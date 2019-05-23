@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO;
 
-namespace Common
+namespace Common.DBUtility
 {
     public abstract class DbsBaseClass : IDbs
     {

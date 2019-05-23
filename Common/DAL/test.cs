@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common
+namespace Common.DAL
 {
-    public class Class1
+    public class Test
     {
+        public int id { get; set; }
+        public string name { get; set; }
     }
 }
