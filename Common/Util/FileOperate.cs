@@ -27,6 +27,19 @@ namespace Common.Util
         }
 
         /// <summary>
+        /// 创建指定的文件夹路径
+        /// </summary>
+        /// <param name="directory"></param>
+        public static void CreateDirectory(string directory)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+            }
+        }
+
+        /// <summary>
         /// 向指定的路径生成文本文件，并写入指定内容
         /// </summary>
         /// <param name="path"></param>

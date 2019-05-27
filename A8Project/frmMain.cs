@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace A8Project
 {
@@ -21,6 +22,10 @@ namespace A8Project
             InitializeComponent();
         }
         ErrorInfo errorInfo = new ErrorInfo();
+        SocketManager _sm = null;
+        string ip = "192.168.0.105";
+        int port = 102;
+
         private void err_timer1_Tick(object sender, EventArgs e)
         {
             //在家ErrorInfo信息
@@ -65,16 +70,64 @@ namespace A8Project
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            #region 读取Socket配置信息
+            this.ip = ConfigurationManager.AppSettings["socketSeverIP"];
+            this.port= Convert.ToInt32(ConfigurationManager.AppSettings["socketSeverPort"]);
+            #endregion
+            #region Socket通讯服务
+            _sm = new SocketManager(ip, port);
+            _sm.OnReceiveMsg += OnReceiveMsg;
+            _sm.OnConnected += OnConnected;
+            _sm.OnDisConnected += OnDisConnected;
+            _sm.Start();
+            #endregion
+
             LoadHistory();
             //DealTestValue();
         }
+
+        #region Socket通讯
+        /// <summary>
+        /// 接收信息
+        /// </summary>
+        /// <param name="ip"></param>
+        public void OnReceiveMsg(string ip)
+        {
+            byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
+            string msg = Encoding.UTF8.GetString(buffer).Replace("\0", "");
+            if (msg.Length > 0)
+            {
+                string[] temp = msg.Split(',');
+                GetCommunication(temp[0], temp[1],temp[2]);
+            }
+        }
+
+        /// <summary>
+        /// 客户端连接
+        /// </summary>
+        /// <param name="clientIP"></param>
+        public void OnConnected(string clientIP)
+        {
+            string ipstr = clientIP.Split(':')[0];
+            string portstr = clientIP.Split(':')[1];
+        }
+
+        /// <summary>
+        /// Socket客户端断开连接
+        /// </summary>
+        /// <param name="clientIp"></param>
+        public void OnDisConnected(string clientIp)
+        {
+            SysLog.CreateLog(clientIp + ",通讯中断");
+        }
+        #endregion
 
         //文档处理，工控机给一个完成信息然后进行文档处理,一次处理一个文件
         private void DealTestValue()
         {
             try
             {
-                string dealPath = FileOperate.RealFile(Application.StartupPath + "\\dealpath.dat")[0];
+                string dealPath= ConfigurationManager.AppSettings["dealpath"];
                 string[] files = File.ReadAllLines(dealPath);
                 string[] testInfo = new string[] { };
                 List<TestValue> listValues = new List<TestValue>();
@@ -103,10 +156,10 @@ namespace A8Project
         /// </summary>
         /// <param name="site"></param>
         /// <param name="message"></param>
-        private void GetCommunication(string site, string message)
+        private void GetCommunication(string createtime,string site, string message)
         {
             ErrorInfo errorInfo = new ErrorInfo();
-            errorInfo.createtime = DateTime.Now;
+            errorInfo.createtime = Convert.ToDateTime(createtime);
             errorInfo.site = site;
             errorInfo.message = message;
             errorInfo.InsertErrorInfo(errorInfo);

@@ -5,12 +5,13 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO;
+using System.Configuration;
 
 namespace Common.DBUtility
 {
     public abstract class DbsBaseClass : IDbs
     {
-        public static string ConStr = "server=127.0.0.1;database=A8;uid=sa;pwd=Ll@20190505;";
+        //public static string ConStr = "server=127.0.0.1;database=A8;uid=sa;pwd=Ll@20190505;";
 
         protected string connectionString;
         public virtual string ConnectionString
@@ -19,59 +20,13 @@ namespace Common.DBUtility
             {
                 return connectionString;
             }
-        }
-
-        private string datasource = "";
-        public virtual string DataSource
-        {
-            get
-            {
-                return datasource;
-            }
-        }
-
-        private string database = "";
-        public virtual string Database
-        {
-            get
-            {
-                return database;
-            }
-        }
-
-        private string uid = "";
-        public virtual string Uid
-        {
-            get
-            {
-                return uid;
-            }
-        }
-
-        private string pwd = "";
-        public virtual string PassWord
-        {
-            get
-            {
-                return pwd;
-            }
-        }
+        }        
 
         #region IDbs 成员
 
         public virtual string GetconnectionString()
         {
-            using (FileStream fs = new FileStream("Config.pp", FileMode.Open, FileAccess.Read))
-            {
-                using (StreamReader sr = new StreamReader(fs))
-                {
-                    datasource = sr.ReadLine();
-                    database = sr.ReadLine();
-                    uid = sr.ReadLine();
-                    pwd = sr.ReadLine();
-                    return "data source='" + datasource + "';database='" + database + "';uid='" + uid + "';pwd='" + pwd + "';";
-                }
-            }
+            return ConfigurationManager.ConnectionStrings["A8Connect"].ConnectionString;
         }
 
         /// <summary>

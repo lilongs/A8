@@ -61,6 +61,7 @@
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange11 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange12 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
+            this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.gdcErrorInfo = new DevExpress.XtraGrid.GridControl();
             this.gdvErrorInfo = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -86,6 +87,7 @@
             this.arcScaleComponent1 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleComponent();
             this.arcScaleNeedleComponent1 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent();
             this.panelControl4 = new DevExpress.XtraEditors.PanelControl();
+            this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.gdcHistory = new DevExpress.XtraGrid.GridControl();
             this.gdvHistory = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -101,10 +103,10 @@
             this.arcScaleComponent3 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleComponent();
             this.arcScaleBackgroundLayerComponent3 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleBackgroundLayerComponent();
             this.arcScaleNeedleComponent3 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent();
-            this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
-            this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
+            this.groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gdcErrorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gdvErrorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
@@ -126,6 +128,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleNeedleComponent1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).BeginInit();
             this.panelControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
+            this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gdcHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gdvHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
@@ -156,10 +160,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleComponent3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleBackgroundLayerComponent3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleNeedleComponent3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
-            this.groupControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
-            this.groupControl2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControl3
@@ -171,6 +171,16 @@
             this.panelControl3.Name = "panelControl3";
             this.panelControl3.Size = new System.Drawing.Size(393, 747);
             this.panelControl3.TabIndex = 2;
+            // 
+            // groupControl2
+            // 
+            this.groupControl2.Controls.Add(this.gdcErrorInfo);
+            this.groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupControl2.Location = new System.Drawing.Point(2, 2);
+            this.groupControl2.Name = "groupControl2";
+            this.groupControl2.Size = new System.Drawing.Size(389, 373);
+            this.groupControl2.TabIndex = 4;
+            this.groupControl2.Text = "实时信息";
             // 
             // gdcErrorInfo
             // 
@@ -552,6 +562,16 @@
             this.panelControl4.Size = new System.Drawing.Size(367, 747);
             this.panelControl4.TabIndex = 3;
             // 
+            // groupControl1
+            // 
+            this.groupControl1.Controls.Add(this.gdcHistory);
+            this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupControl1.Location = new System.Drawing.Point(2, 2);
+            this.groupControl1.Name = "groupControl1";
+            this.groupControl1.Size = new System.Drawing.Size(363, 373);
+            this.groupControl1.TabIndex = 2;
+            this.groupControl1.Text = "CycleTime";
+            // 
             // gdcHistory
             // 
             this.gdcHistory.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -613,7 +633,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chartControl4.DataBindings = null;
             this.chartControl4.Legend.Name = "Default Legend";
-            this.chartControl4.Location = new System.Drawing.Point(10, 26);
+            this.chartControl4.Location = new System.Drawing.Point(9, 21);
             this.chartControl4.Name = "chartControl4";
             series1.Name = "当班产量";
             series1.View = doughnutSeriesView1;
@@ -791,26 +811,6 @@
             this.arcScaleNeedleComponent3.StartOffset = -6F;
             this.arcScaleNeedleComponent3.ZOrder = -50;
             // 
-            // groupControl1
-            // 
-            this.groupControl1.Controls.Add(this.gdcHistory);
-            this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl1.Location = new System.Drawing.Point(2, 2);
-            this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(363, 373);
-            this.groupControl1.TabIndex = 2;
-            this.groupControl1.Text = "CycleTime";
-            // 
-            // groupControl2
-            // 
-            this.groupControl2.Controls.Add(this.gdcErrorInfo);
-            this.groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupControl2.Location = new System.Drawing.Point(2, 2);
-            this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(389, 373);
-            this.groupControl2.TabIndex = 4;
-            this.groupControl2.Text = "实时信息";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -826,6 +826,8 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
+            this.groupControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gdcErrorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gdvErrorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
@@ -850,6 +852,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleNeedleComponent1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).EndInit();
             this.panelControl4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
+            this.groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gdcHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gdvHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
@@ -880,10 +884,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleComponent3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleBackgroundLayerComponent3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arcScaleNeedleComponent3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
-            this.groupControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).EndInit();
-            this.groupControl2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

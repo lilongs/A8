@@ -12,7 +12,7 @@ namespace Common.DBUtility
     {
         public TempTest()
         {
-            connectionString = DbsBaseClass.ConStr;
+            connectionString = GetconnectionString();
         }
     }    
 
