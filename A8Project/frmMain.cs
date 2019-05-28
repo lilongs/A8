@@ -12,6 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using DevExpress.XtraCharts;
+using Common.BLL;
 
 namespace A8Project
 {
@@ -26,6 +28,11 @@ namespace A8Project
         string ip = "192.168.0.105";
         int port = 102;
 
+        /// <summary>
+        /// 加载错误信息，每隔6秒定时刷新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void err_timer1_Tick(object sender, EventArgs e)
         {
             //在家ErrorInfo信息
@@ -34,37 +41,14 @@ namespace A8Project
             this.gdcErrorInfo.DataSource = dt;
         }
 
+        /// <summary>
+        /// 加载各个时间间隔的Cycletime
+        /// </summary>
         private void LoadHistory()
         {
             DataTable dtHis = new DataTable();
-            dtHis.Columns.Add("cycletime");
-            dtHis.Columns.Add("second");
-
-            DataRow dr = dtHis.NewRow();
-            dr["cycletime"] = "1小时";
-            dr["second"] = 8.2;
-            dtHis.Rows.Add(dr);
-
-            DataRow dr1 = dtHis.NewRow();
-            dr1["cycletime"] = "1天";
-            dr1["second"] = 8.3;
-            dtHis.Rows.Add(dr1);
-
-            DataRow dr2 = dtHis.NewRow();
-            dr2["cycletime"] = "1周";
-            dr2["second"] = 8.5;
-            dtHis.Rows.Add(dr2);
-
-            DataRow dr3 = dtHis.NewRow();
-            dr3["cycletime"] = "1个月";
-            dr3["second"] = 9.0;
-            dtHis.Rows.Add(dr3);
-
-            DataRow dr4 = dtHis.NewRow();
-            dr4["cycletime"] = "1年";
-            dr4["second"] = 9.5;
-            dtHis.Rows.Add(dr4);
-
+            BUTestValue bUTestValue = new BUTestValue();
+            dtHis = bUTestValue.GetCycleTime();
             this.gdcHistory.DataSource = dtHis;
         }
 
@@ -83,6 +67,9 @@ namespace A8Project
             #endregion
 
             LoadHistory();
+
+            LoadTodayData();
+
             //DealTestValue();
         }
 
@@ -113,7 +100,7 @@ namespace A8Project
         }
 
         /// <summary>
-        /// Socket客户端断开连接
+        /// Socket客户端断开连接保存日志到指定目录下的
         /// </summary>
         /// <param name="clientIp"></param>
         public void OnDisConnected(string clientIp)
@@ -164,5 +151,72 @@ namespace A8Project
             errorInfo.message = message;
             errorInfo.InsertErrorInfo(errorInfo);
         }
+
+        /// <summary>
+        /// 定时刷新，时间间隔1小时=3600000ms
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Today_timer_Tick(object sender, EventArgs e)
+        {
+            LoadTodayData();
+        }
+
+        /// <summary>
+        /// 加载当班数据
+        /// </summary>
+        private void LoadTodayData()
+        {
+            TestValue testValue = new TestValue();
+            DataTable dtData = testValue.GetTodayData();
+            DataTable dt = FillTable(dtData);
+
+            this.chartControl1.Series.Clear();
+            Series series1 = new Series("产量", ViewType.Bar);
+            series1.DataSource = dt;
+            series1.ArgumentScaleType = ScaleType.Qualitative;
+
+            // 以哪个字段进行显示 
+            series1.ArgumentDataMember = "hours";
+            series1.ValueScaleType = ScaleType.Numerical;
+
+            // 柱状图里的柱的取值字段
+            series1.ValueDataMembers.AddRange(new string[] { "counts" });
+            //绑定Series
+            chartControl1.Series.Add(series1);
+            XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
+            diagram.AxisX.GridSpacingAuto = false;
+            diagram.AxisX.GridSpacing = 1;
+        }
+
+        /// <summary>
+        /// 填充当班数据到0-24小时的表中
+        /// </summary>
+        /// <param name="dtData"></param>
+        /// <returns></returns>
+        private DataTable FillTable(DataTable dtData)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("hours",Type.GetType("System.Int32"));
+            dt.Columns.Add("counts", Type.GetType("System.Int32"));
+            for (int i = 1; i <= 24; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr["hours"] = i;
+                DataRow[] dataRows = dtData.Select("hours=" + i + "");
+                if (dataRows.Length > 0)
+                {
+                    dr["counts"] = dataRows[0]["counts"].ToString();
+                }
+                else
+                {
+                    dr["counts"] = 0;
+                }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+        
     }
 }

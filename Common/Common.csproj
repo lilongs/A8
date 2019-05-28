@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BUTestValue.cs" />
     <Compile Include="DAL\ErrorInfo.cs" />
     <Compile Include="DAL\test.cs" />
     <Compile Include="DAL\TestValue.cs" />
@@ -73,9 +74,7 @@
     <Compile Include="Util\SocketManager.cs" />
     <Compile Include="Util\SysLog.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BLL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
