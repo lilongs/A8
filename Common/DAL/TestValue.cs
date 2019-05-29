@@ -17,6 +17,10 @@ namespace Common.DAL
         public string productno { get; set; }
         public string testItem { get; set; }
         public string testValue { get; set; }
+        public string RESULT { get; set; }
+        public string LOW { get; set; }
+        public string HIGH { get; set; }
+        public string EXPECTED { get; set; }
         public DateTime testTime { get; set; }
         public DateTime createTime { get; set; }
 
@@ -36,8 +40,8 @@ namespace Common.DAL
                 {
                     sql.Append("update testValue set active=0 where path='" + testValue.path + "' and productno='" + testValue.productno + "' and testItem='" + testValue.testItem + "' ");
                 }
-                sql.Append(@"insert into testValue (path, productno, testItem, testValue, testTime, createtime,active) 
-                    values('" + testValue.path + "', '" + testValue.productno + "', '" + testValue.testItem + "', '" + testValue.testValue + "', '" + testValue.testTime + "', getdate(),1)");
+                sql.Append(@"insert into testValue (path, productno, testItem, testValue,RESULT,LOW,HIGH,EXPECTED, testTime, createtime,active) 
+                    values('" + testValue.path + "', '" + testValue.productno + "', '" + testValue.testItem + "', '" + testValue.testValue + "', '" + testValue.RESULT + "', '" + testValue.LOW + "', '" + testValue.HIGH + "', '" + testValue.EXPECTED + "', '" + testValue.testTime + "', getdate(),1)");
             }
             return sqlconn.ExecuteSql(sql.ToString()) > 0 ? true : false;
         }
@@ -86,6 +90,57 @@ namespace Common.DAL
                           group by productno");
 
             return sqlconn.Query(sql.ToString());
+        }
+
+        /// <summary>
+        /// 获取一年12个月的产量
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetYearMonth()
+        {
+            string sql = @"select months,count(productno) as counts 
+                        from(select distinct productno, DATEPART(MM, testtime) as months
+                        from testValue
+                        where DATEDIFF(YEAR, testtime, GETDATE()) = 0 and active = 1) as a
+                        group by months";
+            return sqlconn.Query(sql).Tables[0];
+        }
+
+        /// <summary>
+        /// 获取每个站点的产品数
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
+        public DataTable GetSiteCount(string site)
+        {
+            string sql = @"select '"+site+ @"' as site,count(productno) as counts 
+                        from(
+                        select distinct productno from testValue
+                        where site = '" + site + "') as a";
+            return sqlconn.Query(sql).Tables[0];
+        }
+
+        /// <summary>
+        /// 计算一年12月的FPY
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetYearMonthFPY()
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append(@"select A.*,B.fail_counts 
+                        from (select months,count(productno)as fail_counts 
+                        from (select distinct productno,result,DATEPART(MM,testtime)as months 
+                        from testvalue
+                        where DATEDIFF(YEAR,testtime,GETDATE())=0 and active=1
+                        and result='FAILED') as a
+                        group by months) as B
+                        left join (
+                        select months,count(productno)as counts
+                         from (select distinct productno,DATEPART(MM,testtime)as months
+                        from testvalue
+                        where DATEDIFF(YEAR,testtime,GETDATE())=0 and active=1) as a
+                        group by months) as A on A.months=B.months");
+            return sqlconn.Query(sql.ToString()).Tables[0];
         }
     }
 }
