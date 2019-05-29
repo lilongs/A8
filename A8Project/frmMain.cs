@@ -24,39 +24,20 @@ namespace A8Project
             InitializeComponent();
         }
         ErrorInfo errorInfo = new ErrorInfo();
+        BUTestValue buTestValue = new BUTestValue();
         SocketManager _sm = null;
-        string ip = "192.168.0.105";
+        string ip = string.Empty;
         int port = 102;
 
-        /// <summary>
-        /// 加载错误信息，每隔6秒定时刷新
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void err_timer1_Tick(object sender, EventArgs e)
-        {
-            //在家ErrorInfo信息
-            DataTable dt = new DataTable();
-            dt = errorInfo.GetErrorInfo();
-            this.gdcErrorInfo.DataSource = dt;
-        }
 
-        /// <summary>
-        /// 加载各个时间间隔的Cycletime
-        /// </summary>
-        private void LoadHistory()
-        {
-            DataTable dtHis = new DataTable();
-            BUTestValue bUTestValue = new BUTestValue();
-            dtHis = bUTestValue.GetCycleTime();
-            this.gdcHistory.DataSource = dtHis;
-        }
+
+
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             #region 读取Socket配置信息
             this.ip = ConfigurationManager.AppSettings["socketSeverIP"];
-            this.port= Convert.ToInt32(ConfigurationManager.AppSettings["socketSeverPort"]);
+            this.port = Convert.ToInt32(ConfigurationManager.AppSettings["socketSeverPort"]);
             #endregion
             #region Socket通讯服务
             _sm = new SocketManager(ip, port);
@@ -65,11 +46,13 @@ namespace A8Project
             _sm.OnDisConnected += OnDisConnected;
             _sm.Start();
             #endregion
+            LoadErrorInfo();
+            LoadConsumables();
 
-            LoadHistory();
-
+            LoadCycleTime();
             LoadTodayData();
-
+            LoadYearMonth();
+            LoadYearMonthFPY();
             //DealTestValue();
         }
 
@@ -85,7 +68,7 @@ namespace A8Project
             if (msg.Length > 0)
             {
                 string[] temp = msg.Split(',');
-                GetCommunication(temp[0], temp[1],temp[2]);
+                GetCommunication(temp[0], temp[1], temp[2]);
             }
         }
 
@@ -114,7 +97,7 @@ namespace A8Project
         {
             try
             {
-                string dealPath= ConfigurationManager.AppSettings["dealpath"];
+                string dealPath = ConfigurationManager.AppSettings["dealpath"];
                 string[] files = File.ReadAllLines(dealPath);
                 string[] testInfo = new string[] { };
                 List<TestValue> listValues = new List<TestValue>();
@@ -143,7 +126,7 @@ namespace A8Project
         /// </summary>
         /// <param name="site"></param>
         /// <param name="message"></param>
-        private void GetCommunication(string createtime,string site, string message)
+        private void GetCommunication(string createtime, string site, string message)
         {
             ErrorInfo errorInfo = new ErrorInfo();
             errorInfo.createtime = Convert.ToDateTime(createtime);
@@ -157,9 +140,54 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Today_timer_Tick(object sender, EventArgs e)
+        private void OneHour_timer_Tick(object sender, EventArgs e)
         {
+            LoadCycleTime();
             LoadTodayData();
+            LoadYearMonth();
+            LoadYearMonthFPY();
+        }
+        /// <summary>
+        /// 加载错误信息，每隔6秒定时刷新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Six_timer1_Tick(object sender, EventArgs e)
+        {
+            LoadErrorInfo();
+            LoadConsumables();
+        }
+
+        private void LoadErrorInfo()
+        {
+            //加载错误信息
+            DataTable dt = new DataTable();
+            dt = errorInfo.GetErrorInfo();
+            this.gdcErrorInfo.DataSource = dt;
+        }
+
+        private void LoadConsumables()
+        {
+            int consumable1 = buTestValue.GetSiteCount("RunIn", 10)%100000;
+            int consumable2 = buTestValue.GetSiteCount("FC", 20) % 100000;
+            int consumable3 = (buTestValue.GetSiteCount("RunIn", 5) + buTestValue.GetSiteCount("FC", 5))%50000;
+
+            this.arcScaleComponent1.Value = consumable1;
+            this.labelControl4.Text = consumable1.ToString();
+            this.arcScaleComponent2.Value = consumable2;
+            this.labelControl5.Text = consumable2.ToString();
+            this.arcScaleComponent3.Value = consumable3;
+            this.labelControl6.Text = consumable3.ToString();
+        }
+
+        /// <summary>
+        /// 加载各个时间间隔的Cycletime
+        /// </summary>
+        private void LoadCycleTime()
+        {
+            DataTable dtHis = new DataTable();
+            dtHis = buTestValue.GetCycleTime();
+            this.gdcHistory.DataSource = dtHis;
         }
 
         /// <summary>
@@ -167,14 +195,13 @@ namespace A8Project
         /// </summary>
         private void LoadTodayData()
         {
-            TestValue testValue = new TestValue();
-            DataTable dtData = testValue.GetTodayData();
-            DataTable dt = FillTable(dtData);
+            DataTable dt = buTestValue.GetTodayData(); ;
 
             this.chartControl1.Series.Clear();
             Series series1 = new Series("产量", ViewType.Bar);
             series1.DataSource = dt;
             series1.ArgumentScaleType = ScaleType.Qualitative;
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
 
             // 以哪个字段进行显示 
             series1.ArgumentDataMember = "hours";
@@ -189,34 +216,67 @@ namespace A8Project
             diagram.AxisX.GridSpacing = 1;
         }
 
-        /// <summary>
-        /// 填充当班数据到0-24小时的表中
-        /// </summary>
-        /// <param name="dtData"></param>
-        /// <returns></returns>
-        private DataTable FillTable(DataTable dtData)
+        private void LoadYearMonth()
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("hours",Type.GetType("System.Int32"));
-            dt.Columns.Add("counts", Type.GetType("System.Int32"));
-            for (int i = 1; i <= 24; i++)
-            {
-                DataRow dr = dt.NewRow();
-                dr["hours"] = i;
-                DataRow[] dataRows = dtData.Select("hours=" + i + "");
-                if (dataRows.Length > 0)
-                {
-                    dr["counts"] = dataRows[0]["counts"].ToString();
-                }
-                else
-                {
-                    dr["counts"] = 0;
-                }
-                dt.Rows.Add(dr);
-            }
-            return dt;
+            DataTable dt = buTestValue.GetYearMonth();
+            this.chartControl2.Series.Clear();
+            Series series1 = new Series("历史产量", ViewType.Bar);
+            series1.DataSource = dt;
+            series1.ArgumentScaleType = ScaleType.Qualitative;
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            // 以哪个字段进行显示 
+            series1.ArgumentDataMember = "months";
+            series1.ValueScaleType = ScaleType.Numerical;
+
+            // 柱状图里的柱的取值字段
+            series1.ValueDataMembers.AddRange(new string[] { "counts" });
+            //绑定Series
+            chartControl2.Series.Add(series1);
+            XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
+            diagram.AxisX.GridSpacingAuto = false;
+            diagram.AxisX.GridSpacing = 1;
         }
 
-        
+        private void LoadYearMonthFPY()
+        {
+            DataTable dt = buTestValue.GetYearMonthFPY();
+            this.chartControl3.Series.Clear();
+            Series series1 = new Series("FPY", ViewType.Line);
+            series1.DataSource = dt;
+            series1.ArgumentScaleType = ScaleType.Qualitative;
+
+            // 以哪个字段进行显示 
+            series1.ArgumentDataMember = "months";
+            series1.ValueScaleType = ScaleType.Numerical;
+            series1.Label.TextPattern = "{v:0.00%}";
+            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            // 柱状图里的柱的取值字段
+            series1.ValueDataMembers.AddRange(new string[] { "ratio" });
+            //绑定Series
+            chartControl3.Series.Add(series1);
+            XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
+            diagram.AxisX.GridSpacingAuto = false;
+            diagram.AxisX.GridSpacing = 1;
+
+            diagram.AxisY.Label.TextPattern = "{v:0.00%}";
+            
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("确定退出系统？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (dr == DialogResult.OK)
+            {
+                //需要先释放资源，否则会重复执行该事件
+                Dispose();
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
