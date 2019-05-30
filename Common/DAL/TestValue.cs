@@ -142,5 +142,22 @@ namespace Common.DAL
                         group by months) as A on A.months=B.months");
             return sqlconn.Query(sql.ToString()).Tables[0];
         }
+
+        public DataTable GetDayOfCountWithFPY()
+        {
+            string sql = @"select A.*,B.fail_counts 
+                            from(select days, count(productno) as fail_counts
+                            from(select distinct productno, result, DATEPART(DAY, testtime) as days
+                            from testvalue
+                            where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1
+                            and result = 'FAILED') as a
+                            group by days) as B
+                            left join(select days, count(productno)as counts
+                            from(select distinct productno, DATEPART(DAY, testtime) as days
+                            from testvalue
+                            where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1) as a
+                            group by days) as A on A.days = B.days";
+            return sqlconn.Query(sql).Tables[0];
+        }
     }
 }

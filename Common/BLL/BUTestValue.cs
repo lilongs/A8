@@ -208,5 +208,33 @@ namespace Common.BLL
             }
             return dt;
         }
+
+        public DataTable GetDayOfCountWithFPY()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("name",Type.GetType("System.String"));
+            dt.Columns.Add("value", Type.GetType("System.Double"));
+            DataTable dtData = testValue.GetDayOfCountWithFPY();
+            if (dtData.Rows.Count > 0)
+            {
+                DataRow dr = dt.NewRow();
+                dr["name"] = "合格率";
+                dr["value"] = 1 - (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+                dt.Rows.Add(dr);
+
+                DataRow dr2 = dt.NewRow();
+                dr2["name"] = "不良率";
+                dr2["value"] = (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+                dt.Rows.Add(dr2);
+            }
+            else
+            {
+                DataRow dr = dt.NewRow();
+                dr["name"] = "合格率";
+                dr["value"] = 1;
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
     }
 }

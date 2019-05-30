@@ -51,6 +51,7 @@ namespace A8Project
 
             LoadCycleTime();
             LoadTodayData();
+            LoadDayProductRatio();
             LoadYearMonth();
             LoadYearMonthFPY();
             //DealTestValue();
@@ -147,7 +148,7 @@ namespace A8Project
             LoadYearMonth();
             LoadYearMonthFPY();
         }
-        /// <summary>
+        /// <summary>   
         /// 加载错误信息，每隔6秒定时刷新
         /// </summary>
         /// <param name="sender"></param>
@@ -156,6 +157,7 @@ namespace A8Project
         {
             LoadErrorInfo();
             LoadConsumables();
+            LoadDayProductRatio();
         }
 
         private void LoadErrorInfo()
@@ -214,6 +216,20 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
+        }
+
+        private void LoadDayProductRatio()
+        {
+            DataTable dt= buTestValue.GetDayOfCountWithFPY();
+            this.chartControl4.Series.Clear();
+            this.chartControl4.DataSource = dt;
+            Series mySeries = new Series("Series1", ViewType.Pie);  // 这是图形类型
+            chartControl4.Series.Add(mySeries);
+            mySeries.ArgumentDataMember = "name";   // 绑定参数
+            mySeries.ValueDataMembers.AddRange(new string[] { "value" });   // 绑定值
+            mySeries.Label.PointOptions.PointView = PointView.ArgumentAndValues;   // 设置Label显示方式
+            mySeries.ToolTipEnabled = DevExpress.Utils.DefaultBoolean.True;  // 设置鼠标悬浮显示toolTip
+            
         }
 
         private void LoadYearMonth()
