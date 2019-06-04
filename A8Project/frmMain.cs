@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using DevExpress.XtraCharts;
 using Common.BLL;
+using System.IO.Ports;
 
 namespace A8Project
 {
@@ -28,9 +29,6 @@ namespace A8Project
         SocketManager _sm = null;
         string ip = string.Empty;
         int port = 102;
-
-
-
 
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -55,6 +53,7 @@ namespace A8Project
             LoadYearMonth();
             LoadYearMonthFPY();
             //DealTestValue();
+            
         }
 
         #region Socket通讯
@@ -70,6 +69,7 @@ namespace A8Project
             {
                 string[] temp = msg.Split(',');
                 GetCommunication(temp[0], temp[1], temp[2]);
+                Com_Msg.SendData(msg);
             }
         }
 
