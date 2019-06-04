@@ -63,14 +63,22 @@ namespace A8Project
         /// <param name="ip"></param>
         public void OnReceiveMsg(string ip)
         {
-            byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
-            string msg = Encoding.UTF8.GetString(buffer).Replace("\0", "");
-            if (msg.Length > 0)
+            try
             {
-                string[] temp = msg.Split(',');
-                GetCommunication(temp[0], temp[1], temp[2]);
-                Com_Msg.SendData(msg);
-            }
+                //可根据ip段来区分工控机，PLC等，然后采用不用的方式来处理
+                //当前为处理工控机段socket通讯方法，后期根据具体的PLC通讯协议来变更
+                byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
+                string msg = Encoding.UTF8.GetString(buffer).Replace("\0", "");
+                if (msg.Length > 0)
+                {
+                    string[] temp = msg.Split(',');
+                    GetCommunication(temp[0], temp[1], temp[2]);
+                    Com_Msg.SendData(msg);
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }            
         }
 
         /// <summary>
