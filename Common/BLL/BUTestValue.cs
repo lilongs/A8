@@ -10,7 +10,7 @@ namespace Common.BLL
 {
     public class BUTestValue
     {
-        TestValue testValue = new TestValue();
+        Productlog productlog = new Productlog();
 
         /// <summary>
         /// 填充当班数据到0-24小时的表中
@@ -18,7 +18,7 @@ namespace Common.BLL
         /// <returns></returns>
         public DataTable GetTodayData()
         {
-            DataTable dtData = testValue.GetTodayData();
+            DataTable dtData = productlog.GetTodayData();
             DataTable dt = new DataTable();
             dt.Columns.Add("hours", Type.GetType("System.Int32"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
@@ -49,7 +49,7 @@ namespace Common.BLL
             DataTable dtHis = new DataTable();
             dtHis.Columns.Add("cycletime");
             dtHis.Columns.Add("second");
-            DataSet ds = testValue.GetCycleTime();
+            DataSet ds = productlog.GetCycleTime();
 
             for (int i = 0; i < ds.Tables.Count; i++)
             {
@@ -142,7 +142,7 @@ namespace Common.BLL
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.Int32"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
-            DataTable dtData = testValue.GetYearMonth();
+            DataTable dtData = productlog.GetYearMonth();
             //创建1-12月表样式结构
             for (int i = 1; i <= 12; i++)
             {
@@ -167,7 +167,7 @@ namespace Common.BLL
         public int GetSiteCount(string site, int ratio)
         {
             int result = 0;
-            DataTable dt = testValue.GetSiteCount(site);
+            DataTable dt = productlog.GetSiteCount(site);
             if (dt.Rows.Count > 0)
             {
                 return result = Convert.ToInt32(dt.Rows[0]["counts"]) * ratio;
@@ -184,7 +184,7 @@ namespace Common.BLL
         /// <returns></returns>
         public DataTable GetYearMonthFPY()
         {
-            DataTable dtData = testValue.GetYearMonthFPY();
+            DataTable dtData = productlog.GetYearMonthFPY();
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.Int32"));
             dt.Columns.Add("ratio", Type.GetType("System.Double"));
@@ -209,32 +209,32 @@ namespace Common.BLL
             return dt;
         }
 
-        public DataTable GetDayOfCountWithFPY()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("name",Type.GetType("System.String"));
-            dt.Columns.Add("value", Type.GetType("System.Double"));
-            DataTable dtData = testValue.GetDayOfCountWithFPY();
-            if (dtData.Rows.Count > 0)
-            {
-                DataRow dr = dt.NewRow();
-                dr["name"] = "合格率";
-                dr["value"] = 1 - (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
-                dt.Rows.Add(dr);
+        //public DataTable GetDayOfCountWithFPY()
+        //{
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("name",Type.GetType("System.String"));
+            //dt.Columns.Add("value", Type.GetType("System.Double"));
+            //DataTable dtData = productlog.GetDayOfCountWithFPY();
+            //if (dtData.Rows.Count > 0)
+            //{
+            //    DataRow dr = dt.NewRow();
+            //    dr["name"] = "合格率";
+            //    dr["value"] = 1 - (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+            //    dt.Rows.Add(dr);
 
-                DataRow dr2 = dt.NewRow();
-                dr2["name"] = "不良率";
-                dr2["value"] = (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
-                dt.Rows.Add(dr2);
-            }
-            else
-            {
-                DataRow dr = dt.NewRow();
-                dr["name"] = "合格率";
-                dr["value"] = 1;
-                dt.Rows.Add(dr);
-            }
-            return dt;
-        }
+            //    DataRow dr2 = dt.NewRow();
+            //    dr2["name"] = "不良率";
+            //    dr2["value"] = (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+            //    dt.Rows.Add(dr2);
+            //}
+            //else
+            //{
+            //    DataRow dr = dt.NewRow();
+            //    dr["name"] = "合格率";
+            //    dr["value"] = 1;
+            //    dt.Rows.Add(dr);
+            //}
+            //return dt;
+        //}
     }
 }

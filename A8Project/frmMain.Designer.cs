@@ -62,6 +62,7 @@
             this.gdcErrorInfo = new DevExpress.XtraGrid.GridControl();
             this.gdvErrorInfo = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -162,9 +163,9 @@
             this.panelControl3.Controls.Add(this.groupControl2);
             this.panelControl3.Controls.Add(this.panelControl2);
             this.panelControl3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelControl3.Location = new System.Drawing.Point(1259, 0);
+            this.panelControl3.Location = new System.Drawing.Point(1262, 0);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(393, 786);
+            this.panelControl3.Size = new System.Drawing.Size(477, 786);
             this.panelControl3.TabIndex = 2;
             // 
             // groupControl2
@@ -173,7 +174,7 @@
             this.groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControl2.Location = new System.Drawing.Point(2, 2);
             this.groupControl2.Name = "groupControl2";
-            this.groupControl2.Size = new System.Drawing.Size(389, 412);
+            this.groupControl2.Size = new System.Drawing.Size(473, 412);
             this.groupControl2.TabIndex = 4;
             this.groupControl2.Text = "实时信息";
             // 
@@ -183,7 +184,7 @@
             this.gdcErrorInfo.Location = new System.Drawing.Point(2, 21);
             this.gdcErrorInfo.MainView = this.gdvErrorInfo;
             this.gdcErrorInfo.Name = "gdcErrorInfo";
-            this.gdcErrorInfo.Size = new System.Drawing.Size(385, 389);
+            this.gdcErrorInfo.Size = new System.Drawing.Size(469, 389);
             this.gdcErrorInfo.TabIndex = 0;
             this.gdcErrorInfo.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gdvErrorInfo});
@@ -192,6 +193,7 @@
             // 
             this.gdvErrorInfo.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
+            this.gridColumn6,
             this.gridColumn2,
             this.gridColumn3});
             this.gdvErrorInfo.GridControl = this.gdcErrorInfo;
@@ -213,17 +215,29 @@
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
             // 
+            // gridColumn6
+            // 
+            this.gridColumn6.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn6.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn6.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn6.Caption = "产品号";
+            this.gridColumn6.FieldName = "productno";
+            this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.Visible = true;
+            this.gridColumn6.VisibleIndex = 1;
+            // 
             // gridColumn2
             // 
             this.gridColumn2.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn2.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn2.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn2.Caption = "岗位";
-            this.gridColumn2.FieldName = "site";
+            this.gridColumn2.Caption = "站点";
+            this.gridColumn2.FieldName = "equipment";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 1;
+            this.gridColumn2.VisibleIndex = 2;
             // 
             // gridColumn3
             // 
@@ -232,10 +246,10 @@
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn3.Caption = "信息";
-            this.gridColumn3.FieldName = "message";
+            this.gridColumn3.FieldName = "key_process";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.VisibleIndex = 3;
             // 
             // panelControl2
             // 
@@ -245,7 +259,7 @@
             this.panelControl2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelControl2.Location = new System.Drawing.Point(2, 414);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(389, 370);
+            this.panelControl2.Size = new System.Drawing.Size(473, 370);
             this.panelControl2.TabIndex = 3;
             // 
             // gaugeControl3
@@ -254,7 +268,7 @@
             this.gaugeControl3.Controls.Add(this.labelControl3);
             this.gaugeControl3.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge2});
-            this.gaugeControl3.Location = new System.Drawing.Point(117, 198);
+            this.gaugeControl3.Location = new System.Drawing.Point(164, 198);
             this.gaugeControl3.Name = "gaugeControl3";
             this.gaugeControl3.Size = new System.Drawing.Size(180, 180);
             this.gaugeControl3.TabIndex = 2;
@@ -359,7 +373,7 @@
             this.gaugeControl2.Controls.Add(this.labelControl2);
             this.gaugeControl2.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge1});
-            this.gaugeControl2.Location = new System.Drawing.Point(206, 6);
+            this.gaugeControl2.Location = new System.Drawing.Point(283, 12);
             this.gaugeControl2.Name = "gaugeControl2";
             this.gaugeControl2.Size = new System.Drawing.Size(180, 180);
             this.gaugeControl2.TabIndex = 1;
@@ -464,7 +478,7 @@
             this.gaugeControl1.Controls.Add(this.labelControl1);
             this.gaugeControl1.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge12});
-            this.gaugeControl1.Location = new System.Drawing.Point(8, 6);
+            this.gaugeControl1.Location = new System.Drawing.Point(24, 12);
             this.gaugeControl1.Name = "gaugeControl1";
             this.gaugeControl1.Size = new System.Drawing.Size(180, 180);
             this.gaugeControl1.TabIndex = 0;
@@ -670,7 +684,7 @@
             this.panelControl7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl7.Location = new System.Drawing.Point(367, 0);
             this.panelControl7.Name = "panelControl7";
-            this.panelControl7.Size = new System.Drawing.Size(892, 786);
+            this.panelControl7.Size = new System.Drawing.Size(895, 786);
             this.panelControl7.TabIndex = 4;
             // 
             // chartControl1
@@ -701,7 +715,7 @@
             this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
         series2,
         series3};
-            this.chartControl1.Size = new System.Drawing.Size(888, 412);
+            this.chartControl1.Size = new System.Drawing.Size(891, 412);
             this.chartControl1.TabIndex = 2;
             chartTitle2.Text = "当班产量\r\n";
             this.chartControl1.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
@@ -714,7 +728,7 @@
             this.panelControl9.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelControl9.Location = new System.Drawing.Point(2, 414);
             this.panelControl9.Name = "panelControl9";
-            this.panelControl9.Size = new System.Drawing.Size(888, 370);
+            this.panelControl9.Size = new System.Drawing.Size(891, 370);
             this.panelControl9.TabIndex = 1;
             // 
             // chartControl2
@@ -749,7 +763,7 @@
             xyDiagram3.AxisY.VisibleInPanesSerializable = "-1";
             this.chartControl3.Diagram = xyDiagram3;
             this.chartControl3.Legend.Name = "Default Legend";
-            this.chartControl3.Location = new System.Drawing.Point(452, 21);
+            this.chartControl3.Location = new System.Drawing.Point(455, 21);
             this.chartControl3.Name = "chartControl3";
             series6.Name = "FPY";
             series6.View = lineSeriesView3;
@@ -774,7 +788,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1652, 786);
+            this.ClientSize = new System.Drawing.Size(1739, 786);
             this.Controls.Add(this.panelControl7);
             this.Controls.Add(this.panelControl4);
             this.Controls.Add(this.panelControl3);
@@ -891,6 +905,7 @@
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
     }
 }
 

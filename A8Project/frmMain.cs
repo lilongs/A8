@@ -24,7 +24,7 @@ namespace A8Project
         {
             InitializeComponent();
         }
-        ErrorInfo errorInfo = new ErrorInfo();
+        Productlog productlog = new Productlog();
         BUTestValue buTestValue = new BUTestValue();
         SocketManager _sm = null;
         string ip = string.Empty;
@@ -44,6 +44,7 @@ namespace A8Project
             _sm.OnDisConnected += OnDisConnected;
             _sm.Start();
             #endregion
+
             LoadErrorInfo();
             LoadConsumables();
 
@@ -52,8 +53,7 @@ namespace A8Project
             LoadDayProductRatio();
             LoadYearMonth();
             LoadYearMonthFPY();
-            //DealTestValue();
-            
+
         }
 
         #region Socket通讯
@@ -63,26 +63,56 @@ namespace A8Project
         /// <param name="ip"></param>
         public void OnReceiveMsg(string ip)
         {
+            string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
+            string msg = Encoding.UTF8.GetString(buffer).Replace("<STX>", "");
+            msg = msg.Replace("<ETX>", "");
             try
-            {
-                //可根据ip段来区分工控机，PLC等，然后采用不用的方式来处理
-                //当前为处理工控机段socket通讯方法，后期根据具体的PLC通讯协议来变更
-                byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
-                string msg = Encoding.UTF8.GetString(buffer).Replace("\0", "");
+            {               
+                //当前为处理工控机段socket通讯方法，后期根据具体的PLC通讯协议来变更               
                 if (msg.Length > 0)
                 {
                     string[] temp = msg.Split(',');
-                    GetCommunication(temp[0], temp[1], temp[2]);
-                    Com_Msg.SendData(msg);
+                    //区分出当前接收到的信息到底是哪个阶段：Process_ID、Process_IN、Process_OUT
+                    switch (temp[0])
+                    {
+                        case "Process_ID":
+                            _sm.SendMsg("<STX>" + msg + ",pass<ETX>", ip);
+                            GetCommunicationLogs("<STX>" + msg + ",pass<ETX>", now);
+                            break;
+                        case "Process_IN":
+                            _sm.SendMsg("<STX>" + msg + ",pass<ETX>", ip);
+                            GetCommunicationLogs("<STX>" + msg + ",pass<ETX>", now);
+                            GetProductLog(temp[0],temp[1],temp[3],"","",now);    
+                            break;
+                        case "Process_OUT":
+                            _sm.SendMsg("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", ip);
+                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", now);
+                            List<string> list = temp.ToList();
+                            list.RemoveRange(0,5);
+                            string contents=String.Join(",", list.ToArray());
+                            GetProductLog(temp[0], temp[1], temp[3], temp[4], contents, now);
+                            break;
+                        case "START_OUT":
+                            _sm.SendMsg("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", ip);
+                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", now);
+                            GetProductLog(temp[0], temp[1], temp[3], temp[4], temp[5], now);
+                            break;
+                        default:
+                            break;
+                    }                    
                 }
-            }catch(Exception ex)
+            }
+            catch
             {
-                MessageBox.Show(ex.Message);
-            }            
+                _sm.SendMsg("<STX>" + msg + ",error<ETX>", ip);
+                GetCommunicationLogs("<STX>" + msg + ",error<ETX>", now);
+            }
         }
 
+
         /// <summary>
-        /// 客户端连接
+        /// 客户端连接，并将协议中的信息返回给客户端，并追加pass/error
         /// </summary>
         /// <param name="clientIP"></param>
         public void OnConnected(string clientIP)
@@ -101,47 +131,33 @@ namespace A8Project
         }
         #endregion
 
-        //文档处理，工控机给一个完成信息然后进行文档处理,一次处理一个文件
-        private void DealTestValue()
+        private void GetCommunicationLogs(string msg, string rec_time)
         {
-            try
-            {
-                string dealPath = ConfigurationManager.AppSettings["dealpath"];
-                string[] files = File.ReadAllLines(dealPath);
-                string[] testInfo = new string[] { };
-                List<TestValue> listValues = new List<TestValue>();
-                TestValue testValue1 = new TestValue();
-                foreach (string str in files)
-                {
-                    TestValue testValue = new TestValue();
-                    testInfo = str.Split(',');
-                    testValue.path = dealPath;
-                    testValue.productno = "test1";
-                    testValue.testItem = testInfo[0];
-                    testValue.testValue = testInfo[1];
-                    testValue.testTime = Convert.ToDateTime(testInfo[2]);
-                    listValues.Add(testValue);
-                }
-                testValue1.InsertTestValue(listValues);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            CommunicationLogs communicationLogs = new CommunicationLogs();
+            if (msg.Contains(",error"))
+                communicationLogs.rec_message = msg.Replace(",error", "");
+            else
+                communicationLogs.rec_message = msg.Replace(",pass", "");
+            communicationLogs.rec_time = rec_time;
+            communicationLogs.res_message = msg;
+            communicationLogs.InsertCommunicationLog(communicationLogs);
         }
 
         /// <summary>
-        /// 处理存储errorinfo实时信息
+        /// 处理存储测试信息
         /// </summary>
         /// <param name="site"></param>
-        /// <param name="message"></param>
-        private void GetCommunication(string createtime, string site, string message)
+        /// <param name="message"></param>        
+        private void GetProductLog(string key_process, string equipment, string productno, string result, string contents, string createtime)
         {
-            ErrorInfo errorInfo = new ErrorInfo();
-            errorInfo.createtime = Convert.ToDateTime(createtime);
-            errorInfo.site = site;
-            errorInfo.message = message;
-            errorInfo.InsertErrorInfo(errorInfo);
+            Productlog productlog = new Productlog();
+            productlog.key_process = key_process;
+            productlog.equipment = equipment;
+            productlog.productno = productno;
+            productlog.result = result;
+            productlog.contents = contents;
+            productlog.createtime = createtime;
+            productlog.InsertProductlog(productlog);
         }
 
         /// <summary>
@@ -170,17 +186,17 @@ namespace A8Project
 
         private void LoadErrorInfo()
         {
-            //加载错误信息
+            //加载信息
             DataTable dt = new DataTable();
-            dt = errorInfo.GetErrorInfo();
+            dt = productlog.GetInfo();
             this.gdcErrorInfo.DataSource = dt;
         }
 
         private void LoadConsumables()
         {
-            int consumable1 = buTestValue.GetSiteCount("RunIn", 10)%100000;
-            int consumable2 = buTestValue.GetSiteCount("FC", 20) % 100000;
-            int consumable3 = (buTestValue.GetSiteCount("RunIn", 5) + buTestValue.GetSiteCount("FC", 5))%50000;
+            int consumable1 = buTestValue.GetSiteCount("A8001", 10) % 100000;
+            int consumable2 = buTestValue.GetSiteCount("A8002", 20) % 100000;
+            int consumable3 = (buTestValue.GetSiteCount("A8001", 5) + buTestValue.GetSiteCount("A8002", 5)) % 50000;
 
             this.arcScaleComponent1.Value = consumable1;
             this.labelControl4.Text = consumable1.ToString();
@@ -228,16 +244,16 @@ namespace A8Project
 
         private void LoadDayProductRatio()
         {
-            DataTable dt= buTestValue.GetDayOfCountWithFPY();
-            this.chartControl4.Series.Clear();
-            this.chartControl4.DataSource = dt;
-            Series mySeries = new Series("Series1", ViewType.Pie);  // 这是图形类型
-            chartControl4.Series.Add(mySeries);
-            mySeries.ArgumentDataMember = "name";   // 绑定参数
-            mySeries.ValueDataMembers.AddRange(new string[] { "value" });   // 绑定值
-            mySeries.Label.PointOptions.PointView = PointView.ArgumentAndValues;   // 设置Label显示方式
-            mySeries.ToolTipEnabled = DevExpress.Utils.DefaultBoolean.True;  // 设置鼠标悬浮显示toolTip
-            
+            //DataTable dt = buTestValue.GetDayOfCountWithFPY();
+            //this.chartControl4.Series.Clear();
+            //this.chartControl4.DataSource = dt;
+            //Series mySeries = new Series("Series1", ViewType.Pie);  // 这是图形类型
+            //chartControl4.Series.Add(mySeries);
+            //mySeries.ArgumentDataMember = "name";   // 绑定参数
+            //mySeries.ValueDataMembers.AddRange(new string[] { "value" });   // 绑定值
+            //mySeries.Label.PointOptions.PointView = PointView.ArgumentAndValues;   // 设置Label显示方式
+            //mySeries.ToolTipEnabled = DevExpress.Utils.DefaultBoolean.True;  // 设置鼠标悬浮显示toolTip
+
         }
 
         private void LoadYearMonth()
@@ -285,7 +301,7 @@ namespace A8Project
             diagram.AxisX.GridSpacing = 1;
 
             diagram.AxisY.Label.TextPattern = "{v:0.00%}";
-            
+
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)

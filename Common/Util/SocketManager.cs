@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,7 @@ namespace Common.Util
 {
     public class SocketManager
     {
-        public Dictionary<string,SocketInfo> _listSocketInfo = null;
+        public Dictionary<string, SocketInfo> _listSocketInfo = null;
         Socket _socket = null;
         EndPoint _endPoint = null;
         bool _isListening = false;
@@ -73,7 +74,7 @@ namespace Common.Util
                     //这里向系统投递一个接收信息的请求，并为其指定ReceiveCallBack做为回调函数 
                     sInfo.socket.BeginReceive(sInfo.buffer, 0, sInfo.buffer.Length, SocketFlags.None, ReceiveCallBack, sInfo.socket.RemoteEndPoint);
                 }
-                catch 
+                catch
                 {
                     return;
                 }
@@ -83,40 +84,48 @@ namespace Common.Util
 
         private void ReceiveCallBack(IAsyncResult ar)
         {
+
             EndPoint ep = ar.AsyncState as IPEndPoint;
             SocketInfo info = _listSocketInfo[ep.ToString()];
-            int readCount = 0;
             try
             {
-                if (info.socket == null) return;
-                readCount = info.socket.EndReceive(ar);
-            }catch{
-                return;
-            }
-            if (readCount > 0)
-            {
-                //byte[] buffer = new byte[readCount];
-                //Buffer.BlockCopy(info.buffer, 0, buffer, 0, readCount);
-                if (readCount < info.buffer.Length)
+                int readCount = 0;
+                try
                 {
-                    byte[] newBuffer = new byte[readCount];
-                    Buffer.BlockCopy(info.buffer, 0, newBuffer, 0, readCount);
-                    info.msgBuffer = newBuffer;
+                    if (info.socket == null) return;
+                    readCount = info.socket.EndReceive(ar);
                 }
-                else
+                catch
                 {
-                    info.msgBuffer = info.buffer;
-                }
-                string msgTip = Encoding.UTF8.GetString(info.msgBuffer);
-                if (msgTip == "\0\0\0faild")
-                {
-                    info.isConnected = false;
-                    if (this.OnDisConnected != null) OnDisConnected(info.socket.RemoteEndPoint.ToString());
-                    _listSocketInfo.Remove(info.socket.RemoteEndPoint.ToString());
-                    info.socket.Close();
                     return;
                 }
-                if (OnReceiveMsg != null) OnReceiveMsg(info.socket.RemoteEndPoint.ToString());
+                if (readCount > 0)
+                {
+                    if (readCount < info.buffer.Length)
+                    {
+                        byte[] newBuffer = new byte[readCount];
+                        Buffer.BlockCopy(info.buffer, 0, newBuffer, 0, readCount);
+                        info.msgBuffer = newBuffer;
+                    }
+                    else
+                    {
+                        info.msgBuffer = info.buffer;
+                    }
+                    string msgTip = Encoding.UTF8.GetString(info.msgBuffer);
+                    if (msgTip == "\0\0\0faild")
+                    {
+                        info.isConnected = false;
+                        if (this.OnDisConnected != null) OnDisConnected(info.socket.RemoteEndPoint.ToString());
+                        _listSocketInfo.Remove(info.socket.RemoteEndPoint.ToString());
+                        info.socket.Close();
+                        return;
+                    }
+                    if (OnReceiveMsg != null) OnReceiveMsg(info.socket.RemoteEndPoint.ToString());
+                }                
+            }
+            catch
+            {
+                string msgTip = Encoding.UTF8.GetString(info.msgBuffer);
             }
         }
 
@@ -124,10 +133,12 @@ namespace Common.Util
         {
             if (_listSocketInfo.Keys.Contains(endPoint) && _listSocketInfo[endPoint] != null)
             {
-               // _listSocketInfo[endPoint].socket.Send(Encoding.ASCII.GetBytes(text));
+                // _listSocketInfo[endPoint].socket.Send(Encoding.ASCII.GetBytes(text));
                 _listSocketInfo[endPoint].socket.Send(Encoding.UTF8.GetBytes(text));
             }
         }
+
+       
 
         public void Stop()
         {
