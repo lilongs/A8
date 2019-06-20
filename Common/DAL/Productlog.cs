@@ -96,11 +96,12 @@ namespace Common.DAL
         public DataTable GetTodayData()
         {
             string sql = @"select hours,count(productno)as counts 
-                    from(select distinct productno, DATEPART(hh, createtime) as hours
-                    from productlog
-                    where DATEDIFF(DAY, createtime, GETDATE()) = 0
-                    ) as a
-                    group by hours";
+                        from(select productno,DATEPART(hh, Max(a.createtime)) as hours
+                        from productlog a
+                        where DATEDIFF(DAY, createtime, GETDATE()) = 0
+                        group by productno
+                        ) as a
+                        group by hours";
             return sqlconn.Query(sql).Tables[0];
         }
 
@@ -144,7 +145,7 @@ namespace Common.DAL
                         from (select distinct productno,result,DATEPART(MM,createtime)as months 
                         from productlog
                         where DATEDIFF(YEAR,createtime,GETDATE())=0 
-                        and result='FAIL') as a
+                        and result='PASS') as a
                         group by months) as B
                         left join (
                         select months,count(productno)as counts

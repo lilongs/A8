@@ -15,9 +15,16 @@ using System.Configuration;
 using DevExpress.XtraCharts;
 using Common.BLL;
 using System.IO.Ports;
+using HPSocketCS;
+
 
 namespace A8Project
 {
+    public enum AppState
+    {
+        Starting, Started, Stopping, Stoped, Error
+    }
+
     public partial class frmMain : Form
     {
         public frmMain()
@@ -28,21 +35,37 @@ namespace A8Project
         BUTestValue buTestValue = new BUTestValue();
         SocketManager _sm = null;
         string ip = string.Empty;
-        int port = 102;
-
+        ushort port = 102;
+        private HPSocketCS.TcpPackServer server = new HPSocketCS.TcpPackServer();
+        private AppState appState = AppState.Stoped;
+        List<string> checkedListBoxClientList = new List<string>();
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            #region 读取Socket配置信息
-            this.ip = ConfigurationManager.AppSettings["socketSeverIP"];
-            this.port = Convert.ToInt32(ConfigurationManager.AppSettings["socketSeverPort"]);
-            #endregion
             #region Socket通讯服务
-            _sm = new SocketManager(ip, port);
-            _sm.OnReceiveMsg += OnReceiveMsg;
-            _sm.OnConnected += OnConnected;
-            _sm.OnDisConnected += OnDisConnected;
-            _sm.Start();
+            //_sm = new SocketManager(ip, port);
+            //_sm.OnReceiveMsg += OnReceiveMsg;
+            //_sm.OnConnected += OnConnected;
+            //_sm.OnDisConnected += OnDisConnected;
+            //_sm.Start();
+
+            //绑定监听地址前触发
+            server.OnPrepareListen += new TcpServerEvent.OnPrepareListenEventHandler(server_OnPrepareListen);
+            //客户端连接请求被接受后触发
+            server.OnAccept += new TcpServerEvent.OnAcceptEventHandler(server_OnAccept);
+            //发送消息后触发
+            server.OnSend += new TcpServerEvent.OnSendEventHandler(server_OnSend);
+            //收到消息后触发
+            server.OnReceive += new TcpServerEvent.OnReceiveEventHandler(server_OnReceive);
+            //连接关闭后触发（服务端的连接通常是多个，只要某一个连接关闭了都会触发）
+            server.OnClose += new TcpServerEvent.OnCloseEventHandler(server_OnClose);
+            //组件停止后触发
+            server.OnShutdown += new TcpServerEvent.OnShutdownEventHandler(server_OnShutdown);
+            server.PackHeaderFlag = 0xff;
+            //设置包体长度
+            server.MaxPackSize = 0x1000;
+            //启动server
+            SocketStart();
             #endregion
 
             LoadErrorInfo();
@@ -57,18 +80,56 @@ namespace A8Project
         }
 
         #region Socket通讯
-        /// <summary>
-        /// 接收信息
-        /// </summary>
-        /// <param name="ip"></param>
-        public void OnReceiveMsg(string ip)
+
+        #region 事件处理方法
+        private void SocketStart()
+        {
+            this.ip = ConfigurationManager.AppSettings["socketSeverIP"];
+            this.port = ushort.Parse(ConfigurationManager.AppSettings["socketSeverPort"]);
+            server.IpAddress = ip;
+            server.Port = port;
+            if (server.Start())
+            {
+                appState = AppState.Started;
+                SysLog.CreateLog("服务端启动");
+            }
+            else
+            {
+                appState = AppState.Stoped;
+                SysLog.CreateLog(string.Format("服务端启动失败：{0}，{1}", server.ErrorMessage, server.ErrorCode));
+            }
+        }
+        private HandleResult server_OnPrepareListen(IntPtr soListen)
+        {
+            SysLog.CreateLog("开始监听");
+            return HandleResult.Ok;
+        }
+
+        private HandleResult server_OnAccept(IntPtr connId, IntPtr pClient)
+        {
+            SysLog.CreateLog(string.Format("接受客户端连接请求，连接ID：{0}", connId));
+            string strConnID = connId.ToString();
+            if (checkedListBoxClientList.Contains(strConnID) == false)
+            {
+                CheckedListBoxOperation(connId.ToString(), "add");
+            }
+
+            return HandleResult.Ok;
+        }
+
+        private HandleResult server_OnSend(IntPtr connId, byte[] bytes)
+        {
+            return HandleResult.Ok;
+        }
+
+        private HandleResult server_OnReceive(IntPtr connId, byte[] bytes)
         {
             string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            byte[] buffer = _sm._listSocketInfo[ip].msgBuffer;
-            string msg = Encoding.UTF8.GetString(buffer).Replace("<STX>", "");
+            string msg = Encoding.Default.GetString(bytes).Replace("<STX>", ""); 
             msg = msg.Replace("<ETX>", "");
+            string sendContent = string.Empty;
             try
-            {               
+            {
                 //当前为处理工控机段socket通讯方法，后期根据具体的PLC通讯协议来变更               
                 if (msg.Length > 0)
                 {
@@ -77,30 +138,29 @@ namespace A8Project
                     switch (temp[0])
                     {
                         case "Process_ID":
-                            _sm.SendMsg("<STX>" + msg + ",pass<ETX>", ip);
-                            GetCommunicationLogs("<STX>" + msg + ",pass<ETX>", now);
+                            sendContent = "<STX>" + msg + ",pass<ETX>";
                             break;
                         case "Process_IN":
-                            _sm.SendMsg("<STX>" + msg + ",pass<ETX>", ip);
-                            GetCommunicationLogs("<STX>" + msg + ",pass<ETX>", now);
-                            GetProductLog(temp[0],temp[1],temp[3],"","",now);    
+                            sendContent = "<STX>" + msg + ",pass<ETX>";
+                            GetProductLog(temp[0], temp[1], temp[3], "", "", now);
                             break;
                         case "Process_OUT":
-                            _sm.SendMsg("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", ip);
-                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", now);
+                            sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
                             List<string> list = temp.ToList();
-                            list.RemoveRange(0,5);
-                            string contents=String.Join(",", list.ToArray());
+                            list.RemoveRange(0, 5);
+                            string contents = String.Join(",", list.ToArray());
                             GetProductLog(temp[0], temp[1], temp[3], temp[4], contents, now);
                             break;
                         case "START_OUT":
-                            _sm.SendMsg("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", ip);
-                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>", now);
+                            sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
                             GetProductLog(temp[0], temp[1], temp[3], temp[4], temp[5], now);
                             break;
                         default:
                             break;
-                    }                    
+                    }
+                    byte[] sendBytes = Encoding.Default.GetBytes(sendContent);
+                    server.Send(connId, sendBytes, sendBytes.Length);
+                    GetCommunicationLogs(sendContent, now);
                 }
             }
             catch
@@ -108,27 +168,60 @@ namespace A8Project
                 _sm.SendMsg("<STX>" + msg + ",error<ETX>", ip);
                 GetCommunicationLogs("<STX>" + msg + ",error<ETX>", now);
             }
+            return HandleResult.Ok;
         }
 
-
-        /// <summary>
-        /// 客户端连接，并将协议中的信息返回给客户端，并追加pass/error
-        /// </summary>
-        /// <param name="clientIP"></param>
-        public void OnConnected(string clientIP)
+        //当触发了OnClose事件时，表示连接已经被关闭，并且OnClose事件只会被触发一次
+        //通过errorCode参数判断是正常关闭还是异常关闭，0表示正常关闭
+        private HandleResult server_OnClose(IntPtr connId, SocketOperation enOperation, int errorCode)
         {
-            string ipstr = clientIP.Split(':')[0];
-            string portstr = clientIP.Split(':')[1];
+            try
+            {
+                CheckedListBoxOperation(connId.ToString(), "remove");
+                if (errorCode == 0)
+                {
+                    SysLog.CreateLog(string.Format("连接已断开，连接ID：{0}", connId));
+                }
+                else
+                {
+                    SysLog.CreateLog(string.Format("客户端连接发生异常，已经断开连接，连接ID：{0}，错误代码：{1}", connId, errorCode));
+                }
+
+                return HandleResult.Ok;
+            }
+            catch (Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
+                return HandleResult.Error;
+            }
         }
 
-        /// <summary>
-        /// Socket客户端断开连接保存日志到指定目录下的
-        /// </summary>
-        /// <param name="clientIp"></param>
-        public void OnDisConnected(string clientIp)
+        private HandleResult server_OnShutdown()
         {
-            SysLog.CreateLog(clientIp + ",通讯中断");
+            appState = AppState.Stoped;
+            SysLog.CreateLog("服务端已经停止服务");
+            return HandleResult.Ok;
         }
+        private void CheckedListBoxOperation(string connId, string operationType)
+        {
+
+            switch (operationType)
+            {
+                case "add":
+                    {
+                        checkedListBoxClientList.Add(connId);
+                    }
+                    break;
+
+                case "remove":
+                    {
+                        checkedListBoxClientList.Remove(connId);
+                    }
+                    break;
+            }
+        }
+
+        #endregion 事件处理方法
         #endregion
 
         private void GetCommunicationLogs(string msg, string rec_time)

@@ -13,7 +13,7 @@ namespace Common.Util
         {
             DateTime now = DateTime.Now;
             FileOperate.CreateDirectory("E:\\log");
-            FileOperate.CreateFile("E:\\log\\"+now.ToString("yyyyMMdd") + ".log",new List<string>() { errInfo+","+ now.ToString("yyyy-MM-dd HH:mm:ss")});
+            FileOperate.CreateFile("E:\\log\\"+now.ToString("yyyyMMdd") + ".log",new List<string>() { now.ToString("yyyy-MM-dd HH:mm:ss") + "," + errInfo  });
         }
     }
 }
