@@ -70,7 +70,6 @@
     <Compile Include="Util\SerialClass.cs" />
     <Compile Include="Util\Com_Msg.cs" />
     <Compile Include="Util\FileOperate.cs" />
-    <Compile Include="Util\PLC_Msg.cs" />
     <Compile Include="Util\SocketManager.cs" />
     <Compile Include="Util\SysLog.cs" />
   </ItemGroup>

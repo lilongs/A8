@@ -16,7 +16,7 @@ using DevExpress.XtraCharts;
 using Common.BLL;
 using System.IO.Ports;
 using HPSocketCS;
-
+using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
 
 namespace A8Project
 {
@@ -27,18 +27,32 @@ namespace A8Project
 
     public partial class frmMain : Form
     {
+
         public frmMain()
         {
             InitializeComponent();
         }
         Productlog productlog = new Productlog();
         BUTestValue buTestValue = new BUTestValue();
-        SocketManager _sm = null;
         string ip = string.Empty;
         ushort port = 102;
         private HPSocketCS.TcpPackServer server = new HPSocketCS.TcpPackServer();
         private AppState appState = AppState.Stoped;
         List<string> checkedListBoxClientList = new List<string>();
+        public Dictionary<string, string> EquipmentInfo = new Dictionary<string, string>()
+        {
+            { "A8001","WS1"},
+            { "A8002","WS2"},
+            { "A8003","WS3"},
+            { "A8004","WS4"},
+            { "A8005","Run-In"},
+            { "A8006","AC01"},
+            { "A8007","AC02"},
+            { "A8008","FC01"},
+            { "A8009","FC02"},
+            { "A8010","CC"}
+        };
+
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -125,7 +139,7 @@ namespace A8Project
         private HandleResult server_OnReceive(IntPtr connId, byte[] bytes)
         {
             string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string msg = Encoding.Default.GetString(bytes).Replace("<STX>", ""); 
+            string msg = Encoding.GetEncoding("UTF-8").GetString(bytes).Replace("<STX>", "");
             msg = msg.Replace("<ETX>", "");
             string sendContent = string.Empty;
             try
@@ -142,33 +156,125 @@ namespace A8Project
                             break;
                         case "Process_IN":
                             sendContent = "<STX>" + msg + ",pass<ETX>";
-                            GetProductLog(temp[0], temp[1], temp[3], "", "", now);
+                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], "", "", now);
                             break;
                         case "Process_OUT":
                             sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
                             List<string> list = temp.ToList();
                             list.RemoveRange(0, 5);
                             string contents = String.Join(",", list.ToArray());
-                            GetProductLog(temp[0], temp[1], temp[3], temp[4], contents, now);
+                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], temp[4], contents, now);
                             break;
                         case "START_OUT":
                             sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
-                            GetProductLog(temp[0], temp[1], temp[3], temp[4], temp[5], now);
+                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], temp[4], temp[5], now);
+                            break;
+                        case "Call_OUT":
+                            string title = temp[1];
+                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + ",pass<ETX>", now);
+                            Thread th;//添加线程 
+                            
+                            if (title.Contains("物料呼叫"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label4.Text = title;
+                                });
+                                th = new Thread(run2);
+                                th.IsBackground = true;
+                                th.Start();
+                            }
+                            else
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label3.Text = title;
+                                });
+                                th = new Thread(run1);
+                                th.IsBackground = true;
+                                th.Start();
+                            }
                             break;
                         default:
                             break;
                     }
-                    byte[] sendBytes = Encoding.Default.GetBytes(sendContent);
-                    server.Send(connId, sendBytes, sendBytes.Length);
-                    GetCommunicationLogs(sendContent, now);
+                    if (sendContent.Length > 0)
+                    { 
+                        byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                        server.Send(connId, sendBytes, sendBytes.Length);
+                        GetCommunicationLogs(sendContent, now);
+                    }
                 }
             }
             catch
             {
-                _sm.SendMsg("<STX>" + msg + ",error<ETX>", ip);
+                byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes("<STX>" + msg + ",error<ETX>");
+                server.Send(connId, sendBytes, sendBytes.Length);
                 GetCommunicationLogs("<STX>" + msg + ",error<ETX>", now);
             }
             return HandleResult.Ok;
+        }
+
+        private void run1()
+        {
+            int n = 10;
+            while (n > 0)
+            {
+                if (n % 2 == 0)
+                {
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label1.ForeColor = Color.Red;
+                    });                    
+                }
+                else
+                {
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label1.ForeColor = this.BackColor;
+                    });                    
+                    if (n == 1)
+                    {
+                        this.BeginInvoke((MethodInvoker)delegate
+                        {
+                            label1.ForeColor = Color.Green;
+                        });                        
+                    }
+                }
+                n--;
+                Thread.Sleep(500);
+            }
+        }
+
+        private void run2()
+        {
+            int n = 10;
+            while (n > 0)
+            {
+                if (n % 2 == 0)
+                {
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label2.ForeColor = Color.Red;
+                    });
+                }
+                else
+                {
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label2.ForeColor = this.BackColor;
+                    });                    
+                    if (n == 1)
+                    {
+                        this.BeginInvoke((MethodInvoker)delegate
+                        {
+                            label2.ForeColor = Color.Green;
+                        });                        
+                    }
+                }
+                n--;
+                Thread.Sleep(500);
+            }
         }
 
         //当触发了OnClose事件时，表示连接已经被关闭，并且OnClose事件只会被触发一次
@@ -287,14 +393,17 @@ namespace A8Project
 
         private void LoadConsumables()
         {
-            int consumable1 = buTestValue.GetSiteCount("A8001", 10) % 100000;
-            int consumable2 = buTestValue.GetSiteCount("A8002", 20) % 100000;
-            int consumable3 = (buTestValue.GetSiteCount("A8001", 5) + buTestValue.GetSiteCount("A8002", 5)) % 50000;
+            //查询获得AC、CC、FC等站点Process_IN实际过站次数
+            int consumable1 = buTestValue.GetSiteCount("AC") ;
+            int consumable2 = buTestValue.GetSiteCount("FC") ;
+            int consumable3 = buTestValue.GetSiteCount("CC") ;
 
             this.arcScaleComponent1.Value = consumable1;
             this.labelControl4.Text = consumable1.ToString();
+
             this.arcScaleComponent2.Value = consumable2;
             this.labelControl5.Text = consumable2.ToString();
+
             this.arcScaleComponent3.Value = consumable3;
             this.labelControl6.Text = consumable3.ToString();
         }
@@ -314,22 +423,62 @@ namespace A8Project
         /// </summary>
         private void LoadTodayData()
         {
-            DataTable dt = buTestValue.GetTodayData(); ;
+            DataTable dt = buTestValue.GetTodayData();
+            DataTable dt2 = buTestValue.GetTodayTarget();
 
             this.chartControl1.Series.Clear();
+            #region 方式一，传统的数据绑定，无需精确控制每一个Bar
+            //Series series1 = new Series("产量", ViewType.Bar);
+            //series1.DataSource = dt;
+            //series1.ArgumentScaleType = ScaleType.Qualitative;
+            //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            //// 以哪个字段进行显示 
+            //series1.ArgumentDataMember = "hours";
+            //series1.ValueScaleType = ScaleType.Numerical;
+
+            //// 柱状图里的柱的取值字段
+            //series1.ValueDataMembers.AddRange(new string[] { "counts" });
+
+            ////BarSeriesView barSeriesView = (BarSeriesView)series1.View;
+            ////barSeriesView.Color = Color.Red;
+            //chartControl1.Series.Add(series1);
+            #endregion
+
+            #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
             Series series1 = new Series("产量", ViewType.Bar);
-            series1.DataSource = dt;
-            series1.ArgumentScaleType = ScaleType.Qualitative;
-            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            SeriesPoint point = null;
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["hours"] != null)
+                {
+                    point = new SeriesPoint(row["hours"].ToString());
+                    double[] vals = { Convert.ToDouble(row["counts"]) };
+                    point.Values = vals;
+                    if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]))
+                        point.Color = Color.Red;
+                    else
+                        point.Color = Color.Blue;
+                    series1.Points.Add(point);
+                }
+            }
+            this.chartControl1.Series.Add(series1);
+            #endregion
+
+            Series series2 = new Series("Target", ViewType.Line);
+            series2.DataSource = dt2;
+            series2.ArgumentScaleType = ScaleType.Qualitative;
 
             // 以哪个字段进行显示 
-            series1.ArgumentDataMember = "hours";
-            series1.ValueScaleType = ScaleType.Numerical;
+            series2.ArgumentDataMember = "hours";
+            series2.ValueScaleType = ScaleType.Numerical;
+            //series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;//标签
 
             // 柱状图里的柱的取值字段
-            series1.ValueDataMembers.AddRange(new string[] { "counts" });
+            series2.ValueDataMembers.AddRange(new string[] { "counts" });
             //绑定Series
-            chartControl1.Series.Add(series1);
+            chartControl1.Series.Add(series2);
+
             XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
@@ -352,20 +501,58 @@ namespace A8Project
         private void LoadYearMonth()
         {
             DataTable dt = buTestValue.GetYearMonth();
+            DataTable dt2 = buTestValue.GetYearMonthTarget();
+
             this.chartControl2.Series.Clear();
+            #region 方式一，传统的数据绑定，无需精确控制每一个Bar
+            //Series series1 = new Series("历史产量", ViewType.Bar);
+            //series1.DataSource = dt;
+            //series1.ArgumentScaleType = ScaleType.Qualitative;
+            //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+            //// 以哪个字段进行显示 
+            //series1.ArgumentDataMember = "months";
+            //series1.ValueScaleType = ScaleType.Numerical;
+
+            //// 柱状图里的柱的取值字段
+            //series1.ValueDataMembers.AddRange(new string[] { "counts" });
+            ////绑定Series
+            //chartControl2.Series.Add(series1);
+            #endregion
+
+            #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
             Series series1 = new Series("历史产量", ViewType.Bar);
-            series1.DataSource = dt;
-            series1.ArgumentScaleType = ScaleType.Qualitative;
-            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+            SeriesPoint point = null;
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["months"] != null)
+                {
+                    point = new SeriesPoint(row["months"].ToString());
+                    double[] vals = { Convert.ToDouble(row["counts"]) };
+                    point.Values = vals;
+                    if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]))
+                        point.Color = Color.Red;
+                    else
+                        point.Color = Color.Blue;
+                    series1.Points.Add(point);
+                }
+            }
+            this.chartControl2.Series.Add(series1);
+            #endregion
+
+            Series series2 = new Series("Target", ViewType.Line);
+            series2.DataSource = dt2;
+            series2.ArgumentScaleType = ScaleType.Qualitative;
 
             // 以哪个字段进行显示 
-            series1.ArgumentDataMember = "months";
-            series1.ValueScaleType = ScaleType.Numerical;
+            series2.ArgumentDataMember = "months";
+            series2.ValueScaleType = ScaleType.Numerical;
 
             // 柱状图里的柱的取值字段
-            series1.ValueDataMembers.AddRange(new string[] { "counts" });
+            series2.ValueDataMembers.AddRange(new string[] { "counts" });
             //绑定Series
-            chartControl2.Series.Add(series1);
+            this.chartControl2.Series.Add(series2);
+
             XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
@@ -374,6 +561,7 @@ namespace A8Project
         private void LoadYearMonthFPY()
         {
             DataTable dt = buTestValue.GetYearMonthFPY();
+            DataTable dt2 = buTestValue.GetYearMonthFPYTarget();
             this.chartControl3.Series.Clear();
             Series series1 = new Series("FPY", ViewType.Line);
             series1.DataSource = dt;
@@ -389,6 +577,19 @@ namespace A8Project
             series1.ValueDataMembers.AddRange(new string[] { "ratio" });
             //绑定Series
             chartControl3.Series.Add(series1);
+
+            Series series2 = new Series("Target", ViewType.Line);
+            series2.DataSource = dt2;
+            series2.ArgumentScaleType = ScaleType.Qualitative;
+
+            // 以哪个字段进行显示 
+            series2.ArgumentDataMember = "months";
+            series2.ValueScaleType = ScaleType.Numerical;
+
+            // 柱状图里的柱的取值字段
+            series2.ValueDataMembers.AddRange(new string[] { "ratio" });
+            //绑定Series
+            this.chartControl3.Series.Add(series2);
             XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
@@ -402,14 +603,17 @@ namespace A8Project
             DialogResult dr = MessageBox.Show("确定退出系统？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                //需要先释放资源，否则会重复执行该事件
-                Dispose();
-                Application.Exit();
+                e.Cancel = false;
             }
             else
             {
                 e.Cancel = true;
             }
+        }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

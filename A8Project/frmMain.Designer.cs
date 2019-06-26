@@ -38,25 +38,10 @@
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange7 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange8 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange9 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraCharts.Series series1 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.DoughnutSeriesView doughnutSeriesView1 = new DevExpress.XtraCharts.DoughnutSeriesView();
             DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series2 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.Series series3 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.LineSeriesView lineSeriesView1 = new DevExpress.XtraCharts.LineSeriesView();
             DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.XYDiagram xyDiagram2 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series4 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.Series series5 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.LineSeriesView lineSeriesView2 = new DevExpress.XtraCharts.LineSeriesView();
             DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.XYDiagram xyDiagram3 = new DevExpress.XtraCharts.XYDiagram();
-            DevExpress.XtraCharts.Series series6 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.LineSeriesView lineSeriesView3 = new DevExpress.XtraCharts.LineSeriesView();
-            DevExpress.XtraCharts.Series series7 = new DevExpress.XtraCharts.Series();
-            DevExpress.XtraCharts.LineSeriesView lineSeriesView4 = new DevExpress.XtraCharts.LineSeriesView();
-            DevExpress.XtraCharts.ChartTitle chartTitle4 = new DevExpress.XtraCharts.ChartTitle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.gdcErrorInfo = new DevExpress.XtraGrid.GridControl();
@@ -94,7 +79,10 @@
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
-            this.chartControl4 = new DevExpress.XtraCharts.ChartControl();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.Six_timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelControl7 = new DevExpress.XtraEditors.PanelControl();
             this.chartControl1 = new DevExpress.XtraCharts.ChartControl();
@@ -133,29 +121,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.gdvHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
             this.panelControl6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartControl4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).BeginInit();
             this.panelControl7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl9)).BeginInit();
             this.panelControl9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(series7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView4)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl3
@@ -246,7 +218,7 @@
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn3.Caption = "信息";
-            this.gridColumn3.FieldName = "key_process";
+            this.gridColumn3.FieldName = "contents";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 3;
@@ -268,14 +240,14 @@
             this.gaugeControl3.Controls.Add(this.labelControl3);
             this.gaugeControl3.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge2});
-            this.gaugeControl3.Location = new System.Drawing.Point(164, 198);
+            this.gaugeControl3.Location = new System.Drawing.Point(148, 189);
             this.gaugeControl3.Name = "gaugeControl3";
-            this.gaugeControl3.Size = new System.Drawing.Size(180, 180);
+            this.gaugeControl3.Size = new System.Drawing.Size(189, 185);
             this.gaugeControl3.TabIndex = 2;
             // 
             // labelControl6
             // 
-            this.labelControl6.Location = new System.Drawing.Point(93, 155);
+            this.labelControl6.Location = new System.Drawing.Point(155, 164);
             this.labelControl6.Name = "labelControl6";
             this.labelControl6.Size = new System.Drawing.Size(14, 14);
             this.labelControl6.TabIndex = 5;
@@ -283,18 +255,18 @@
             // 
             // labelControl3
             // 
-            this.labelControl3.Location = new System.Drawing.Point(3, 153);
+            this.labelControl3.Location = new System.Drawing.Point(17, 164);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(84, 14);
+            this.labelControl3.Size = new System.Drawing.Size(114, 14);
             this.labelControl3.TabIndex = 5;
-            this.labelControl3.Text = "探针使用次数：";
+            this.labelControl3.Text = "CC Process_IN次数：";
             // 
             // circularGauge2
             // 
             this.circularGauge2.AutoSize = DevExpress.Utils.DefaultBoolean.False;
             this.circularGauge2.BackgroundLayers.AddRange(new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleBackgroundLayerComponent[] {
             this.arcScaleBackgroundLayerComponent3});
-            this.circularGauge2.Bounds = new System.Drawing.Rectangle(6, 6, 168, 168);
+            this.circularGauge2.Bounds = new System.Drawing.Rectangle(6, 6, 177, 173);
             this.circularGauge2.Name = "circularGauge2";
             this.circularGauge2.Needles.AddRange(new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent[] {
             this.arcScaleNeedleComponent3});
@@ -333,24 +305,24 @@
             this.arcScaleComponent3.Name = "scale1";
             arcScaleRange1.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9BBB59");
             arcScaleRange1.EndThickness = 22F;
-            arcScaleRange1.EndValue = 10000F;
+            arcScaleRange1.EndValue = 15000F;
             arcScaleRange1.Name = "Range0";
             arcScaleRange1.ShapeOffset = -4F;
             arcScaleRange1.StartThickness = 22F;
             arcScaleRange2.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#F4F56B");
             arcScaleRange2.EndThickness = 22F;
-            arcScaleRange2.EndValue = 40000F;
+            arcScaleRange2.EndValue = 35000F;
             arcScaleRange2.Name = "Range1";
             arcScaleRange2.ShapeOffset = -4F;
             arcScaleRange2.StartThickness = 22F;
-            arcScaleRange2.StartValue = 10000F;
+            arcScaleRange2.StartValue = 15000F;
             arcScaleRange3.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#E73141");
             arcScaleRange3.EndThickness = 22F;
             arcScaleRange3.EndValue = 50000F;
             arcScaleRange3.Name = "Range2";
             arcScaleRange3.ShapeOffset = -4F;
             arcScaleRange3.StartThickness = 22F;
-            arcScaleRange3.StartValue = 40000F;
+            arcScaleRange3.StartValue = 35000F;
             this.arcScaleComponent3.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
             arcScaleRange1,
             arcScaleRange2,
@@ -373,14 +345,14 @@
             this.gaugeControl2.Controls.Add(this.labelControl2);
             this.gaugeControl2.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge1});
-            this.gaugeControl2.Location = new System.Drawing.Point(283, 12);
+            this.gaugeControl2.Location = new System.Drawing.Point(283, 8);
             this.gaugeControl2.Name = "gaugeControl2";
             this.gaugeControl2.Size = new System.Drawing.Size(180, 180);
             this.gaugeControl2.TabIndex = 1;
             // 
             // labelControl5
             // 
-            this.labelControl5.Location = new System.Drawing.Point(100, 158);
+            this.labelControl5.Location = new System.Drawing.Point(150, 161);
             this.labelControl5.Name = "labelControl5";
             this.labelControl5.Size = new System.Drawing.Size(14, 14);
             this.labelControl5.TabIndex = 5;
@@ -388,11 +360,11 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(3, 158);
+            this.labelControl2.Location = new System.Drawing.Point(3, 161);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(91, 14);
+            this.labelControl2.Size = new System.Drawing.Size(113, 14);
             this.labelControl2.TabIndex = 4;
-            this.labelControl2.Text = "切刀2使用次数：";
+            this.labelControl2.Text = "FC Process_IN次数：";
             // 
             // circularGauge1
             // 
@@ -430,7 +402,7 @@
             this.arcScaleComponent2.MajorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style27_1;
             this.arcScaleComponent2.MajorTickmark.TextOffset = 18F;
             this.arcScaleComponent2.MajorTickmark.TextOrientation = DevExpress.XtraGauges.Core.Model.LabelOrientation.LeftToRight;
-            this.arcScaleComponent2.MaxValue = 100000F;
+            this.arcScaleComponent2.MaxValue = 50000F;
             this.arcScaleComponent2.MinorTickCount = 4;
             this.arcScaleComponent2.MinorTickmark.ShapeOffset = 4F;
             this.arcScaleComponent2.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style27_1;
@@ -438,24 +410,24 @@
             this.arcScaleComponent2.Name = "scale1";
             arcScaleRange4.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9BBB59");
             arcScaleRange4.EndThickness = 22F;
-            arcScaleRange4.EndValue = 20000F;
+            arcScaleRange4.EndValue = 15000F;
             arcScaleRange4.Name = "Range0";
             arcScaleRange4.ShapeOffset = -4F;
             arcScaleRange4.StartThickness = 22F;
             arcScaleRange5.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#F4F56B");
             arcScaleRange5.EndThickness = 22F;
-            arcScaleRange5.EndValue = 80000F;
+            arcScaleRange5.EndValue = 35000F;
             arcScaleRange5.Name = "Range1";
             arcScaleRange5.ShapeOffset = -4F;
             arcScaleRange5.StartThickness = 22F;
-            arcScaleRange5.StartValue = 20000F;
+            arcScaleRange5.StartValue = 15000F;
             arcScaleRange6.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#E73141");
             arcScaleRange6.EndThickness = 22F;
-            arcScaleRange6.EndValue = 100000F;
+            arcScaleRange6.EndValue = 50000F;
             arcScaleRange6.Name = "Range2";
             arcScaleRange6.ShapeOffset = -4F;
             arcScaleRange6.StartThickness = 22F;
-            arcScaleRange6.StartValue = 80000F;
+            arcScaleRange6.StartValue = 35000F;
             this.arcScaleComponent2.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
             arcScaleRange4,
             arcScaleRange5,
@@ -478,14 +450,14 @@
             this.gaugeControl1.Controls.Add(this.labelControl1);
             this.gaugeControl1.Gauges.AddRange(new DevExpress.XtraGauges.Base.IGauge[] {
             this.circularGauge12});
-            this.gaugeControl1.Location = new System.Drawing.Point(24, 12);
+            this.gaugeControl1.Location = new System.Drawing.Point(18, 8);
             this.gaugeControl1.Name = "gaugeControl1";
             this.gaugeControl1.Size = new System.Drawing.Size(180, 180);
             this.gaugeControl1.TabIndex = 0;
             // 
             // labelControl4
             // 
-            this.labelControl4.Location = new System.Drawing.Point(96, 158);
+            this.labelControl4.Location = new System.Drawing.Point(147, 161);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(14, 14);
             this.labelControl4.TabIndex = 4;
@@ -493,11 +465,11 @@
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(12, 158);
+            this.labelControl1.Location = new System.Drawing.Point(3, 161);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(91, 14);
+            this.labelControl1.Size = new System.Drawing.Size(115, 14);
             this.labelControl1.TabIndex = 3;
-            this.labelControl1.Text = "切刀1使用次数：";
+            this.labelControl1.Text = "AC Process_IN次数：";
             // 
             // circularGauge12
             // 
@@ -535,7 +507,7 @@
             this.arcScaleComponent1.MajorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style27_1;
             this.arcScaleComponent1.MajorTickmark.TextOffset = 18F;
             this.arcScaleComponent1.MajorTickmark.TextOrientation = DevExpress.XtraGauges.Core.Model.LabelOrientation.LeftToRight;
-            this.arcScaleComponent1.MaxValue = 100000F;
+            this.arcScaleComponent1.MaxValue = 50000F;
             this.arcScaleComponent1.MinorTickCount = 4;
             this.arcScaleComponent1.MinorTickmark.ShapeOffset = 4F;
             this.arcScaleComponent1.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style27_1;
@@ -543,24 +515,24 @@
             this.arcScaleComponent1.Name = "scale1";
             arcScaleRange7.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9BBB59");
             arcScaleRange7.EndThickness = 22F;
-            arcScaleRange7.EndValue = 20000F;
+            arcScaleRange7.EndValue = 15000F;
             arcScaleRange7.Name = "Range0";
             arcScaleRange7.ShapeOffset = -4F;
             arcScaleRange7.StartThickness = 22F;
             arcScaleRange8.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#F4F56B");
             arcScaleRange8.EndThickness = 22F;
-            arcScaleRange8.EndValue = 80000F;
+            arcScaleRange8.EndValue = 35000F;
             arcScaleRange8.Name = "Range1";
             arcScaleRange8.ShapeOffset = -4F;
             arcScaleRange8.StartThickness = 22F;
-            arcScaleRange8.StartValue = 20000F;
+            arcScaleRange8.StartValue = 15000F;
             arcScaleRange9.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#E73141");
             arcScaleRange9.EndThickness = 22F;
-            arcScaleRange9.EndValue = 100000F;
+            arcScaleRange9.EndValue = 50000F;
             arcScaleRange9.Name = "Range2";
             arcScaleRange9.ShapeOffset = -4F;
             arcScaleRange9.StartThickness = 22F;
-            arcScaleRange9.StartValue = 80000F;
+            arcScaleRange9.StartValue = 35000F;
             this.arcScaleComponent1.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
             arcScaleRange7,
             arcScaleRange8,
@@ -636,7 +608,7 @@
             this.gridColumn5.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn5.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn5.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn5.Caption = "Second";
+            this.gridColumn5.Caption = "Second(s)";
             this.gridColumn5.FieldName = "second";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
@@ -644,32 +616,55 @@
             // 
             // panelControl6
             // 
-            this.panelControl6.Controls.Add(this.chartControl4);
+            this.panelControl6.Controls.Add(this.label4);
+            this.panelControl6.Controls.Add(this.label3);
+            this.panelControl6.Controls.Add(this.label2);
+            this.panelControl6.Controls.Add(this.label1);
             this.panelControl6.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelControl6.Location = new System.Drawing.Point(2, 414);
             this.panelControl6.Name = "panelControl6";
             this.panelControl6.Size = new System.Drawing.Size(363, 370);
             this.panelControl6.TabIndex = 1;
             // 
-            // chartControl4
+            // label4
             // 
-            this.chartControl4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chartControl4.DataBindings = null;
-            this.chartControl4.Legend.Name = "Default Legend";
-            this.chartControl4.Location = new System.Drawing.Point(9, 21);
-            this.chartControl4.Name = "chartControl4";
-            series1.Name = "当班产量";
-            series1.View = doughnutSeriesView1;
-            this.chartControl4.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series1};
-            this.chartControl4.Size = new System.Drawing.Size(348, 334);
-            this.chartControl4.TabIndex = 0;
-            chartTitle1.Text = "当班产量占比";
-            chartTitle1.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            this.chartControl4.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle1});
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(250, 237);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(81, 14);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "WS1物料呼叫";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(49, 237);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 14);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "WS1设备呼叫";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 100F);
+            this.label2.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label2.Location = new System.Drawing.Point(209, 89);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(149, 162);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "●";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 100F);
+            this.label1.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label1.Location = new System.Drawing.Point(10, 89);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 162);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "●";
             // 
             // Six_timer1
             // 
@@ -690,36 +685,16 @@
             // chartControl1
             // 
             this.chartControl1.DataBindings = null;
-            xyDiagram1.AxisX.AutoScaleBreaks.MaxCount = 24;
-            xyDiagram1.AxisX.NumericScaleOptions.AutoGrid = false;
-            xyDiagram1.AxisX.StickToEnd = true;
-            xyDiagram1.AxisX.Title.Text = "";
-            xyDiagram1.AxisX.Title.Visibility = DevExpress.Utils.DefaultBoolean.Default;
-            xyDiagram1.AxisX.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            xyDiagram1.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram1.AxisX.WholeRange.Auto = false;
-            xyDiagram1.AxisX.WholeRange.MaxValueSerializable = "24";
-            xyDiagram1.AxisX.WholeRange.MinValueSerializable = "0";
-            xyDiagram1.AxisY.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
-            xyDiagram1.EnableAxisXScrolling = true;
-            xyDiagram1.EnableAxisYScrolling = true;
-            this.chartControl1.Diagram = xyDiagram1;
             this.chartControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartControl1.Legend.Name = "Default Legend";
             this.chartControl1.Location = new System.Drawing.Point(2, 2);
             this.chartControl1.Name = "chartControl1";
-            series2.Name = "产量";
-            series3.Name = "Target";
-            series3.View = lineSeriesView1;
-            this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series2,
-        series3};
+            this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl1.Size = new System.Drawing.Size(891, 412);
             this.chartControl1.TabIndex = 2;
-            chartTitle2.Text = "当班产量\r\n";
+            chartTitle1.Text = "当班产量\r\n";
             this.chartControl1.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle2});
+            chartTitle1});
             // 
             // panelControl9
             // 
@@ -736,52 +711,36 @@
             this.chartControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.chartControl2.DataBindings = null;
-            xyDiagram2.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram2.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartControl2.Diagram = xyDiagram2;
             this.chartControl2.Legend.Name = "Default Legend";
             this.chartControl2.Location = new System.Drawing.Point(7, 22);
             this.chartControl2.Name = "chartControl2";
-            series4.Name = "历史产量";
-            series5.Name = "Target";
-            series5.View = lineSeriesView2;
-            this.chartControl2.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series4,
-        series5};
+            this.chartControl2.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl2.Size = new System.Drawing.Size(431, 327);
             this.chartControl2.TabIndex = 0;
-            chartTitle3.Text = "历史产量\r\n";
+            chartTitle2.Text = "历史产量\r\n";
             this.chartControl2.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle3});
+            chartTitle2});
             // 
             // chartControl3
             // 
             this.chartControl3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chartControl3.DataBindings = null;
-            xyDiagram3.AxisX.VisibleInPanesSerializable = "-1";
-            xyDiagram3.AxisY.VisibleInPanesSerializable = "-1";
-            this.chartControl3.Diagram = xyDiagram3;
             this.chartControl3.Legend.Name = "Default Legend";
             this.chartControl3.Location = new System.Drawing.Point(455, 21);
             this.chartControl3.Name = "chartControl3";
-            series6.Name = "FPY";
-            series6.View = lineSeriesView3;
-            series7.Name = "Target";
-            series7.View = lineSeriesView4;
-            this.chartControl3.SeriesSerializable = new DevExpress.XtraCharts.Series[] {
-        series6,
-        series7};
+            this.chartControl3.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl3.Size = new System.Drawing.Size(431, 327);
             this.chartControl3.TabIndex = 1;
-            chartTitle4.Text = "FPY\r\n";
+            chartTitle3.Font = new System.Drawing.Font("Tahoma", 10F);
+            chartTitle3.Text = "FPY\r\n=PASS_COUNT/TOTAL_COUNT";
             this.chartControl3.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle4});
+            chartTitle3});
             // 
             // OneHour_timer
             // 
             this.OneHour_timer.Enabled = true;
-            this.OneHour_timer.Interval = 3600000;
+            this.OneHour_timer.Interval = 60000;
             this.OneHour_timer.Tick += new System.EventHandler(this.OneHour_timer_Tick);
             // 
             // frmMain
@@ -792,11 +751,13 @@
             this.Controls.Add(this.panelControl7);
             this.Controls.Add(this.panelControl4);
             this.Controls.Add(this.panelControl3);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "监控台";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
@@ -832,28 +793,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.gdvHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
             this.panelControl6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(doughnutSeriesView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chartControl4)).EndInit();
+            this.panelControl6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).EndInit();
             this.panelControl7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl9)).EndInit();
             this.panelControl9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(xyDiagram3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(lineSeriesView4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(series7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl3)).EndInit();
             this.ResumeLayout(false);
 
@@ -878,7 +824,6 @@
         private DevExpress.XtraEditors.PanelControl panelControl7;
         private DevExpress.XtraEditors.PanelControl panelControl9;
         private DevExpress.XtraCharts.ChartControl chartControl1;
-        private DevExpress.XtraCharts.ChartControl chartControl4;
         private DevExpress.XtraCharts.ChartControl chartControl2;
         private DevExpress.XtraCharts.ChartControl chartControl3;
         private DevExpress.XtraEditors.GroupControl groupControl1;
@@ -906,6 +851,10 @@
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }
 

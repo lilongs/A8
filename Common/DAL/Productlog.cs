@@ -18,7 +18,7 @@ namespace Common.DAL
         public string productno { get; set; }
         public string result { get; set; }
         public string contents { get; set; }
-        public string createtime { get; set; }        
+        public string createtime { get; set; }
 
         /// <summary>
         /// 存储实时信息
@@ -47,8 +47,9 @@ namespace Common.DAL
         /// <returns></returns>
         public DataTable GetInfo()
         {
-            string sql = @"select top 10 key_process,equipment,productno,createtime 
+            string sql = @"select top 20 contents ,equipment,productno,createtime 
                         from productlog
+                        where result='FAIL'
                         order by createtime desc";
             return sqlconn.Query(sql).Tables[0];
         }
@@ -127,9 +128,8 @@ namespace Common.DAL
         public DataTable GetSiteCount(string site)
         {
             string sql = @"select '" + site + @"' as site,count(productno) as counts 
-                        from(
-                        select distinct productno from productlog
-                        where equipment = '" + site + "') as a";
+                        from productlog
+                        where equipment like '%" + site + "%' and key_process='Process_IN'";
             return sqlconn.Query(sql).Tables[0];
         }
 
@@ -140,8 +140,8 @@ namespace Common.DAL
         public DataTable GetYearMonthFPY()
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"select A.*,B.fail_counts 
-                        from (select months,count(productno)as fail_counts 
+            sql.Append(@"select A.*,B.pass_counts 
+                        from (select months,count(productno)as pass_counts 
                         from (select distinct productno,result,DATEPART(MM,createtime)as months 
                         from productlog
                         where DATEDIFF(YEAR,createtime,GETDATE())=0 
@@ -158,19 +158,19 @@ namespace Common.DAL
 
         //public DataTable GetDayOfCountWithFPY()
         //{
-            //string sql = @"select A.*,B.fail_counts 
-            //                from(select days, count(productno) as fail_counts
-            //                from(select distinct productno, result, DATEPART(DAY, testtime) as days
-            //                from testvalue
-            //                where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1
-            //                and result = 'FAILED') as a
-            //                group by days) as B
-            //                left join(select days, count(productno)as counts
-            //                from(select distinct productno, DATEPART(DAY, testtime) as days
-            //                from testvalue
-            //                where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1) as a
-            //                group by days) as A on A.days = B.days";
-            //return sqlconn.Query(sql).Tables[0];
-       //}
+        //string sql = @"select A.*,B.fail_counts 
+        //                from(select days, count(productno) as fail_counts
+        //                from(select distinct productno, result, DATEPART(DAY, testtime) as days
+        //                from testvalue
+        //                where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1
+        //                and result = 'FAILED') as a
+        //                group by days) as B
+        //                left join(select days, count(productno)as counts
+        //                from(select distinct productno, DATEPART(DAY, testtime) as days
+        //                from testvalue
+        //                where DATEDIFF(DAY, testtime, GETDATE()) = 0 and active = 1) as a
+        //                group by days) as A on A.days = B.days";
+        //return sqlconn.Query(sql).Tables[0];
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Common.DAL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -20,12 +21,12 @@ namespace Common.BLL
         {
             DataTable dtData = productlog.GetTodayData();
             DataTable dt = new DataTable();
-            dt.Columns.Add("hours", Type.GetType("System.Int32"));
+            dt.Columns.Add("hours", Type.GetType("System.String"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
             for (int i = 1; i <= 24; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i;
+                dr["hours"] = i+"点";
                 DataRow[] dataRows = dtData.Select("hours=" + i + "");
                 if (dataRows.Length > 0)
                 {
@@ -35,6 +36,21 @@ namespace Common.BLL
                 {
                     dr["counts"] = 0;
                 }
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+        public DataTable GetTodayTarget()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("hours", Type.GetType("System.String"));
+            dt.Columns.Add("counts", Type.GetType("System.Int32"));
+            for (int i = 1; i <= 24; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr["hours"] = i + "点";
+                dr["counts"] = ConfigurationManager.AppSettings["OneHourProductionTarget"];
                 dt.Rows.Add(dr);
             }
             return dt;
@@ -140,14 +156,14 @@ namespace Common.BLL
         public DataTable GetYearMonth()
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("months", Type.GetType("System.Int32"));
+            dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
             DataTable dtData = productlog.GetYearMonth();
             //创建1-12月表样式结构
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i;
+                dr["months"] = i+"月份";
                 DataRow[] dataRows = dtData.Select("months=" + i + "");
                 if (dataRows.Length > 0)
                     dr["counts"] = dataRows[0]["counts"].ToString();
@@ -158,19 +174,33 @@ namespace Common.BLL
             return dt;
         }
 
+        public DataTable GetYearMonthTarget()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("months", Type.GetType("System.String"));
+            dt.Columns.Add("counts", Type.GetType("System.Int32"));
+            for (int i = 1; i <= 12; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr["months"] = i + "月份";
+                dr["counts"] = ConfigurationManager.AppSettings["YearMonthTarget"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
         /// <summary>
-        /// 获取每个站点的产品数,并计算出对应耗材的使用次数
+        /// 获取每个站点的Process_IN次数
         /// </summary>
         /// <param name="site"></param>
-        /// <param name="ratio"></param>
         /// <returns></returns>
-        public int GetSiteCount(string site, int ratio)
+        public int GetSiteCount(string site)
         {
             int result = 0;
             DataTable dt = productlog.GetSiteCount(site);
             if (dt.Rows.Count > 0)
             {
-                return result = Convert.ToInt32(dt.Rows[0]["counts"]) * ratio;
+                return result = Convert.ToInt32(dt.Rows[0]["counts"]);
             }
             else
             {
@@ -186,16 +216,16 @@ namespace Common.BLL
         {
             DataTable dtData = productlog.GetYearMonthFPY();
             DataTable dt = new DataTable();
-            dt.Columns.Add("months", Type.GetType("System.Int32"));
+            dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("ratio", Type.GetType("System.Double"));
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i;
+                dr["months"] = i+"月份";
                 DataRow[] dataRows = dtData.Select("months=" + i + "");
                 if (dataRows.Length > 0)
                 {
-                    int fail_counts = Convert.ToInt32(dataRows[0]["fail_counts"]);
+                    int fail_counts = Convert.ToInt32(dataRows[0]["pass_counts"]);
                     int counts = Convert.ToInt32(dataRows[0]["counts"]);
                     double resutl = (Double)fail_counts / counts;
                     dr["ratio"] = resutl.ToString("0.00");
@@ -209,32 +239,47 @@ namespace Common.BLL
             return dt;
         }
 
+        public DataTable GetYearMonthFPYTarget()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("months", Type.GetType("System.String"));
+            dt.Columns.Add("ratio", Type.GetType("System.Double"));
+            for (int i = 1; i <= 12; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr["months"] = i + "月份";
+                dr["ratio"] = ConfigurationManager.AppSettings["YearMonthFPYTarget"];
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
         //public DataTable GetDayOfCountWithFPY()
         //{
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("name",Type.GetType("System.String"));
-            //dt.Columns.Add("value", Type.GetType("System.Double"));
-            //DataTable dtData = productlog.GetDayOfCountWithFPY();
-            //if (dtData.Rows.Count > 0)
-            //{
-            //    DataRow dr = dt.NewRow();
-            //    dr["name"] = "合格率";
-            //    dr["value"] = 1 - (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
-            //    dt.Rows.Add(dr);
+        //DataTable dt = new DataTable();
+        //dt.Columns.Add("name",Type.GetType("System.String"));
+        //dt.Columns.Add("value", Type.GetType("System.Double"));
+        //DataTable dtData = productlog.GetDayOfCountWithFPY();
+        //if (dtData.Rows.Count > 0)
+        //{
+        //    DataRow dr = dt.NewRow();
+        //    dr["name"] = "合格率";
+        //    dr["value"] = 1 - (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+        //    dt.Rows.Add(dr);
 
-            //    DataRow dr2 = dt.NewRow();
-            //    dr2["name"] = "不良率";
-            //    dr2["value"] = (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
-            //    dt.Rows.Add(dr2);
-            //}
-            //else
-            //{
-            //    DataRow dr = dt.NewRow();
-            //    dr["name"] = "合格率";
-            //    dr["value"] = 1;
-            //    dt.Rows.Add(dr);
-            //}
-            //return dt;
+        //    DataRow dr2 = dt.NewRow();
+        //    dr2["name"] = "不良率";
+        //    dr2["value"] = (Double)Convert.ToInt32(dtData.Rows[0]["fail_counts"]) / Convert.ToInt32(dtData.Rows[0]["counts"]);
+        //    dt.Rows.Add(dr2);
+        //}
+        //else
+        //{
+        //    DataRow dr = dt.NewRow();
+        //    dr["name"] = "合格率";
+        //    dr["value"] = 1;
+        //    dt.Rows.Add(dr);
+        //}
+        //return dt;
         //}
     }
 }
