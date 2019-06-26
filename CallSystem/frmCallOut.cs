@@ -151,9 +151,11 @@ namespace CallSystem
                 ((Button)sender).BackColor = Color.Red;
                 byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(msg);
                 client.Send(sendBytes, sendBytes.Length);
+                Com_Msg.SendData(((Button)sender).Text);
             }
             catch (Exception exc)
             {
+                MessageBox.Show("发送失败：{0}", exc.Message);
                 SysLog.CreateLog(string.Format("发送失败：{0}", exc.Message));
             }
         }
