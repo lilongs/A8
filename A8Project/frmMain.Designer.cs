@@ -814,7 +814,6 @@
             arcScaleRange11,
             arcScaleRange12});
             this.arcScaleComponent5.StartAngle = -240F;
-            this.arcScaleComponent5.Value = 10F;
             // 
             // arcScaleBackgroundLayerComponent5
             // 
@@ -829,6 +828,7 @@
             this.arcScaleNeedleComponent5.ArcScale = this.arcScaleComponent5;
             this.arcScaleNeedleComponent5.EndOffset = 8F;
             this.arcScaleNeedleComponent5.Name = "needle";
+            this.arcScaleNeedleComponent5.Shader = new DevExpress.XtraGauges.Core.Drawing.GrayShader("");
             this.arcScaleNeedleComponent5.ShapeType = DevExpress.XtraGauges.Core.Model.NeedleShapeType.CircularFull_Style27;
             this.arcScaleNeedleComponent5.StartOffset = -6F;
             this.arcScaleNeedleComponent5.ZOrder = -50;
@@ -911,13 +911,13 @@
             arcScaleRange8,
             arcScaleRange9});
             this.arcScaleComponent6.StartAngle = -240F;
-            this.arcScaleComponent6.Value = 10F;
             // 
             // arcScaleNeedleComponent6
             // 
             this.arcScaleNeedleComponent6.ArcScale = this.arcScaleComponent6;
             this.arcScaleNeedleComponent6.EndOffset = 8F;
             this.arcScaleNeedleComponent6.Name = "needle";
+            this.arcScaleNeedleComponent6.Shader = new DevExpress.XtraGauges.Core.Drawing.GrayShader("");
             this.arcScaleNeedleComponent6.ShapeType = DevExpress.XtraGauges.Core.Model.NeedleShapeType.CircularFull_Style27;
             this.arcScaleNeedleComponent6.StartOffset = -6F;
             this.arcScaleNeedleComponent6.ZOrder = -50;
@@ -1007,6 +1007,7 @@
             this.arcScaleNeedleComponent7.ArcScale = this.arcScaleComponent7;
             this.arcScaleNeedleComponent7.EndOffset = 8F;
             this.arcScaleNeedleComponent7.Name = "needle";
+            this.arcScaleNeedleComponent7.Shader = new DevExpress.XtraGauges.Core.Drawing.GrayShader("");
             this.arcScaleNeedleComponent7.ShapeType = DevExpress.XtraGauges.Core.Model.NeedleShapeType.CircularFull_Style27;
             this.arcScaleNeedleComponent7.StartOffset = -6F;
             this.arcScaleNeedleComponent7.ZOrder = -50;
@@ -1096,6 +1097,7 @@
             this.arcScaleNeedleComponent8.ArcScale = this.arcScaleComponent8;
             this.arcScaleNeedleComponent8.EndOffset = 8F;
             this.arcScaleNeedleComponent8.Name = "needle";
+            this.arcScaleNeedleComponent8.Shader = new DevExpress.XtraGauges.Core.Drawing.GrayShader("");
             this.arcScaleNeedleComponent8.ShapeType = DevExpress.XtraGauges.Core.Model.NeedleShapeType.CircularFull_Style27;
             this.arcScaleNeedleComponent8.StartOffset = -6F;
             this.arcScaleNeedleComponent8.ZOrder = -50;

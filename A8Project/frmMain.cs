@@ -399,16 +399,16 @@ namespace A8Project
             float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0);
             float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0);
 
-            this.arcScaleComponent1.Value = consumable1;
+            this.arcScaleComponent5.Value = consumable1;
             this.label9.Text = consumable1.ToString() + " K";
 
-            this.arcScaleComponent2.Value = consumable2;
+            this.arcScaleComponent6.Value = consumable2;
             this.label10.Text = consumable2.ToString() + " K";
 
-            this.arcScaleComponent3.Value = consumable3;
+            this.arcScaleComponent7.Value = consumable3;
             this.label11.Text = consumable3.ToString() + " K";
 
-            this.arcScaleComponent4.Value = consumable4;
+            this.arcScaleComponent8.Value = consumable4;
             this.label12.Text = consumable3.ToString() + " K";
         }
 
