@@ -394,18 +394,22 @@ namespace A8Project
         private void LoadConsumables()
         {
             //查询获得AC、CC、FC等站点Process_IN实际过站次数
-            int consumable1 = buTestValue.GetSiteCount("AC") ;
-            int consumable2 = buTestValue.GetSiteCount("FC") ;
-            int consumable3 = buTestValue.GetSiteCount("CC") ;
+            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) ;
+            float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0);
+            float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0);
+            float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0);
 
             this.arcScaleComponent1.Value = consumable1;
-            this.labelControl4.Text = consumable1.ToString();
+            this.label9.Text = consumable1.ToString() + " K";
 
             this.arcScaleComponent2.Value = consumable2;
-            this.labelControl5.Text = consumable2.ToString();
+            this.label10.Text = consumable2.ToString() + " K";
 
             this.arcScaleComponent3.Value = consumable3;
-            this.labelControl6.Text = consumable3.ToString();
+            this.label11.Text = consumable3.ToString() + " K";
+
+            this.arcScaleComponent4.Value = consumable4;
+            this.label12.Text = consumable3.ToString() + " K";
         }
 
         /// <summary>
@@ -446,7 +450,7 @@ namespace A8Project
             #endregion
 
             #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
-            Series series1 = new Series("产量", ViewType.Bar);
+            Series series1 = new Series("Output", ViewType.Bar);
             SeriesPoint point = null;
             foreach (DataRow row in dt.Rows)
             {
@@ -482,6 +486,7 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
+            diagram.AxisX.Label.Angle = 30;
         }
 
         private void LoadDayProductRatio()
@@ -521,7 +526,7 @@ namespace A8Project
             #endregion
 
             #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
-            Series series1 = new Series("历史产量", ViewType.Bar);
+            Series series1 = new Series("HistoryOutput", ViewType.Bar);
             SeriesPoint point = null;
             foreach (DataRow row in dt.Rows)
             {
@@ -556,6 +561,7 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
+            diagram.AxisX.Label.Angle = 30;
         }
 
         private void LoadYearMonthFPY()
@@ -593,7 +599,7 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
-
+            diagram.AxisX.Label.Angle = 30;
             diagram.AxisY.Label.TextPattern = "{v:0.00%}";
 
         }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCallOut));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -50,7 +49,7 @@
             this.button18 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
-            this.TenSec_timer1 = new System.Windows.Forms.Timer(this.components);
+            this.TenSec_timer1 = new System.Windows.Forms.Timer();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -319,7 +318,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmCallOut";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "呼叫控制台";
+            this.Text = "CallOut Console 芜湖思诺尔自动化科技有限公司V1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCallOut_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmCallOut_FormClosed);
             this.Load += new System.EventHandler(this.frmCallOut_Load);

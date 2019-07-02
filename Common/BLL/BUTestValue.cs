@@ -26,7 +26,7 @@ namespace Common.BLL
             for (int i = 1; i <= 24; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i+"点";
+                dr["hours"] = i+ " O'clock";
                 DataRow[] dataRows = dtData.Select("hours=" + i + "");
                 if (dataRows.Length > 0)
                 {
@@ -49,7 +49,7 @@ namespace Common.BLL
             for (int i = 1; i <= 24; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i + "点";
+                dr["hours"] = i + " O'clock";
                 dr["counts"] = ConfigurationManager.AppSettings["OneHourProductionTarget"];
                 dt.Rows.Add(dr);
             }
@@ -75,70 +75,70 @@ namespace Common.BLL
                     case 0:
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "1小时";
+                            dr["cycletime"] = "One Hour";
                             dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
                             dtHis.Rows.Add(dr);
                         }
                         else
                         {
-                            dr["cycletime"] = "1小时";
-                            dr["second"] = "无数据";
+                            dr["cycletime"] = "One Hour";
+                            dr["second"] = "null";
                             dtHis.Rows.Add(dr);
                         }
                         break;
                     case 1:
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "1天";
+                            dr["cycletime"] = "One Day";
                             dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
                             dtHis.Rows.Add(dr);
                         }
                         else
                         {
-                            dr["cycletime"] = "1天";
-                            dr["second"] = "无数据";
+                            dr["cycletime"] = "One Day";
+                            dr["second"] = "null";
                             dtHis.Rows.Add(dr);
                         }
                         break;
                     case 2:
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "1周";
+                            dr["cycletime"] = "One Week";
                             dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
                             dtHis.Rows.Add(dr);
                         }
                         else
                         {
-                            dr["cycletime"] = "1周";
-                            dr["second"] = "无数据";
+                            dr["cycletime"] = "One Week";
+                            dr["second"] = "null";
                             dtHis.Rows.Add(dr);
                         }
                         break;
                     case 3:
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "1月";
+                            dr["cycletime"] = "One Month";
                             dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
                             dtHis.Rows.Add(dr);
                         }
                         else
                         {
-                            dr["cycletime"] = "1月";
-                            dr["second"] = "无数据";
+                            dr["cycletime"] = "One Month";
+                            dr["second"] = "null";
                             dtHis.Rows.Add(dr);
                         }
                         break;
                     case 4:
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "1年";
+                            dr["cycletime"] = "One Year";
                             dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
                             dtHis.Rows.Add(dr);
                         }
                         else
                         {
-                            dr["cycletime"] = "1年";
-                            dr["second"] = "无数据";
+                            dr["cycletime"] = "One Year";
+                            dr["second"] = "null";
                             dtHis.Rows.Add(dr);
                         }
                         break;
@@ -155,6 +155,8 @@ namespace Common.BLL
         /// <returns></returns>
         public DataTable GetYearMonth()
         {
+            string strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
+            string[] mon = strParaMonthn.Split('_');
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
@@ -163,7 +165,7 @@ namespace Common.BLL
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i+"月份";
+                dr["months"] = mon[i-1];
                 DataRow[] dataRows = dtData.Select("months=" + i + "");
                 if (dataRows.Length > 0)
                     dr["counts"] = dataRows[0]["counts"].ToString();
@@ -176,13 +178,15 @@ namespace Common.BLL
 
         public DataTable GetYearMonthTarget()
         {
+            string strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
+            string[] mon = strParaMonthn.Split('_');
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i + "月份";
+                dr["months"] = mon[i-1]; 
                 dr["counts"] = ConfigurationManager.AppSettings["YearMonthTarget"];
                 dt.Rows.Add(dr);
             }
@@ -214,6 +218,8 @@ namespace Common.BLL
         /// <returns></returns>
         public DataTable GetYearMonthFPY()
         {
+            string strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
+            string[] mon = strParaMonthn.Split('_');
             DataTable dtData = productlog.GetYearMonthFPY();
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.String"));
@@ -221,7 +227,7 @@ namespace Common.BLL
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i+"月份";
+                dr["months"] = mon[i-1];
                 DataRow[] dataRows = dtData.Select("months=" + i + "");
                 if (dataRows.Length > 0)
                 {
@@ -241,13 +247,15 @@ namespace Common.BLL
 
         public DataTable GetYearMonthFPYTarget()
         {
+            string strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
+            string[] mon = strParaMonthn.Split('_');
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("ratio", Type.GetType("System.Double"));
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = i + "月份";
+                dr["months"] = mon[i-1];
                 dr["ratio"] = ConfigurationManager.AppSettings["YearMonthFPYTarget"];
                 dt.Rows.Add(dr);
             }
