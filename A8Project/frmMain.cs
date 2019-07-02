@@ -621,5 +621,10 @@ namespace A8Project
         {
             Application.Exit();
         }
+
+        private void groupControl2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

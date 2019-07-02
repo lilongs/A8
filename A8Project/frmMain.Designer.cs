@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange1 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange2 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange3 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
@@ -41,7 +42,6 @@
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange10 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange11 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange12 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
             DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
             DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange13 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
@@ -196,21 +196,23 @@
             // 
             // groupControl2
             // 
+            this.groupControl2.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("groupControl2.CaptionImageOptions.Image")));
             this.groupControl2.Controls.Add(this.gdcErrorInfo);
             this.groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControl2.Location = new System.Drawing.Point(2, 2);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.Size = new System.Drawing.Size(473, 313);
             this.groupControl2.TabIndex = 4;
-            this.groupControl2.Text = "Real-time Information";
+            this.groupControl2.Text = "ErrorInformation";
+            this.groupControl2.Paint += new System.Windows.Forms.PaintEventHandler(this.groupControl2_Paint);
             // 
             // gdcErrorInfo
             // 
             this.gdcErrorInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gdcErrorInfo.Location = new System.Drawing.Point(2, 21);
+            this.gdcErrorInfo.Location = new System.Drawing.Point(2, 39);
             this.gdcErrorInfo.MainView = this.gdvErrorInfo;
             this.gdcErrorInfo.Name = "gdcErrorInfo";
-            this.gdcErrorInfo.Size = new System.Drawing.Size(469, 290);
+            this.gdcErrorInfo.Size = new System.Drawing.Size(469, 272);
             this.gdcErrorInfo.TabIndex = 0;
             this.gdcErrorInfo.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gdvErrorInfo});
