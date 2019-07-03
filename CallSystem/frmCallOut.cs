@@ -72,14 +72,20 @@ namespace CallSystem
                 //异步是指组件的连接方法会立即返回，如果返回值为false则表示连接失败，如果连接成功则稍后会触发OnConnect事件
                 if (client.Connect(ip, port, true))
                 {
-                    appState = AppState.Started;
-                    label1.Text = "通讯正常：服务器已连接！";
+                    appState = AppState.Started;                    
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label1.Text = "通讯正常：服务器已连接！";
+                    });
                 }
                 else
                 {
                     appState = AppState.Stoped;
-                    SysLog.CreateLog(string.Format("无法建立连接：{0}，{1}", client.ErrorMessage, client.ErrorCode));
-                    label1.Text = "通讯异常：服务器连接已关闭！";
+                    SysLog.CreateLog(string.Format("无法建立连接：{0}，{1}", client.ErrorMessage, client.ErrorCode));                    
+                    this.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label1.Text = "通讯异常：服务器连接已关闭！";
+                    });
                 }
             }
             catch (Exception exc)
@@ -130,12 +136,18 @@ namespace CallSystem
             if (errorCode == 0)
             {
                 SysLog.CreateLog("连接已关闭");
-                label1.Text = "通讯异常：服务器连接已关闭！";
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    label1.Text = "通讯异常：服务器连接已关闭！";
+                });                
             }
             else
             {
                 SysLog.CreateLog(string.Format("连接异常关闭：{0}，{1}", client.ErrorMessage, client.ErrorCode));
-                label1.Text = "通讯异常：服务器连接已关闭！";
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    label1.Text = "通讯异常：服务器连接已关闭！";
+                });                
             }
 
             return HandleResult.Ok;

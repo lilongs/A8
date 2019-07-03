@@ -16,7 +16,7 @@ namespace CallSystem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmCallOut());
+            Application.Run(new frmLogin());
         }
     }
 }
