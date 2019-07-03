@@ -202,6 +202,8 @@ namespace CallSystem
 
         private void frmCallOut_FormClosed(object sender, FormClosedEventArgs e)
         {
+            appState = AppState.Stopping;
+            client.Stop();
             Application.Exit();
         }
     }

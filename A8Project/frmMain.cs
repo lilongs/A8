@@ -174,25 +174,93 @@ namespace A8Project
                             GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + ",pass<ETX>", now);
                             Thread th;//添加线程 
                             
-                            if (title.Contains("物料呼叫"))
+                            if (title.Contains("WS1"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label4.Text = title;
+                                    label31.Text = title;
+                                    label31.Visible = true;
                                 });
-                                th = new Thread(run2);
+                                th = new Thread(run);
                                 th.IsBackground = true;
-                                th.Start();
+                                th.Start(41);
+                            }
+                            else if(title.Contains("WS2"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label32.Text = title;
+                                    label32.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(42);
+                            }
+                            else if (title.Contains("WS3"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label33.Text = title;
+                                    label33.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(43);
+                            }
+                            else if (title.Contains("WS4"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label34.Text = title;
+                                    label34.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(44);
+                            }
+                            else if (title.Contains("Run-In"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label35.Text = title;
+                                    label35.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(45);
+                            }
+                            else if (title.Contains("AC"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label36.Text = title;
+                                    label36.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(46);
+                            }
+                            else if (title.Contains("CC"))
+                            {
+                                this.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    label37.Text = title;
+                                    label37.Visible = true;
+                                });
+                                th = new Thread(run);
+                                th.IsBackground = true;
+                                th.Start(47);
                             }
                             else
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label3.Text = title;
+                                    label38.Text = title;
+                                    label38.Visible = true;
                                 });
-                                th = new Thread(run1);
+                                th = new Thread(run);
                                 th.IsBackground = true;
-                                th.Start();
+                                th.Start(48);
                             }
                             break;
                         default:
@@ -215,29 +283,30 @@ namespace A8Project
             return HandleResult.Ok;
         }
 
-        private void run1()
+        private void run(object num)
         {
-            int n = 10;
+            int n = 20;
             while (n > 0)
             {
                 if (n % 2 == 0)
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.ForeColor = Color.Red;
+                        ((Label)this.Controls.Find("label"+num.ToString(), true)[0]).ForeColor = Color.Red;                        
                     });                    
                 }
                 else
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.ForeColor = this.BackColor;
+                        ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = this.BackColor;
                     });                    
                     if (n == 1)
                     {
                         this.BeginInvoke((MethodInvoker)delegate
                         {
-                            label1.ForeColor = Color.Green;
+                            ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = Color.Green;
+                            ((Label)this.Controls.Find("label" + (Convert.ToInt32(num) - 10).ToString(), true)[0]).Visible = false;
                         });                        
                     }
                 }
@@ -255,20 +324,20 @@ namespace A8Project
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label2.ForeColor = Color.Red;
+                        label32.ForeColor = Color.Red;
                     });
                 }
                 else
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label2.ForeColor = this.BackColor;
+                        label32.ForeColor = this.BackColor;
                     });                    
                     if (n == 1)
                     {
                         this.BeginInvoke((MethodInvoker)delegate
                         {
-                            label2.ForeColor = Color.Green;
+                            label32.ForeColor = Color.Green;
                         });                        
                     }
                 }
@@ -400,16 +469,16 @@ namespace A8Project
             float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0);
 
             this.arcScaleComponent5.Value = consumable1;
-            this.label9.Text = consumable1.ToString() + " K";
+            this.label5.Text = consumable1.ToString() + " K";
 
             this.arcScaleComponent6.Value = consumable2;
-            this.label10.Text = consumable2.ToString() + " K";
+            this.label6.Text = consumable2.ToString() + " K";
 
             this.arcScaleComponent7.Value = consumable3;
-            this.label11.Text = consumable3.ToString() + " K";
+            this.label7.Text = consumable3.ToString() + " K";
 
             this.arcScaleComponent8.Value = consumable4;
-            this.label12.Text = consumable3.ToString() + " K";
+            this.label8.Text = consumable3.ToString() + " K";
         }
 
         /// <summary>
@@ -619,6 +688,8 @@ namespace A8Project
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            appState = AppState.Stopping;
+            server.Stop();
             Application.Exit();
         }
 

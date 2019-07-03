@@ -32,7 +32,7 @@ namespace CallSystem
             }
             #endregion
 
-            if((txtUsername.Text.Trim()=="admin" && txtPassword.Text.Trim() == "snor123456789snor") || (txtUsername.Text.Trim()== "visteon" && txtPassword.Text.Trim() == "visteon"))
+            if((txtUsername.Text.Trim()=="admin" && txtPassword.Text.Trim() == "snor") || (txtUsername.Text.Trim()== "visteon" && txtPassword.Text.Trim() == "visteon"))
             {
                 frmCallOut frm = new frmCallOut();
                 frm.Show();
