@@ -26,7 +26,7 @@ namespace Common.BLL
             for (int i = 1; i <= 24; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i+ " O'clock";
+                dr["hours"] = i + " O'clock";
                 DataRow[] dataRows = dtData.Select("hours=" + i + "");
                 if (dataRows.Length > 0)
                 {
@@ -165,7 +165,7 @@ namespace Common.BLL
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = mon[i-1];
+                dr["months"] = mon[i - 1];
                 DataRow[] dataRows = dtData.Select("months=" + i + "");
                 if (dataRows.Length > 0)
                     dr["counts"] = dataRows[0]["counts"].ToString();
@@ -186,7 +186,7 @@ namespace Common.BLL
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = mon[i-1]; 
+                dr["months"] = mon[i - 1];
                 dr["counts"] = ConfigurationManager.AppSettings["YearMonthTarget"];
                 dt.Rows.Add(dr);
             }
@@ -220,21 +220,32 @@ namespace Common.BLL
         {
             string strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
             string[] mon = strParaMonthn.Split('_');
-            DataTable dtData = productlog.GetYearMonthFPY();
+            DataSet ds = productlog.GetYearMonthFPY();
             DataTable dt = new DataTable();
             dt.Columns.Add("months", Type.GetType("System.String"));
             dt.Columns.Add("ratio", Type.GetType("System.Double"));
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = mon[i-1];
-                DataRow[] dataRows = dtData.Select("months=" + i + "");
-                if (dataRows.Length > 0)
+                dr["months"] = mon[i - 1];
+                DataRow[] dataRows = ds.Tables[0].Select("months=" + i + "");//AC_FPY
+                DataRow[] dataRows2 = ds.Tables[1].Select("months=" + i + "");//CC_FPY
+                DataRow[] dataRows3 = ds.Tables[2].Select("months=" + i + "");//FC_FPY
+                if (dataRows.Length > 0 && dataRows2.Length > 0 && dataRows3.Length > 0)
                 {
-                    int fail_counts = Convert.ToInt32(dataRows[0]["pass_counts"]);
-                    int counts = Convert.ToInt32(dataRows[0]["counts"]);
-                    double resutl = (Double)fail_counts / counts;
-                    dr["ratio"] = resutl.ToString("0.00");
+                    int pass_counts1 = Convert.ToInt32(dataRows[0]["pass_counts"]);
+                    int counts1 = Convert.ToInt32(dataRows[0]["counts"]);
+                    double resutl = (Double)pass_counts1 / counts1;
+
+                    int pass_counts2 = Convert.ToInt32(dataRows[0]["pass_counts"]);
+                    int counts2 = Convert.ToInt32(dataRows[0]["counts"]);
+                    double resut2 = (Double)pass_counts2 / counts2;
+
+                    int pass_counts3 = Convert.ToInt32(dataRows[0]["pass_counts"]);
+                    int counts3 = Convert.ToInt32(dataRows[0]["counts"]);
+                    double resut3 = (Double)pass_counts3 / counts3;
+
+                    dr["ratio"] = (resutl * resut2 * resut3).ToString("0.00");
                 }
                 else
                 {
@@ -255,7 +266,7 @@ namespace Common.BLL
             for (int i = 1; i <= 12; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["months"] = mon[i-1];
+                dr["months"] = mon[i - 1];
                 dr["ratio"] = ConfigurationManager.AppSettings["YearMonthFPYTarget"];
                 dt.Rows.Add(dr);
             }

@@ -91,37 +91,34 @@ namespace Common.DAL
         }
 
         /// <summary>
-        /// 获取当班整点的产量
+        /// 获取当班整点的产量,以CC站点作为最后一个站点，用于统计产量
         /// </summary>
         /// <returns></returns>
         public DataTable GetTodayData()
         {
-            string sql = @"select hours,count(productno)as counts 
-                        from(select productno,DATEPART(hh, Max(a.createtime)) as hours
-                        from productlog a
+            string sql = @"select DATEPART(hh, createtime) as hours,count(productno)as counts  
+                        from productlog
                         where DATEDIFF(DAY, createtime, GETDATE()) = 0
-                        group by productno
-                        ) as a
-                        group by hours";
+                        and equipment='CC' and key_process='START_OUT'
+                        group by DATEPART(hh, createtime)";
             return sqlconn.Query(sql).Tables[0];
         }
 
         /// <summary>
-        /// 获取一年12个月的产量
+        /// 获取一年12个月的产量,以CC站点作为最后一个站点，用于统计产量
         /// </summary>
         /// <returns></returns>
         public DataTable GetYearMonth()
         {
-            string sql = @"select months,count(productno) as counts 
-                        from(select distinct productno, DATEPART(MM, createtime) as months
-                        from productlog
-                        where DATEDIFF(YEAR, createtime, GETDATE()) = 0 ) as a
-                        group by months";
+            string sql = @"select DATEPART(MM, createtime) as months,count(productno) as counts 
+                            from productlog
+                            where equipment='CC' and key_process='START_OUT'
+                            group by DATEPART(MM, createtime)";
             return sqlconn.Query(sql).Tables[0];
         }
 
         /// <summary>
-        /// 获取每个站点的产品数
+        /// 获取每个站点Process_IN的产品数的次数
         /// </summary>
         /// <param name="site"></param>
         /// <returns></returns>
@@ -134,26 +131,59 @@ namespace Common.DAL
         }
 
         /// <summary>
-        /// 计算一年12月的FPY
+        /// 计算一年12月的FPY，FPY=AC_FPY*CC_FPY*FC_FPY
         /// </summary>
         /// <returns></returns>
-        public DataTable GetYearMonthFPY()
+        public DataSet GetYearMonthFPY()
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append(@"select A.*,B.pass_counts 
-                        from (select months,count(productno)as pass_counts 
-                        from (select distinct productno,result,DATEPART(MM,createtime)as months 
-                        from productlog
-                        where DATEDIFF(YEAR,createtime,GETDATE())=0 
-                        and result='PASS') as a
-                        group by months) as B
+            //AC_FPY
+            sql.Append(@"select A.*,B.pass_counts from (
+	                    select DATEPART(MM,createtime)as months,count(productno) as counts 
+	                    from productlog
+	                    where (equipment='AC01' or equipment='AC02')
+	                    and key_process='START_OUT'
+	                    group by DATEPART(MM,createtime)
+                    )as a
+                    left join (
+	                    select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                    from productlog
+	                    where (equipment='AC01' or equipment='AC02')
+	                    and key_process='START_OUT' and result='PASS'
+	                    group by DATEPART(MM,createtime)
+                    )as b on a.months=b.months");
+
+
+                //CC_FPY
+                sql.Append(@" select A.*,B.pass_counts from (
+	                        select DATEPART(MM,createtime)as months,count(productno) as counts 
+	                        from productlog
+	                        where equipment='CC'and key_process='START_OUT'
+	                        group by DATEPART(MM,createtime)
+                        )as a
                         left join (
-                        select months,count(productno)as counts
-                            from (select distinct productno,DATEPART(MM,createtime)as months
-                        from productlog
-                        where DATEDIFF(YEAR,createtime,GETDATE())=0 ) as a
-                        group by months) as A on A.months=B.months ");
-            return sqlconn.Query(sql.ToString()).Tables[0];
+	                        select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                        from productlog
+	                        where equipment='CC'and key_process='START_OUT' and result='PASS'
+	                        group by DATEPART(MM,createtime)
+                        )as b on a.months=b.months");
+
+                //FC_FPY
+                 sql.Append(@" select A.*,B.pass_counts from (
+	                select DATEPART(MM,createtime)as months,count(productno) as counts 
+	                from productlog
+	                where (equipment='FC01' or equipment='FC02')
+	                and key_process='START_OUT'
+	                group by DATEPART(MM,createtime)
+                )as a
+                left join (
+	                select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                from productlog
+	                where (equipment='FC01' or equipment='FC02')
+	                and key_process='START_OUT' and result='PASS'
+	                group by DATEPART(MM,createtime)
+                )as b on a.months=b.months ");
+            return sqlconn.Query(sql.ToString());
         }
 
         //public DataTable GetDayOfCountWithFPY()

@@ -103,6 +103,20 @@
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
             this.groupControl7 = new DevExpress.XtraEditors.GroupControl();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.Six_timer1 = new System.Windows.Forms.Timer(this.components);
@@ -114,7 +128,7 @@
             this.chartControl3 = new DevExpress.XtraCharts.ChartControl();
             this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
             this.chartControl2 = new DevExpress.XtraCharts.ChartControl();
-            this.OneHour_timer = new System.Windows.Forms.Timer(this.components);
+            this.OneMin_timer = new System.Windows.Forms.Timer(this.components);
             this.arcScaleNeedleComponent1 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent();
             this.arcScaleComponent1 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleComponent();
             this.arcScaleBackgroundLayerComponent1 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleBackgroundLayerComponent();
@@ -127,20 +141,6 @@
             this.arcScaleNeedleComponent4 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent();
             this.arcScaleBackgroundLayerComponent4 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleBackgroundLayerComponent();
             this.arcScaleComponent4 = new DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleComponent();
-            this.label42 = new System.Windows.Forms.Label();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
@@ -242,6 +242,10 @@
             // 
             // gdvErrorInfo
             // 
+            this.gdvErrorInfo.Appearance.EvenRow.BackColor = System.Drawing.Color.Red;
+            this.gdvErrorInfo.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gdvErrorInfo.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.gdvErrorInfo.Appearance.OddRow.Options.UseBackColor = true;
             this.gdvErrorInfo.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn1,
             this.gridColumn6,
@@ -250,6 +254,8 @@
             this.gdvErrorInfo.GridControl = this.gdcErrorInfo;
             this.gdvErrorInfo.Name = "gdvErrorInfo";
             this.gdvErrorInfo.OptionsBehavior.Editable = false;
+            this.gdvErrorInfo.OptionsView.EnableAppearanceEvenRow = true;
+            this.gdvErrorInfo.OptionsView.EnableAppearanceOddRow = true;
             this.gdvErrorInfo.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn1
@@ -790,12 +796,18 @@
             // 
             // gdvHistory
             // 
+            this.gdvHistory.Appearance.EvenRow.BackColor = System.Drawing.Color.Red;
+            this.gdvHistory.Appearance.EvenRow.Options.UseBackColor = true;
+            this.gdvHistory.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.gdvHistory.Appearance.OddRow.Options.UseBackColor = true;
             this.gdvHistory.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn4,
             this.gridColumn5});
             this.gdvHistory.GridControl = this.gdcHistory;
             this.gdvHistory.Name = "gdvHistory";
             this.gdvHistory.OptionsBehavior.Editable = false;
+            this.gdvHistory.OptionsView.EnableAppearanceEvenRow = true;
+            this.gdvHistory.OptionsView.EnableAppearanceOddRow = true;
             this.gdvHistory.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn4
@@ -857,6 +869,167 @@
             this.groupControl7.Size = new System.Drawing.Size(528, 465);
             this.groupControl7.TabIndex = 2;
             this.groupControl7.Text = "ProductionLineCall";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label36.Location = new System.Drawing.Point(409, 178);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(60, 14);
+            this.label36.TabIndex = 20;
+            this.label36.Text = "ACXX呼叫";
+            this.label36.Visible = false;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(164)))), ((int)(((byte)(164)))));
+            this.label46.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label46.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label46.Location = new System.Drawing.Point(483, 178);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(26, 28);
+            this.label46.TabIndex = 19;
+            this.label46.Text = "●";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label38.Location = new System.Drawing.Point(295, 178);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(58, 14);
+            this.label38.TabIndex = 18;
+            this.label38.Text = "FCXX呼叫";
+            this.label38.Visible = false;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label48.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label48.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label48.Location = new System.Drawing.Point(333, 192);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(26, 28);
+            this.label48.TabIndex = 17;
+            this.label48.Text = "●";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label37.Location = new System.Drawing.Point(262, 59);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(59, 14);
+            this.label37.TabIndex = 16;
+            this.label37.Text = "CCXX呼叫";
+            this.label37.Visible = false;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label47.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label47.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label47.Location = new System.Drawing.Point(263, 78);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(26, 28);
+            this.label47.TabIndex = 15;
+            this.label47.Text = "●";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label35.Location = new System.Drawing.Point(397, 444);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(77, 14);
+            this.label35.TabIndex = 14;
+            this.label35.Text = "RunInXX呼叫";
+            this.label35.Visible = false;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label45.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label45.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label45.Location = new System.Drawing.Point(483, 435);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(26, 28);
+            this.label45.TabIndex = 13;
+            this.label45.Text = "●";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label34.Location = new System.Drawing.Point(293, 239);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(71, 14);
+            this.label34.TabIndex = 12;
+            this.label34.Text = "WS4XX呼叫";
+            this.label34.Visible = false;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label33.Location = new System.Drawing.Point(216, 239);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(81, 14);
+            this.label33.TabIndex = 11;
+            this.label33.Text = "WS3物料呼叫";
+            this.label33.Visible = false;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label32.Location = new System.Drawing.Point(141, 239);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(81, 14);
+            this.label32.TabIndex = 10;
+            this.label32.Text = "WS2物料呼叫";
+            this.label32.Visible = false;
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label44.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label44.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label44.Location = new System.Drawing.Point(317, 253);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(26, 28);
+            this.label44.TabIndex = 9;
+            this.label44.Text = "●";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label43.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label43.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label43.Location = new System.Drawing.Point(244, 253);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(26, 28);
+            this.label43.TabIndex = 8;
+            this.label43.Text = "●";
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label42.Font = new System.Drawing.Font("Tahoma", 17F);
+            this.label42.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label42.Location = new System.Drawing.Point(174, 253);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(26, 28);
+            this.label42.TabIndex = 6;
+            this.label42.Text = "●";
             // 
             // label31
             // 
@@ -984,11 +1157,11 @@
             this.chartControl2.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
             chartTitle9});
             // 
-            // OneHour_timer
+            // OneMin_timer
             // 
-            this.OneHour_timer.Enabled = true;
-            this.OneHour_timer.Interval = 60000;
-            this.OneHour_timer.Tick += new System.EventHandler(this.OneHour_timer_Tick);
+            this.OneMin_timer.Enabled = true;
+            this.OneMin_timer.Interval = 60000;
+            this.OneMin_timer.Tick += new System.EventHandler(this.OneMin_timer_Tick);
             // 
             // arcScaleNeedleComponent1
             // 
@@ -1252,167 +1425,6 @@
             this.arcScaleComponent4.StartAngle = -240F;
             this.arcScaleComponent4.Value = 50F;
             // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label42.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label42.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label42.Location = new System.Drawing.Point(174, 253);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(26, 28);
-            this.label42.TabIndex = 6;
-            this.label42.Text = "●";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label43.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label43.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label43.Location = new System.Drawing.Point(244, 253);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(26, 28);
-            this.label43.TabIndex = 8;
-            this.label43.Text = "●";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label44.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label44.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label44.Location = new System.Drawing.Point(317, 253);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(26, 28);
-            this.label44.TabIndex = 9;
-            this.label44.Text = "●";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label32.Location = new System.Drawing.Point(141, 239);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(81, 14);
-            this.label32.TabIndex = 10;
-            this.label32.Text = "WS2物料呼叫";
-            this.label32.Visible = false;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label33.Location = new System.Drawing.Point(216, 239);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(81, 14);
-            this.label33.TabIndex = 11;
-            this.label33.Text = "WS3物料呼叫";
-            this.label33.Visible = false;
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label34.Location = new System.Drawing.Point(293, 239);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(71, 14);
-            this.label34.TabIndex = 12;
-            this.label34.Text = "WS4XX呼叫";
-            this.label34.Visible = false;
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label45.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label45.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label45.Location = new System.Drawing.Point(483, 435);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(26, 28);
-            this.label45.TabIndex = 13;
-            this.label45.Text = "●";
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label35.Location = new System.Drawing.Point(397, 444);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(77, 14);
-            this.label35.TabIndex = 14;
-            this.label35.Text = "RunInXX呼叫";
-            this.label35.Visible = false;
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label47.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label47.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label47.Location = new System.Drawing.Point(263, 78);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(26, 28);
-            this.label47.TabIndex = 15;
-            this.label47.Text = "●";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label37.Location = new System.Drawing.Point(262, 59);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(59, 14);
-            this.label37.TabIndex = 16;
-            this.label37.Text = "CCXX呼叫";
-            this.label37.Visible = false;
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label48.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label48.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label48.Location = new System.Drawing.Point(333, 192);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(26, 28);
-            this.label48.TabIndex = 17;
-            this.label48.Text = "●";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label38.Location = new System.Drawing.Point(295, 178);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(58, 14);
-            this.label38.TabIndex = 18;
-            this.label38.Text = "FCXX呼叫";
-            this.label38.Visible = false;
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(164)))), ((int)(((byte)(164)))));
-            this.label46.Font = new System.Drawing.Font("Tahoma", 17F);
-            this.label46.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label46.Location = new System.Drawing.Point(483, 178);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(26, 28);
-            this.label46.TabIndex = 19;
-            this.label46.Text = "●";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
-            this.label36.Location = new System.Drawing.Point(409, 178);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(60, 14);
-            this.label36.TabIndex = 20;
-            this.label36.Text = "ACXX呼叫";
-            this.label36.Visible = false;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1522,7 +1534,7 @@
         private DevExpress.XtraEditors.PanelControl panelControl9;
         private DevExpress.XtraEditors.GroupControl groupControl1;
         private DevExpress.XtraEditors.GroupControl groupControl2;
-        private System.Windows.Forms.Timer OneHour_timer;
+        private System.Windows.Forms.Timer OneMin_timer;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraGauges.Win.Gauges.Circular.ArcScaleNeedleComponent arcScaleNeedleComponent1;

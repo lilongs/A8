@@ -433,7 +433,7 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OneHour_timer_Tick(object sender, EventArgs e)
+        private void OneMin_timer_Tick(object sender, EventArgs e)
         {
             LoadCycleTime();
             LoadTodayData();
@@ -531,7 +531,7 @@ namespace A8Project
                     if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]))
                         point.Color = Color.Red;
                     else
-                        point.Color = Color.Blue;
+                        point.Color = Color.Green;
                     series1.Points.Add(point);
                 }
             }
@@ -607,7 +607,7 @@ namespace A8Project
                     if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]))
                         point.Color = Color.Red;
                     else
-                        point.Color = Color.Blue;
+                        point.Color = Color.Green;
                     series1.Points.Add(point);
                 }
             }
