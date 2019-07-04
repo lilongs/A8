@@ -237,12 +237,12 @@ namespace Common.BLL
                     int counts1 = Convert.ToInt32(dataRows[0]["counts"]);
                     double resutl = (Double)pass_counts1 / counts1;
 
-                    int pass_counts2 = Convert.ToInt32(dataRows[0]["pass_counts"]);
-                    int counts2 = Convert.ToInt32(dataRows[0]["counts"]);
+                    int pass_counts2 = Convert.ToInt32(dataRows2[0]["pass_counts"]);
+                    int counts2 = Convert.ToInt32(dataRows2[0]["counts"]);
                     double resut2 = (Double)pass_counts2 / counts2;
 
-                    int pass_counts3 = Convert.ToInt32(dataRows[0]["pass_counts"]);
-                    int counts3 = Convert.ToInt32(dataRows[0]["counts"]);
+                    int pass_counts3 = Convert.ToInt32(dataRows3[0]["pass_counts"]);
+                    int counts3 = Convert.ToInt32(dataRows3[0]["counts"]);
                     double resut3 = (Double)pass_counts3 / counts3;
 
                     dr["ratio"] = (resutl * resut2 * resut3).ToString("0.00");
