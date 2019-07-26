@@ -36,7 +36,8 @@ namespace A8Project
         BUTestValue buTestValue = new BUTestValue();
         string ip = string.Empty;
         ushort port = 102;
-        private HPSocketCS.TcpPackServer server = new HPSocketCS.TcpPackServer();
+        //private HPSocketCS.TcpPackServer server = new HPSocketCS.TcpPackServer();
+        private HPSocketCS.TcpServer server = new HPSocketCS.TcpServer();
         private AppState appState = AppState.Stoped;
         List<string> checkedListBoxClientList = new List<string>();
         public Dictionary<string, string> EquipmentInfo = new Dictionary<string, string>()
@@ -75,9 +76,9 @@ namespace A8Project
             server.OnClose += new TcpServerEvent.OnCloseEventHandler(server_OnClose);
             //组件停止后触发
             server.OnShutdown += new TcpServerEvent.OnShutdownEventHandler(server_OnShutdown);
-            server.PackHeaderFlag = 0xff;
+            //server.PackHeaderFlag = 0xFF;
             //设置包体长度
-            server.MaxPackSize = 0x1000;
+            //server.MaxPackSize = 0x1000;
             //启动server
             SocketStart();
             #endregion
@@ -173,7 +174,7 @@ namespace A8Project
                             string title = temp[1];
                             GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + ",pass<ETX>", now);
                             Thread th;//添加线程 
-                            
+                            #region 呼叫系统
                             if (title.Contains("WS1"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
@@ -263,7 +264,9 @@ namespace A8Project
                                 th.Start(48);
                             }
                             break;
+                        #endregion
                         default:
+                            sendContent = "<STX>" + msg + ",error<ETX>";
                             break;
                     }
                     if (sendContent.Length > 0)
@@ -456,7 +459,7 @@ namespace A8Project
         {
             //加载信息
             DataTable dt = new DataTable();
-            dt = productlog.GetInfo();
+            dt = buTestValue.DealErrorInfo();
             this.gdcErrorInfo.DataSource = dt;
         }
 

@@ -47,7 +47,7 @@ namespace Common.DAL
         /// <returns></returns>
         public DataTable GetInfo()
         {
-            string sql = @"select top 20 contents ,equipment,productno,createtime 
+            string sql = @"select top 20 key_process,contents ,equipment,productno,createtime 
                         from productlog
                         where result='FAIL'
                         order by createtime desc";

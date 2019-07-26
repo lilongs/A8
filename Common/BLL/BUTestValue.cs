@@ -1,5 +1,7 @@
 ﻿using Common.DAL;
+using Common.Util;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -300,5 +302,36 @@ namespace Common.BLL
         //}
         //return dt;
         //}
+
+        /// <summary>
+        /// 读取xml文件中TestSult=0的StepName
+        /// </summary>
+        /// <returns></returns>
+        public DataTable DealErrorInfo()
+        {
+            DataTable dt = new DataTable();
+            dt = productlog.GetInfo();
+            foreach(DataRow dr in dt.Rows)
+            {
+                if (dr["key_process"].ToString() == "START_OUT")
+                {
+                    string xml = dr["contents"].ToString();
+                    IList<Teststep> resultList = ReadXml.ReadXMLFroPath(xml);
+                    IEnumerator enumerator = resultList.GetEnumerator();
+                    List<string> list = new List<string>();
+                    while (enumerator.MoveNext())
+                    {
+                        Teststep teststep = enumerator.Current as Teststep;
+                        if (teststep.TestResult == "0")
+                        {
+                            list.Add(teststep.StepName);
+                        }
+                    }
+                    if(list.Count>0)
+                    dr["contents"] = String.Join(",", list.ToArray());
+                }
+            }
+            return dt;
+        }
     }
 }

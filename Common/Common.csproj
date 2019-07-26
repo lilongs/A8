@@ -67,6 +67,7 @@
     <Compile Include="DBUtility\DbsBaseClass.cs" />
     <Compile Include="DBUtility\IDbs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ReadXml.cs" />
     <Compile Include="Util\SerialClass.cs" />
     <Compile Include="Util\Com_Msg.cs" />
     <Compile Include="Util\FileOperate.cs" />
