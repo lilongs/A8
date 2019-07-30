@@ -20,15 +20,8 @@ namespace Common.DAL
 
         public bool InsertCommunicationLog(CommunicationLogs communicationLogs)
         {
-            string sql = "insert into CommunicationLogs( rec_message, rec_time,res_message) values( @rec_message, @rec_time, @res_message)";
-            SqlParameter[] param = new SqlParameter[]
-            {
-                new SqlParameter("@rec_message",communicationLogs.rec_message),
-                new SqlParameter("@rec_time",communicationLogs.rec_time),
-                new SqlParameter("@res_message",communicationLogs.res_message)
-
-            };
-            return sqlconn.ExecuteSql(sql, param) > 0 ? true : false;
+            string sql = "insert into CommunicationLogs( rec_message, rec_time,res_message) values( '"+communicationLogs.rec_message+ "','" + communicationLogs.rec_time + "', '" + communicationLogs.res_message + "')";
+            return sqlconn.ExecuteSql(sql) > 0 ? true : false;
         }
     }
 }

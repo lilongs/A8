@@ -27,18 +27,9 @@ namespace Common.DAL
         /// <returns></returns>
         public bool InsertProductlog(Productlog productlog)
         {
-            string sql = "insert into Productlog( key_process, equipment, productno, result, contents, createtime) values( @key_process,@equipment,@productno,@result,@contents,@createtime)";
-            SqlParameter[] param = new SqlParameter[]
-            {
-                new SqlParameter("@key_process",productlog.key_process),
-                new SqlParameter("@equipment",productlog.equipment),
-                new SqlParameter("@productno",productlog.productno),
-                new SqlParameter("@result",productlog.result),
-                new SqlParameter("@contents",productlog.contents),
-                new SqlParameter("@createtime",productlog.createtime),
-
-            };
-            return sqlconn.ExecuteSql(sql, param) > 0 ? true : false;
+            string sql = "insert into Productlog( key_process, equipment, productno, result, contents, createtime) " +
+                "values( '"+productlog.key_process+"','"+productlog.equipment + "','" + productlog.productno + "','" + productlog.result + "','" + productlog.contents + "','" + productlog.createtime + "')";            
+            return sqlconn.ExecuteSql(sql) > 0 ? true : false;
         }
 
         /// <summary>
@@ -202,5 +193,19 @@ namespace Common.DAL
         //                group by days) as A on A.days = B.days";
         //return sqlconn.Query(sql).Tables[0];
         //}
+
+        /// <summary>
+        /// 确认当前站点该产品是否已进站
+        /// </summary>
+        /// <param name="equipment"></param>
+        /// <param name="productno"></param>visteon0000Process_OUT
+        /// <returns></returns>
+        public Boolean CheckProcess(string equipment,string productno)
+        {
+            string sql = @"select count(id) 
+                        from productlog
+                        where key_process='Process_IN' and equipment='" + equipment + "' and productno='"+ productno + "'";
+            return sqlconn.Exists(sql);
+        }
     }
 }

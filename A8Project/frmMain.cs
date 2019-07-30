@@ -54,6 +54,8 @@ namespace A8Project
             { "A8010","CC"}
         };
 
+        public Dictionary<IntPtr, bool> checkInfo = new Dictionary<IntPtr, bool>();//检验当前客户端是否已进行握手校验
+
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -140,39 +142,137 @@ namespace A8Project
         private HandleResult server_OnReceive(IntPtr connId, byte[] bytes)
         {
             string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string msg = Encoding.GetEncoding("UTF-8").GetString(bytes).Replace("<STX>", "");
-            msg = msg.Replace("<ETX>", "");
-            string sendContent = string.Empty;
+            string msg = Encoding.GetEncoding("UTF-8").GetString(bytes);
+            List<string> list = new List<string>();
+            byte[] sendBytes = new byte[] { };
             try
             {
-                //当前为处理工控机段socket通讯方法，后期根据具体的PLC通讯协议来变更               
-                if (msg.Length > 0)
+                string sendContent = string.Empty;
+                string doneMsg = msg.Replace("<STX>", "").Replace("<ETX>", "");
+                list = doneMsg.Split(',').ToList();
+                int listCount = list.Count();
+                if (listCount > 0)
                 {
-                    string[] temp = msg.Split(',');
-                    //区分出当前接收到的信息到底是哪个阶段：Process_ID、Process_IN、Process_OUT
-                    switch (temp[0])
+                    //区分出当前接收到的信息到底是哪个阶段：Process_ID、Process_IN、Process_OUT、START_OUT
+                    switch (list[0])
                     {
                         case "Process_ID":
-                            sendContent = "<STX>" + msg + ",pass<ETX>";
+                            //握手
+                            //接收信息:msg
+                            //返回信息:sendContent
+                            //接收时间:now                                                   
+                            if (!checkInfo.ContainsKey(connId))
+                                checkInfo.Add(connId, true);
+                            else
+                                checkInfo[connId] = true;
+
+                            list.Add("pass");
+                            sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            server.Send(connId, sendBytes, sendBytes.Length);
+                            GetCommunicationLogs(msg, now, sendContent);
+                            sendContent = string.Empty;
                             break;
                         case "Process_IN":
-                            sendContent = "<STX>" + msg + ",pass<ETX>";
-                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], "", "", now);
+                            if (checkInfo[connId])
+                            {
+                                list.Add("pass");
+                                sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                GetProductLog(list[0], EquipmentInfo[list[1]], list[3], "", "", now);
+                            }
+                            else
+                            {
+                                list.Add("error");
+                                sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            }
+                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            server.Send(connId, sendBytes, sendBytes.Length);
+                            GetCommunicationLogs(msg, now, sendContent);
+                            sendContent = string.Empty;
                             break;
                         case "Process_OUT":
-                            sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
-                            List<string> list = temp.ToList();
-                            list.RemoveRange(0, 5);
-                            string contents = String.Join(",", list.ToArray());
-                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], temp[4], contents, now);
+                            if (checkInfo[connId])
+                            {
+                                if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))//校验当前产品是否已进站
+                                {
+                                    List<string> tempList = new List<string>();
+                                    foreach(string str in list)
+                                    {
+                                        tempList.Add(str);
+                                    }                                  
+                                    tempList.RemoveRange(0, 5);//取得Item项目和校验位
+                                    //判断Item项目与数量是否一致，一致则返回pass,否则为error
+                                    int count = tempList.Count;
+                                    if (count - 1 == Convert.ToInt32(tempList[count - 1]))
+                                    {
+                                        string contents = String.Join(",", tempList.ToArray());
+                                        GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
+                                        list.RemoveRange(4, listCount -4);
+                                        list.Add("pass");
+                                        sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                    }
+                                    else
+                                    {
+                                        list.RemoveRange(4, listCount - 4);
+                                        list.Add("error");
+                                        sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                    }
+                                }
+                                else
+                                {
+                                    list.RemoveRange(4, listCount - 4);
+                                    list.Add("error");
+                                    sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                }
+                            }
+                            else
+                            {
+                                list.RemoveRange(4, listCount - 4);
+                                list.Add("error");
+                                sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            }
+                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            server.Send(connId, sendBytes, sendBytes.Length);
+                            GetCommunicationLogs(msg, now, sendContent);
+                            sendContent = string.Empty;
                             break;
                         case "START_OUT":
-                            sendContent = "<STX>" + temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ",pass<ETX>";
-                            GetProductLog(temp[0], EquipmentInfo[temp[1]], temp[3], temp[4], temp[5], now);
+                            if (checkInfo[connId])
+                            {
+                                //校验当前产品是否已进站
+                                if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))
+                                {
+                                    GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], list[5], now);
+
+                                    list.RemoveRange(4, listCount - 4);
+                                    list.Add("pass");
+                                    sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                }
+                                else
+                                {
+                                    list.RemoveRange(4, listCount - 4);
+                                    list.Add("error");
+                                    sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                }
+
+                            }
+                            else
+                            {
+                                list.RemoveRange(4, listCount - 4);
+                                list.Add("error");
+                                sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            }
+                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            server.Send(connId, sendBytes, sendBytes.Length);
+                            GetCommunicationLogs(msg, now, sendContent);
+                            sendContent = string.Empty;
                             break;
                         case "Call_OUT":
-                            string title = temp[1];
-                            GetCommunicationLogs("<STX>" + temp[0] + "," + temp[1] + ",pass<ETX>", now);
+                            string title = list[1];
+                            list.Add("pass");
+                            sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            GetCommunicationLogs(msg, now, sendContent);
+
                             Thread th;//添加线程 
                             #region 呼叫系统
                             if (title.Contains("WS1"))
@@ -186,7 +286,7 @@ namespace A8Project
                                 th.IsBackground = true;
                                 th.Start(41);
                             }
-                            else if(title.Contains("WS2"))
+                            else if (title.Contains("WS2"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
@@ -266,22 +366,21 @@ namespace A8Project
                             break;
                         #endregion
                         default:
-                            sendContent = "<STX>" + msg + ",error<ETX>";
+                            list.Add("error");
+                            sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            server.Send(connId, sendBytes, sendBytes.Length);
+                            GetCommunicationLogs(msg, now, sendContent);
+                            sendContent = string.Empty;
                             break;
-                    }
-                    if (sendContent.Length > 0)
-                    { 
-                        byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
-                        server.Send(connId, sendBytes, sendBytes.Length);
-                        GetCommunicationLogs(sendContent, now);
                     }
                 }
             }
             catch
             {
-                byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes("<STX>" + msg + ",error<ETX>");
+                sendBytes = Encoding.GetEncoding("UTF-8").GetBytes("<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
                 server.Send(connId, sendBytes, sendBytes.Length);
-                GetCommunicationLogs("<STX>" + msg + ",error<ETX>", now);
+                GetCommunicationLogs(msg, now, "<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
             }
             return HandleResult.Ok;
         }
@@ -295,22 +394,22 @@ namespace A8Project
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        ((Label)this.Controls.Find("label"+num.ToString(), true)[0]).ForeColor = Color.Red;                        
-                    });                    
+                        ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = Color.Red;
+                    });
                 }
                 else
                 {
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = this.BackColor;
-                    });                    
+                    });
                     if (n == 1)
                     {
                         this.BeginInvoke((MethodInvoker)delegate
                         {
                             ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = Color.Green;
                             ((Label)this.Controls.Find("label" + (Convert.ToInt32(num) - 10).ToString(), true)[0]).Visible = false;
-                        });                        
+                        });
                     }
                 }
                 n--;
@@ -335,13 +434,13 @@ namespace A8Project
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         label32.ForeColor = this.BackColor;
-                    });                    
+                    });
                     if (n == 1)
                     {
                         this.BeginInvoke((MethodInvoker)delegate
                         {
                             label32.ForeColor = Color.Green;
-                        });                        
+                        });
                     }
                 }
                 n--;
@@ -402,15 +501,12 @@ namespace A8Project
         #endregion 事件处理方法
         #endregion
 
-        private void GetCommunicationLogs(string msg, string rec_time)
+        private void GetCommunicationLogs(string msg, string rec_time, string rebackMsg)
         {
             CommunicationLogs communicationLogs = new CommunicationLogs();
-            if (msg.Contains(",error"))
-                communicationLogs.rec_message = msg.Replace(",error", "");
-            else
-                communicationLogs.rec_message = msg.Replace(",pass", "");
+            communicationLogs.rec_message = msg;
             communicationLogs.rec_time = rec_time;
-            communicationLogs.res_message = msg;
+            communicationLogs.res_message = rebackMsg;
             communicationLogs.InsertCommunicationLog(communicationLogs);
         }
 
@@ -466,7 +562,7 @@ namespace A8Project
         private void LoadConsumables()
         {
             //查询获得AC、CC、FC等站点Process_IN实际过站次数
-            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) ;
+            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0);
             float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0);
             float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0);
             float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0);
