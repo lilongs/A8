@@ -53,30 +53,101 @@ namespace Common.DAL
         {
             StringBuilder sql = new StringBuilder();
             //一小时
-            sql.Append(@" select productno,DATEDIFF(SECOND,min(createtime),max(createtime)) as cycletime 
-                        from productlog 
-                        where DATEDIFF(HOUR, createtime, GETDATE()) <= 1 
-                        group by productno");
+            sql.Append(@" select a.productno,DATEDIFF(SECOND,starttime,endtime)as cycletime 
+                        from (
+	                        select productno,min(createtime)as starttime
+	                        from  (select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(HOUR, createtime, GETDATE()) <= 1 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                        where equipment='WS1' and  key_process='Process_IN'
+	                        group by productno)as a
+                        left join (
+	                        select productno,min(createtime)as endtime 
+	                        from (select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(HOUR, createtime, GETDATE()) <= 1 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
+	                        where equipment='CC' and  key_process='START_OUT'
+	                        group by productno
+	                        ) as b on a.productno=b.productno");
             //一天
-            sql.Append(@" select productno,DATEDIFF(SECOND,min(createtime),max(createtime)) as cycletime 
-                        from productlog
-                        where DATEDIFF(DAY,createtime,GETDATE())<=1 
-                        group by productno");
+            sql.Append(@" select a.productno,DATEDIFF(SECOND,starttime,endtime)as cycletime 
+                        from (
+	                        select productno,min(createtime)as starttime
+	                        from  (select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(DAY,createtime,GETDATE())<=1 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                        where equipment='WS1' and  key_process='Process_IN'
+	                        group by productno)as a
+                        left join (
+	                        select productno,min(createtime)as endtime 
+	                        from (select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(DAY,createtime,GETDATE())<=1 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
+	                        where equipment='CC' and  key_process='START_OUT'
+	                        group by productno
+	                        ) as b on a.productno=b.productno");
             //一周
-            sql.Append(@" select productno, DATEDIFF(SECOND, min(createtime), max(createtime)) as cycletime
-                        from productlog 
-                        where DATEDIFF(DAY, createtime, GETDATE()) <= 7 
-                        group by productno");
+            sql.Append(@" select a.productno,DATEDIFF(SECOND,starttime,endtime)as cycletime 
+                        from (
+	                        select productno,min(createtime)as starttime
+	                        from (select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(DAY, createtime, GETDATE()) <= 7 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                        where equipment='WS1' and  key_process='Process_IN'
+	                        group by productno)as a
+                        left join (
+	                        select productno,min(createtime)as endtime 
+	                        from (
+		                        select equipment,productno,key_process,createtime  
+			                        from productlog
+			                        where DATEDIFF(DAY, createtime, GETDATE()) <= 7 
+			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                        where equipment='CC' and  key_process='START_OUT'
+	                        group by productno
+	                        ) as b on a.productno=b.productno");
             //一个月
-            sql.Append(@" select productno,DATEDIFF(SECOND,min(createtime),max(createtime)) as cycletime   
-                        from productlog 
-                        where DATEDIFF(DAY,createtime,GETDATE())<=30
-                        group by productno");
+            sql.Append(@"  select a.productno,DATEDIFF(SECOND,starttime,endtime)as cycletime 
+                            from (
+	                            select productno,min(createtime)as starttime
+	                            from  (select equipment,productno,key_process,createtime  
+			                            from productlog
+			                            where DATEDIFF(DAY,createtime,GETDATE())<=30
+			                            and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                            where equipment='WS1' and  key_process='Process_IN'
+	                            group by productno)as a
+                            left join (
+	                            select productno,min(createtime)as endtime 
+	                            from (select equipment,productno,key_process,createtime  
+			                            from productlog
+			                            where DATEDIFF(DAY,createtime,GETDATE())<=30
+			                            and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
+	                            where equipment='CC' and  key_process='START_OUT'
+	                            group by productno
+	                            ) as b on a.productno=b.productno");
             //一年
-            sql.Append(@" select productno,DATEDIFF(SECOND,min(createtime),max(createtime)) as cycletime   
-                        from productlog 
-                        where DATEDIFF(YEAR,createtime,GETDATE())<=1 
-                        group by productno");
+            sql.Append(@" select a.productno,DATEDIFF(SECOND,starttime,endtime)as cycletime 
+                            from (
+	                            select productno,min(createtime)as starttime
+	                            from  (select equipment,productno,key_process,createtime  
+			                            from productlog
+			                            where DATEDIFF(YEAR,createtime,GETDATE())<=1 
+			                            and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp
+	                            where equipment='WS1' and  key_process='Process_IN'
+	                            group by productno)as a
+                            left join (
+	                            select productno,min(createtime)as endtime 
+	                            from (select equipment,productno,key_process,createtime  
+			                            from productlog
+			                            where DATEDIFF(YEAR,createtime,GETDATE())<=1 
+			                            and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
+	                            where equipment='CC' and  key_process='START_OUT'
+	                            group by productno
+	                            ) as b on a.productno=b.productno");
 
             return sqlconn.Query(sql.ToString());
         }
@@ -132,14 +203,14 @@ namespace Common.DAL
             sql.Append(@"select A.*,B.pass_counts from (
 	                    select DATEPART(MM,createtime)as months,count(productno) as counts 
 	                    from productlog
-	                    where (equipment='AC01' or equipment='AC02')
+	                    where equipment='AC' 
 	                    and key_process='START_OUT'
 	                    group by DATEPART(MM,createtime)
                     )as a
                     left join (
 	                    select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
 	                    from productlog
-	                    where (equipment='AC01' or equipment='AC02')
+	                    where equipment='AC' 
 	                    and key_process='START_OUT' and result='PASS'
 	                    group by DATEPART(MM,createtime)
                     )as b on a.months=b.months");

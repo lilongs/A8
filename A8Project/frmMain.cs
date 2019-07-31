@@ -47,11 +47,11 @@ namespace A8Project
             { "A8003","WS3"},
             { "A8004","WS4"},
             { "A8005","Run-In"},
-            { "A8006","AC01"},
-            { "A8007","AC02"},
-            { "A8008","FC01"},
-            { "A8009","FC02"},
-            { "A8010","CC"}
+            { "A8006","AC"},
+            //{ "A8007","AC02"},
+            { "A8007","FC01"},
+            { "A8008","FC02"},
+            { "A8009","CC"}
         };
 
         public Dictionary<IntPtr, bool> checkInfo = new Dictionary<IntPtr, bool>();//检验当前客户端是否已进行握手校验
@@ -196,10 +196,10 @@ namespace A8Project
                                 if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))//校验当前产品是否已进站
                                 {
                                     List<string> tempList = new List<string>();
-                                    foreach(string str in list)
+                                    foreach (string str in list)
                                     {
                                         tempList.Add(str);
-                                    }                                  
+                                    }
                                     tempList.RemoveRange(0, 5);//取得Item项目和校验位
                                     //判断Item项目与数量是否一致，一致则返回pass,否则为error
                                     int count = tempList.Count;
@@ -207,7 +207,7 @@ namespace A8Project
                                     {
                                         string contents = String.Join(",", tempList.ToArray());
                                         GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
-                                        list.RemoveRange(4, listCount -4);
+                                        list.RemoveRange(4, listCount - 4);
                                         list.Add("pass");
                                         sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                                     }
@@ -532,7 +532,7 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OneMin_timer_Tick(object sender, EventArgs e)
+        private void Six_timer_Tick(object sender, EventArgs e)
         {
             LoadCycleTime();
             LoadTodayData();
@@ -544,7 +544,7 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Six_timer1_Tick(object sender, EventArgs e)
+        private void Three_timer1_Tick(object sender, EventArgs e)
         {
             LoadErrorInfo();
             LoadConsumables();
@@ -627,10 +627,15 @@ namespace A8Project
                     point = new SeriesPoint(row["hours"].ToString());
                     double[] vals = { Convert.ToDouble(row["counts"]) };
                     point.Values = vals;
-                    if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]))
-                        point.Color = Color.Red;
-                    else
+                    double counts = Convert.ToDouble(row["counts"]);
+                    double target = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]);
+
+                    if (counts >= target)
                         point.Color = Color.Green;
+                    else if ((target - 0.1 * target) <= counts && counts < target)
+                        point.Color = Color.Yellow;
+                    else
+                        point.Color = Color.Red;
                     series1.Points.Add(point);
                 }
             }
@@ -703,10 +708,16 @@ namespace A8Project
                     point = new SeriesPoint(row["months"].ToString());
                     double[] vals = { Convert.ToDouble(row["counts"]) };
                     point.Values = vals;
-                    if (Convert.ToDouble(row["counts"]) < Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]))
-                        point.Color = Color.Red;
-                    else
+
+                    double counts = Convert.ToDouble(row["counts"]);
+                    double target = Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]);
+
+                    if (counts >= target)
                         point.Color = Color.Green;
+                    else if ((target - 0.1 * target) <= counts && counts < target)
+                        point.Color = Color.Yellow;
+                    else
+                        point.Color = Color.Red;                    
                     series1.Points.Add(point);
                 }
             }
@@ -792,5 +803,27 @@ namespace A8Project
             Application.Exit();
         }
 
+        private void gdvHistory_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            if (e.Column.FieldName == "second")
+            {
+                int Value = e.CellValue.ToString() == "null" ? 0 : Convert.ToInt32(e.CellValue);
+                double target = double.Parse(ConfigurationManager.AppSettings["CycleTimeTarget"]);
+                double ratio = (Value / target) - 1;
+
+                if (Value <= target)
+                {
+                    e.Appearance.BackColor = Color.Green;
+                }
+                else if (Value > target && Value <= target + target * 0.1)
+                {
+                    e.Appearance.BackColor = Color.Yellow;
+                }
+                else
+                {
+                    e.Appearance.BackColor = Color.Red;
+                }
+            }
+        }
     }
 }

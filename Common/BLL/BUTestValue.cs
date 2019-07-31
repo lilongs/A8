@@ -78,7 +78,7 @@ namespace Common.BLL
                         if (ds.Tables[i].Rows.Count > 0)
                         {
                             dr["cycletime"] = "One Hour";
-                            dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
+                            dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
                             dtHis.Rows.Add(dr);
                         }
                         else
@@ -92,7 +92,7 @@ namespace Common.BLL
                         if (ds.Tables[i].Rows.Count > 0)
                         {
                             dr["cycletime"] = "One Day";
-                            dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
+                            dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
                             dtHis.Rows.Add(dr);
                         }
                         else
@@ -106,7 +106,7 @@ namespace Common.BLL
                         if (ds.Tables[i].Rows.Count > 0)
                         {
                             dr["cycletime"] = "One Week";
-                            dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
+                            dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
                             dtHis.Rows.Add(dr);
                         }
                         else
@@ -120,7 +120,7 @@ namespace Common.BLL
                         if (ds.Tables[i].Rows.Count > 0)
                         {
                             dr["cycletime"] = "One Month";
-                            dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
+                            dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
                             dtHis.Rows.Add(dr);
                         }
                         else
@@ -134,7 +134,7 @@ namespace Common.BLL
                         if (ds.Tables[i].Rows.Count > 0)
                         {
                             dr["cycletime"] = "One Year";
-                            dr["second"] = Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count;
+                            dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
                             dtHis.Rows.Add(dr);
                         }
                         else
