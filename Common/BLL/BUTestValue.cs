@@ -67,6 +67,12 @@ namespace Common.BLL
             DataTable dtHis = new DataTable();
             dtHis.Columns.Add("cycletime");
             dtHis.Columns.Add("second");
+
+            DataRow dataRow = dtHis.NewRow();
+            dataRow["cycletime"] = "TargetCT";
+            dataRow["second"] = ConfigurationManager.AppSettings["CycleTimeTarget"].ToString();
+            dtHis.Rows.Add(dataRow);
+
             DataSet ds = productlog.GetCycleTime();
 
             for (int i = 0; i < ds.Tables.Count; i++)
