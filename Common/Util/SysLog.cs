@@ -25,7 +25,7 @@ namespace Common.Util
             {
                 FileStream fs = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 StreamWriter sr = new StreamWriter(fs);
-                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + errInfo);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "," + errInfo);
                 sr.Close();
                 fs.Close();
             }
@@ -33,7 +33,7 @@ namespace Common.Util
             {
                 FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 StreamWriter sr = new StreamWriter(fs);
-                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + errInfo);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "," + errInfo);
                 sr.Close();
                 fs.Close();
             }
@@ -51,7 +51,7 @@ namespace Common.Util
             {
                 FileStream fs = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 StreamWriter sr = new StreamWriter(fs);
-                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + info);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "," + info);
                 sr.Close();
                 fs.Close();
             }
@@ -59,7 +59,7 @@ namespace Common.Util
             {
                 FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 StreamWriter sr = new StreamWriter(fs);
-                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + info);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "," + info);
                 sr.Close();
                 fs.Close();
             }

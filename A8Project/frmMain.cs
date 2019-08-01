@@ -138,7 +138,7 @@ namespace A8Project
 
         private HandleResult server_OnReceive(IntPtr connId, byte[] bytes)
         {
-            string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             string msg = Encoding.GetEncoding("UTF-8").GetString(bytes);
             List<string> list = new List<string>();
             byte[] sendBytes = new byte[] { };
