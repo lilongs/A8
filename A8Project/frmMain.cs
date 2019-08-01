@@ -48,24 +48,17 @@ namespace A8Project
             { "A8004","WS4"},
             { "A8005","Run-In"},
             { "A8006","AC"},
-            //{ "A8007","AC02"},
             { "A8007","FC01"},
             { "A8008","FC02"},
             { "A8009","CC"}
         };
 
         public Dictionary<IntPtr, bool> checkInfo = new Dictionary<IntPtr, bool>();//检验当前客户端是否已进行握手校验
-
+        public Dictionary<Label, int> ControlStatus = new Dictionary<Label, int>();//图标状态
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             #region Socket通讯服务
-            //_sm = new SocketManager(ip, port);
-            //_sm.OnReceiveMsg += OnReceiveMsg;
-            //_sm.OnConnected += OnConnected;
-            //_sm.OnDisConnected += OnDisConnected;
-            //_sm.Start();
-
             //绑定监听地址前触发
             server.OnPrepareListen += new TcpServerEvent.OnPrepareListenEventHandler(server_OnPrepareListen);
             //客户端连接请求被接受后触发
@@ -94,6 +87,10 @@ namespace A8Project
             LoadYearMonth();
             LoadYearMonthFPY();
 
+            for (int i=41;i<49;i++)
+            {
+                ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]),0);
+            }
         }
 
         #region Socket通讯
@@ -269,99 +266,140 @@ namespace A8Project
                             break;
                         case "Call_OUT":
                             string title = list[1];
+                            int flag = Convert.ToInt32(list[2]);
+
                             list.Add("pass");
                             sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                             GetCommunicationLogs(msg, now, sendContent);
 
-                            Thread th;//添加线程 
                             #region 呼叫系统
                             if (title.Contains("WS1"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
+                                    if (flag == 0)
+                                    {
+                                        label31.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label31.Visible = true;
+                                    }
                                     label31.Text = title;
-                                    label31.Visible = true;
+                                    ControlStatus[label41] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(41);
                             }
                             else if (title.Contains("WS2"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label32.Text = title;
-                                    label32.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label32.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label32.Visible = true;
+                                    }
+                                    label32.Text = title;                                    
+                                    ControlStatus[label42] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(42);
                             }
                             else if (title.Contains("WS3"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label33.Text = title;
-                                    label33.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label33.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label33.Visible = true;
+                                    }
+                                    label33.Text = title;                                    
+                                    ControlStatus[label43] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(43);
                             }
                             else if (title.Contains("WS4"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label34.Text = title;
-                                    label34.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label34.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label34.Visible = true;
+                                    }
+                                    label34.Text = title;                                    
+                                    ControlStatus[label44] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(44);
                             }
                             else if (title.Contains("Run-In"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label35.Text = title;
-                                    label35.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label35.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label35.Visible = true;
+                                    }
+                                    label35.Text = title;                                    
+                                    ControlStatus[label45] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(45);
                             }
                             else if (title.Contains("AC"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label36.Text = title;
-                                    label36.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label36.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label36.Visible = true;
+                                    }
+                                    label36.Text = title;                                    
+                                    ControlStatus[label46] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(46);
                             }
                             else if (title.Contains("CC"))
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label37.Text = title;
-                                    label37.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label37.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label37.Visible = true;
+                                    }
+                                    label37.Text = title;                                    
+                                    ControlStatus[label47] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(47);
                             }
                             else
                             {
                                 this.BeginInvoke((MethodInvoker)delegate
                                 {
-                                    label38.Text = title;
-                                    label38.Visible = true;
+                                    if (flag == 0)
+                                    {
+                                        label38.Visible = false;
+                                    }
+                                    else
+                                    {
+                                        label38.Visible = true;
+                                    }
+                                    label38.Text = title;                                    
+                                    ControlStatus[label48] = flag;
                                 });
-                                th = new Thread(run);
-                                th.IsBackground = true;
-                                th.Start(48);
                             }
                             break;
                         #endregion
@@ -417,34 +455,38 @@ namespace A8Project
             }
         }
 
-        private void run2()
+        
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            int n = 10;
-            while (n > 0)
+            foreach (var item in ControlStatus)
             {
-                if (n % 2 == 0)
+                if (item.Value == 0)
                 {
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        label32.ForeColor = Color.Red;
-                    });
+                    //绿
+                    item.Key.ForeColor = Color.Green;
                 }
-                else
+                else if (item.Value == 1)
                 {
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        label32.ForeColor = this.BackColor;
-                    });
-                    if (n == 1)
-                    {
-                        this.BeginInvoke((MethodInvoker)delegate
-                        {
-                            label32.ForeColor = Color.Green;
-                        });
-                    }
+                    //闪红
+                    if (item.Key.ForeColor == Color.Green || item.Key.ForeColor == this.BackColor)
+                        item.Key.ForeColor = Color.Red;
+                    else
+                        item.Key.ForeColor = this.BackColor;
                 }
-                n--;
-                Thread.Sleep(500);
+                else if (item.Value == 2)
+                {
+                    //红
+                    item.Key.ForeColor = Color.Red;
+                }
+                else if (item.Value == 3)
+                {
+                    //闪绿
+                    if (item.Key.ForeColor == Color.Red || item.Key.ForeColor == this.BackColor)
+                        item.Key.ForeColor = Color.Green;
+                    else
+                        item.Key.ForeColor = this.BackColor;
+
+                }
             }
         }
 

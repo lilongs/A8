@@ -38,5 +38,31 @@ namespace Common.Util
                 fs.Close();
             }
         }
+
+        public static void OperateLog(string info)
+        {
+            DateTime now = DateTime.Now;
+
+            string folder = "E:\\operateLog ";
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+            string filename = folder + "/" + now.ToString("yyyyMMdd") + ".log";
+            if (File.Exists(filename))
+            {
+                FileStream fs = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                StreamWriter sr = new StreamWriter(fs);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + info);
+                sr.Close();
+                fs.Close();
+            }
+            else
+            {
+                FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                StreamWriter sr = new StreamWriter(fs);
+                sr.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + info);
+                sr.Close();
+                fs.Close();
+            }
+        }
     }
 }

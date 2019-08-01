@@ -57,9 +57,17 @@ namespace CallSystem
             //设置包体长度
             //client.MaxPackSize = 0x1000;
             ConnectServer();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control.GetType().Name == "Button")
+                {
+                    ControlStatus.Add((Button)control,0);
+                }
+            }
         }
 
-        #region 事件处理方法
+        #region Socket连接处理方法
         private void ConnectServer()
         {
             try
@@ -73,7 +81,7 @@ namespace CallSystem
                 //异步是指组件的连接方法会立即返回，如果返回值为false则表示连接失败，如果连接成功则稍后会触发OnConnect事件
                 if (client.Connect(ip, port, true))
                 {
-                    appState = AppState.Started;                    
+                    appState = AppState.Started;
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         label1.Text = "通讯正常：服务器已连接！";
@@ -82,7 +90,7 @@ namespace CallSystem
                 else
                 {
                     appState = AppState.Stoped;
-                    SysLog.CreateLog(string.Format("无法建立连接：{0}，{1}", client.ErrorMessage, client.ErrorCode));                    
+                    SysLog.CreateLog(string.Format("无法建立连接：{0}，{1}", client.ErrorMessage, client.ErrorCode));
                     this.BeginInvoke((MethodInvoker)delegate
                     {
                         label1.Text = "通讯异常：服务器连接已关闭！";
@@ -140,7 +148,7 @@ namespace CallSystem
                 this.BeginInvoke((MethodInvoker)delegate
                 {
                     label1.Text = "通讯异常：服务器连接已关闭！";
-                });                
+                });
             }
             else
             {
@@ -148,7 +156,7 @@ namespace CallSystem
                 this.BeginInvoke((MethodInvoker)delegate
                 {
                     label1.Text = "通讯异常：服务器连接已关闭！";
-                });                
+                });
             }
 
             return HandleResult.Ok;
@@ -156,37 +164,113 @@ namespace CallSystem
 
         #endregion 事件处理方法
 
+        //控件，状态标识
+        public Dictionary<Button, int> ControlStatus = new Dictionary<Button, int>();
+
         private void button_Click(object sender, EventArgs e)
         {
             try
             {
-                string msg = "<STX>Call_OUT," + ((Button)sender).Text+"<ETX>";
-                ((Button)sender).BackColor = Color.Red;
+                if (ControlStatus[((Button)sender)] == 0)
+                {
+                    //闪红
+                    ControlStatus[((Button)sender)] = 1;
+                    if (((Button)sender).Text.Contains("物料呼叫"))
+                    {                        
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("物料呼叫", "物料待补充");
+                    }
+                    else
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("维修呼叫", "待维修");
+                    }
+                }
+                else if (ControlStatus[((Button)sender)] == 1)
+                {
+                    //红
+                    ControlStatus[((Button)sender)] = 2;
+                    if (((Button)sender).Text.Contains("物料待补充"))
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("物料待补充", "物料补充中");
+                    }
+                    else
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("待维修", "维修中");
+                    }
+                }
+                else if (ControlStatus[((Button)sender)] == 2)
+                {
+                    //闪绿
+                    ControlStatus[((Button)sender)] = 3;
+                    if (((Button)sender).Text.Contains("物料补充中"))
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("物料补充中", "物料待确认");
+                    }
+                    else
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("维修中", "维修待确认");
+                    }
+                }
+                else
+                {
+                    //绿色
+                    ControlStatus[((Button)sender)] = 0;
+                    if (((Button)sender).Text.Contains("物料待确认"))
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("物料待确认", "物料呼叫");
+                    }
+                    else
+                    {
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("维修中", "维修呼叫");
+                    }
+                }
+                //操作记录
+                SysLog.OperateLog(((Button)sender).Text);
+                //与服务器通讯并发送信息到移动手表
+                string msg = "<STX>Call_OUT," + ((Button)sender).Text + ","+ ControlStatus[((Button)sender)] + "<ETX>";
                 byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(msg);
                 client.Send(sendBytes, sendBytes.Length);
                 Com_Msg.SendData(((Button)sender).Text);
+                
             }
             catch (Exception exc)
             {
-                MessageBox.Show("发送失败：{0}", exc.Message);
                 SysLog.CreateLog(string.Format("发送失败：{0}", exc.Message));
             }
         }
 
-        private void TenSec_timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            foreach (Control control in this.Controls)
+            foreach (var item in ControlStatus)
             {
-                if (control.GetType().Name == "Button")
-                { 
-                    if (control.BackColor == Color.Red)
-                    {
-                        control.BackColor = Color.LimeGreen;
-                    }
+                if (item.Value == 0)
+                {
+                    //绿
+                    item.Key.BackColor = Color.Green;
+                }
+                else if (item.Value == 1)
+                {
+                    //闪红
+                    if (item.Key.BackColor == Color.Green || item.Key.BackColor == this.BackColor)
+                        item.Key.BackColor = Color.Red;
+                    else
+                        item.Key.BackColor = this.BackColor;
+                }
+                else if (item.Value == 2)
+                {
+                    //红
+                    item.Key.BackColor = Color.Red;
+                }
+                else if (item.Value == 3)
+                {
+                    //闪绿
+                    if (item.Key.BackColor == Color.Red || item.Key.BackColor == this.BackColor)
+                        item.Key.BackColor = Color.Green;
+                    else
+                        item.Key.BackColor = this.BackColor;
+
                 }
             }
         }
-
 
         private void frmCallOut_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -207,5 +291,7 @@ namespace CallSystem
             client.Stop();
             Application.Exit();
         }
+
+        
     }
 }

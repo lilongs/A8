@@ -38,6 +38,10 @@ namespace CallSystem
                 frm.Show();
                 this.Hide();
             }
+            else
+            {
+                MessageBox.Show("登录失败，用户信息错误");
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
