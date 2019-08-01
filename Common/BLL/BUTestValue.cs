@@ -238,22 +238,27 @@ namespace Common.BLL
                 dr["months"] = mon[i - 1];
                 DataRow[] dataRows = ds.Tables[0].Select("months=" + i + "");//AC_FPY
                 DataRow[] dataRows2 = ds.Tables[1].Select("months=" + i + "");//CC_FPY
-                DataRow[] dataRows3 = ds.Tables[2].Select("months=" + i + "");//FC_FPY
-                if (dataRows.Length > 0 && dataRows2.Length > 0 && dataRows3.Length > 0)
+                DataRow[] dataRows3 = ds.Tables[2].Select("months=" + i + "");//FC01_FPY
+                DataRow[] dataRows4 = ds.Tables[2].Select("months=" + i + "");//FC02_FPY
+                if (dataRows.Length > 0 && dataRows2.Length > 0 && dataRows3.Length > 0 && dataRows4.Length > 0)
                 {
-                    int pass_counts1 = Convert.ToInt32(dataRows[0]["pass_counts"]);
+                    int pass_counts1 = Convert.ToInt32(dataRows[0]["fail_counts"]);
                     int counts1 = Convert.ToInt32(dataRows[0]["counts"]);
-                    double resutl = (Double)pass_counts1 / counts1;
+                    double resutl =1- (Double)pass_counts1 / counts1;
 
-                    int pass_counts2 = Convert.ToInt32(dataRows2[0]["pass_counts"]);
+                    int pass_counts2 = Convert.ToInt32(dataRows2[0]["fail_counts"]);
                     int counts2 = Convert.ToInt32(dataRows2[0]["counts"]);
-                    double resut2 = (Double)pass_counts2 / counts2;
+                    double resut2 = 1-(Double)pass_counts2 / counts2;
 
-                    int pass_counts3 = Convert.ToInt32(dataRows3[0]["pass_counts"]);
+                    int pass_counts3 = Convert.ToInt32(dataRows3[0]["fail_counts"]);
                     int counts3 = Convert.ToInt32(dataRows3[0]["counts"]);
-                    double resut3 = (Double)pass_counts3 / counts3;
+                    double resut3 =1- (Double)pass_counts3 / counts3;
 
-                    dr["ratio"] = (resutl * resut2 * resut3).ToString("0.00");
+                    int pass_counts4 = Convert.ToInt32(dataRows4[0]["fail_counts"]);
+                    int counts4 = Convert.ToInt32(dataRows4[0]["counts"]);
+                    double resut4 = 1-(Double)pass_counts4 / counts4;
+
+                    dr["ratio"] = (resutl * resut2 * resut3).ToString("0.000");
                 }
                 else
                 {

@@ -200,7 +200,7 @@ namespace Common.DAL
         {
             StringBuilder sql = new StringBuilder();
             //AC_FPY
-            sql.Append(@"select A.*,B.pass_counts from (
+            sql.Append(@"select A.*,isnull(B.fail_counts,0) as fail_counts from (
 	                    select DATEPART(MM,createtime)as months,count(productno) as counts 
 	                    from productlog
 	                    where equipment='AC' 
@@ -208,41 +208,58 @@ namespace Common.DAL
 	                    group by DATEPART(MM,createtime)
                     )as a
                     left join (
-	                    select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                    select DATEPART(MM,createtime)as months,count(productno) as fail_counts 
 	                    from productlog
 	                    where equipment='AC' 
-	                    and key_process='START_OUT' and result='PASS'
+	                    and (key_process='START_OUT' or key_process='Process_OUT') and result='FAIL'
 	                    group by DATEPART(MM,createtime)
                     )as b on a.months=b.months");
 
 
                 //CC_FPY
-                sql.Append(@" select A.*,B.pass_counts from (
+                sql.Append(@" select A.*,isnull(B.fail_counts,0) as fail_counts from (
 	                        select DATEPART(MM,createtime)as months,count(productno) as counts 
 	                        from productlog
 	                        where equipment='CC'and key_process='START_OUT'
 	                        group by DATEPART(MM,createtime)
                         )as a
                         left join (
-	                        select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                        select DATEPART(MM,createtime)as months,count(productno) as fail_counts 
 	                        from productlog
-	                        where equipment='CC'and key_process='START_OUT' and result='PASS'
+	                        where equipment='CC'
+							and (key_process='START_OUT' or key_process='Process_OUT') and result='FAIL'
 	                        group by DATEPART(MM,createtime)
                         )as b on a.months=b.months");
 
-                //FC_FPY
-                 sql.Append(@" select A.*,B.pass_counts from (
+                //FC01_FPY
+                 sql.Append(@" select A.*,isnull(B.fail_counts,0) as fail_counts from (
 	                select DATEPART(MM,createtime)as months,count(productno) as counts 
 	                from productlog
-	                where (equipment='FC01' or equipment='FC02')
+	                where equipment='FC01' 
 	                and key_process='START_OUT'
 	                group by DATEPART(MM,createtime)
                 )as a
                 left join (
-	                select DATEPART(MM,createtime)as months,count(productno) as pass_counts 
+	                select DATEPART(MM,createtime)as months,count(productno) as fail_counts 
 	                from productlog
-	                where (equipment='FC01' or equipment='FC02')
-	                and key_process='START_OUT' and result='PASS'
+	                where equipment='FC01'
+	                and (key_process='START_OUT' or key_process='Process_OUT') and result='FAIL'
+	                group by DATEPART(MM,createtime)
+                )as b on a.months=b.months ");
+
+            //FC02_FPY
+            sql.Append(@" select A.*,isnull(B.fail_counts,0) as fail_counts from (
+	                select DATEPART(MM,createtime)as months,count(productno) as counts 
+	                from productlog
+	                where equipment='FC02' 
+	                and key_process='START_OUT'
+	                group by DATEPART(MM,createtime)
+                )as a
+                left join (
+	                select DATEPART(MM,createtime)as months,count(productno) as fail_counts 
+	                from productlog
+	                where equipment='FC02'
+	                and (key_process='START_OUT' or key_process='Process_OUT') and result='FAIL'
 	                group by DATEPART(MM,createtime)
                 )as b on a.months=b.months ");
             return sqlconn.Query(sql.ToString());
