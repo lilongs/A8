@@ -220,7 +220,7 @@ namespace CallSystem
                     }
                     else
                     {
-                        ((Button)sender).Text = ((Button)sender).Text.Replace("维修中", "维修呼叫");
+                        ((Button)sender).Text = ((Button)sender).Text.Replace("维修待确认", "维修呼叫");
                     }
                 }
                 //操作记录
