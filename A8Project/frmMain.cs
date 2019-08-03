@@ -77,6 +77,11 @@ namespace A8Project
             //启动server
             SocketStart();
             #endregion
+            //为label41-label53赋值，默认状态0：常绿
+            for (int i = 41; i < 53; i++)
+            {
+                ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]), 0);
+            }
 
             LoadErrorInfo();
             LoadConsumables();
@@ -87,10 +92,7 @@ namespace A8Project
             LoadYearMonth();
             LoadYearMonthFPY();
 
-            for (int i=41;i<49;i++)
-            {
-                ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]),0);
-            }
+            
         }
 
         #region Socket通讯
@@ -301,7 +303,7 @@ namespace A8Project
                                     {
                                         label32.Visible = true;
                                     }
-                                    label32.Text = title;                                    
+                                    label32.Text = title;
                                     ControlStatus[label42] = flag;
                                 });
                             }
@@ -317,7 +319,7 @@ namespace A8Project
                                     {
                                         label33.Visible = true;
                                     }
-                                    label33.Text = title;                                    
+                                    label33.Text = title;
                                     ControlStatus[label43] = flag;
                                 });
                             }
@@ -333,7 +335,7 @@ namespace A8Project
                                     {
                                         label34.Visible = true;
                                     }
-                                    label34.Text = title;                                    
+                                    label34.Text = title;
                                     ControlStatus[label44] = flag;
                                 });
                             }
@@ -349,7 +351,7 @@ namespace A8Project
                                     {
                                         label35.Visible = true;
                                     }
-                                    label35.Text = title;                                    
+                                    label35.Text = title;
                                     ControlStatus[label45] = flag;
                                 });
                             }
@@ -365,7 +367,7 @@ namespace A8Project
                                     {
                                         label36.Visible = true;
                                     }
-                                    label36.Text = title;                                    
+                                    label36.Text = title;
                                     ControlStatus[label46] = flag;
                                 });
                             }
@@ -381,7 +383,7 @@ namespace A8Project
                                     {
                                         label37.Visible = true;
                                     }
-                                    label37.Text = title;                                    
+                                    label37.Text = title;
                                     ControlStatus[label47] = flag;
                                 });
                             }
@@ -397,7 +399,7 @@ namespace A8Project
                                     {
                                         label38.Visible = true;
                                     }
-                                    label38.Text = title;                                    
+                                    label38.Text = title;
                                     ControlStatus[label48] = flag;
                                 });
                             }
@@ -455,7 +457,11 @@ namespace A8Project
             }
         }
 
-        
+        /// <summary>
+        /// 用于控制灯具显示状态，0：常绿、1：闪红、2：红、3：闪绿
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
             foreach (var item in ControlStatus)
@@ -570,7 +576,7 @@ namespace A8Project
         }
 
         /// <summary>
-        /// 定时刷新，时间间隔1小时=3600000ms
+        /// 定时刷新，时间间隔6s
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -582,7 +588,7 @@ namespace A8Project
             LoadYearMonthFPY();
         }
         /// <summary>   
-        /// 加载错误信息，每隔6秒定时刷新
+        /// 加载错误信息，每隔3秒定时刷新
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -604,10 +610,68 @@ namespace A8Project
         private void LoadConsumables()
         {
             //查询获得AC、CC、FC等站点Process_IN实际过站次数
-            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0);
-            float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0);
-            float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0);
-            float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0);
+            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0)%50;
+            float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
+            float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
+            float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
+            float consumable5 = (float)(buTestValue.GetSiteCount("WS3") / 1000.0) % 50;
+
+            Sys_reset_flag flag = new Sys_reset_flag();
+            if (consumable1 == 47.5)
+            {
+                flag.updateResetFlag("AC", 1);
+            }
+            if (consumable2 == 47.5)
+            {
+                flag.updateResetFlag("CC", 1);
+            }
+            if (consumable3 == 47.5)
+            {
+                flag.updateResetFlag("FC01", 1);
+            }
+            if (consumable4 == 47.5)
+            {
+                flag.updateResetFlag("FC02", 1);
+            }
+            if (consumable5 == 47.5)
+            {
+                flag.updateResetFlag("WS3", 1);
+            }
+
+            DataTable dtFlag = flag.getResetFlag();
+            bool AC_flag = Convert.ToBoolean(dtFlag.Select("keyname='AC'")[0]["flag"]);
+            bool CC_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC'")[0]["flag"]);
+            bool FC01_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC01'")[0]["flag"]);
+            bool FC02_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC02'")[0]["flag"]);
+            bool WS3_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3'")[0]["flag"]);            
+
+            //bool开关量用来作重置标识
+            if (consumable1 > 47.5 && AC_flag)
+            {
+                ControlStatus[label49] = 1;
+                label19.Visible = true;
+            }
+            if (consumable2 > 47.5 && CC_flag)
+            {
+                ControlStatus[label50] = 1;
+                ControlStatus[label53] = 1;
+                label19.Visible = true;
+            }
+            if (consumable3 > 47.5 && FC01_flag)
+            {
+                ControlStatus[label51] = 1;
+                label19.Visible = true;
+            }
+            if (consumable4 > 47.5 && FC02_flag)
+            {
+                ControlStatus[label52] = 1;
+                label19.Visible = true;
+            }
+            if (consumable5 > 47.5 && WS3_flag)
+            {
+                ControlStatus[label54] = 1;
+                label19.Visible = true;
+            }
 
             this.arcScaleComponent1.Value = consumable1;
             this.label5.Text = consumable1.ToString() + " K";
@@ -620,6 +684,12 @@ namespace A8Project
 
             this.arcScaleComponent4.Value = consumable4;
             this.label8.Text = consumable3.ToString() + " K";
+
+            this.arcScaleComponent5.Value = consumable2;
+            this.label10.Text = consumable2.ToString() + " K";
+
+            this.arcScaleComponent6.Value = consumable5;
+            this.label12.Text = consumable5.ToString() + " K";
         }
 
         /// <summary>
@@ -761,7 +831,7 @@ namespace A8Project
                     else if ((target - 0.1 * target) <= counts && counts < target)
                         point.Color = Color.Yellow;
                     else
-                        point.Color = Color.Red;                    
+                        point.Color = Color.Red;
                     series1.Points.Add(point);
                 }
             }
@@ -784,7 +854,7 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle =20;
+            diagram.AxisX.Label.Angle = 20;
             diagram.AxisY.Label.Font = new Font("Arial", 9F);
             diagram.AxisX.Label.Font = new Font("Arial", 9F);
             chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
@@ -833,7 +903,7 @@ namespace A8Project
             diagram.AxisY.WholeRange.Auto = false;
             diagram.AxisY.WholeRange.AutoSideMargins = false;
             diagram.AxisY.WholeRange.SideMarginsValue = 0;
-            diagram.AxisY.WholeRange.SetMinMaxValues(0,1);
+            diagram.AxisY.WholeRange.SetMinMaxValues(0, 1);
             chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
         }
 

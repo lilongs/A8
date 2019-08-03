@@ -63,6 +63,7 @@
     <Compile Include="BLL\BUTestValue.cs" />
     <Compile Include="DAL\CommunicationLogs.cs" />
     <Compile Include="DAL\Productlog.cs" />
+    <Compile Include="DAL\Sys_reset_flag.cs" />
     <Compile Include="DBUtility\Dbs.classes.cs" />
     <Compile Include="DBUtility\DbsBaseClass.cs" />
     <Compile Include="DBUtility\IDbs.cs" />
