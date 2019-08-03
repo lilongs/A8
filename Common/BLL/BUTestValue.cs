@@ -67,92 +67,87 @@ namespace Common.BLL
             DataTable dtHis = new DataTable();
             dtHis.Columns.Add("cycletime");
             dtHis.Columns.Add("second");
-
-            DataRow dataRow = dtHis.NewRow();
-            dataRow["cycletime"] = "TargetCT";
-            dataRow["second"] = ConfigurationManager.AppSettings["CycleTimeTarget"].ToString();
-            dtHis.Rows.Add(dataRow);
-
+            dtHis.Columns.Add("targetCT");            
+            dtHis.Columns.Add("deviation");  
+            
             DataSet ds = productlog.GetCycleTime();
+            int targetCT = Convert.ToInt32(ConfigurationManager.AppSettings["CycleTimeTarget"]);
 
             for (int i = 0; i < ds.Tables.Count; i++)
             {
                 DataRow dr = dtHis.NewRow();
+                dr["targetCT"] = targetCT;
                 switch (i)
                 {
                     case 0:
+                        dr["cycletime"] = "One Hour";
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "One Hour";
                             dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"]= (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count) - targetCT;
                         }
                         else
                         {
-                            dr["cycletime"] = "One Hour";
                             dr["second"] = "null";
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] =  -targetCT;
                         }
                         break;
                     case 1:
+                        dr["cycletime"] = "One Day";
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "One Day";
                             dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count) - targetCT;
                         }
                         else
                         {
-                            dr["cycletime"] = "One Day";
                             dr["second"] = "null";
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = -targetCT;
                         }
                         break;
                     case 2:
+                        dr["cycletime"] = "One Week";
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "One Week";
                             dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count) - targetCT;
                         }
                         else
                         {
-                            dr["cycletime"] = "One Week";
                             dr["second"] = "null";
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = -targetCT;
                         }
                         break;
                     case 3:
+                        dr["cycletime"] = "One Month";
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "One Month";
                             dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count) - targetCT;
                         }
                         else
                         {
-                            dr["cycletime"] = "One Month";
                             dr["second"] = "null";
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = -targetCT;
                         }
                         break;
                     case 4:
+                        dr["cycletime"] = "One Year";
                         if (ds.Tables[i].Rows.Count > 0)
                         {
-                            dr["cycletime"] = "One Year";
                             dr["second"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count);
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = (int)(Convert.ToDouble(ds.Tables[i].Compute("Sum(cycletime)", "")) / ds.Tables[i].Rows.Count) - targetCT;
                         }
                         else
                         {
-                            dr["cycletime"] = "One Year";
                             dr["second"] = "null";
-                            dtHis.Rows.Add(dr);
+                            dr["deviation"] = -targetCT;
                         }
                         break;
                     default:
                         break;
                 }
+                dtHis.Rows.Add(dr);
             }
             return dtHis;
         }

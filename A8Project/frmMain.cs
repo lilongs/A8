@@ -702,6 +702,8 @@ namespace A8Project
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
             diagram.AxisX.Label.Angle = 30;
+            diagram.AxisY.Label.Font = new Font("Arial", 9F);
+            chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
         }
 
         private void LoadDayProductRatio()
@@ -782,7 +784,10 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle = 30;
+            diagram.AxisX.Label.Angle =20;
+            diagram.AxisY.Label.Font = new Font("Arial", 9F);
+            diagram.AxisX.Label.Font = new Font("Arial", 9F);
+            chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
         }
 
         private void LoadYearMonthFPY()
@@ -820,9 +825,16 @@ namespace A8Project
             XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
             diagram.AxisX.GridSpacingAuto = false;
             diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle = 30;
+            diagram.AxisX.Label.Angle = 20;
             diagram.AxisY.Label.TextPattern = "{v:0.00%}";
-
+            diagram.AxisY.Label.Font = new Font("Arial", 9F);
+            diagram.AxisX.Label.Font = new Font("Arial", 9F);
+            //设置Y轴区间范围0%-100%
+            diagram.AxisY.WholeRange.Auto = false;
+            diagram.AxisY.WholeRange.AutoSideMargins = false;
+            diagram.AxisY.WholeRange.SideMarginsValue = 0;
+            diagram.AxisY.WholeRange.SetMinMaxValues(0,1);
+            chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
