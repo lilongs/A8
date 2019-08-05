@@ -85,7 +85,7 @@ namespace Common.DAL
 	                        select productno,min(createtime)as endtime 
 	                        from (select equipment,productno,key_process,createtime  
 			                        from productlog
-			                        where DATEDIFF(DAY,createtime,GETDATE())=0
+			                        where DATEDIFF(DAY,createtime,GETDATE())<=1 
 			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
 	                        where equipment='CC' and  key_process='START_OUT'
 	                        group by productno
