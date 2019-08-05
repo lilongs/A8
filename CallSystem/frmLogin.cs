@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.BLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +17,7 @@ namespace CallSystem
         {
             InitializeComponent();
         }
-
+        BUSys_userinfo userinfo = new BUSys_userinfo();
         private void btnLogin_Click(object sender, EventArgs e)
         {
             #region 检验输入不能为空
@@ -32,10 +33,11 @@ namespace CallSystem
             }
             #endregion
 
-            if((txtUsername.Text.Trim()=="admin" && txtPassword.Text.Trim() == "snor") || (txtUsername.Text.Trim()== "visteon" && txtPassword.Text.Trim() == "visteon"))
+           if(userinfo.login(txtUsername.Text.Trim(), txtPassword.Text.Trim()))
             {
                 frmCallOut frm = new frmCallOut();
-                frm.Show();
+                frm.Tag = txtUsername.Text.Trim();
+                frm.Show();                
                 this.Hide();
             }
             else

@@ -20,10 +20,10 @@ namespace Common.DAL
             return sqlconn.Query(sql).Tables[0];
         }
 
-        public void updateResetFlag(string keyname,int flag)
+        public bool updateResetFlag(string keyname,int flag)
         {
             string sql = "update sys_reset_flag set flag="+flag+" where keyname='"+keyname+"' ";
-            sqlconn.ExecuteSql(sql);
+            return sqlconn.ExecuteSql(sql)>0?true:false;
         }
     }
 }

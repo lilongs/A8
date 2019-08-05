@@ -88,11 +88,10 @@ namespace A8Project
 
             LoadCycleTime();
             LoadTodayData();
-            LoadDayProductRatio();
             LoadYearMonth();
             LoadYearMonthFPY();
 
-            
+
         }
 
         #region Socket通讯
@@ -425,38 +424,6 @@ namespace A8Project
             return HandleResult.Ok;
         }
 
-        private void run(object num)
-        {
-            int n = 20;
-            while (n > 0)
-            {
-                if (n % 2 == 0)
-                {
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = Color.Red;
-                    });
-                }
-                else
-                {
-                    this.BeginInvoke((MethodInvoker)delegate
-                    {
-                        ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = this.BackColor;
-                    });
-                    if (n == 1)
-                    {
-                        this.BeginInvoke((MethodInvoker)delegate
-                        {
-                            ((Label)this.Controls.Find("label" + num.ToString(), true)[0]).ForeColor = Color.Green;
-                            ((Label)this.Controls.Find("label" + (Convert.ToInt32(num) - 10).ToString(), true)[0]).Visible = false;
-                        });
-                    }
-                }
-                n--;
-                Thread.Sleep(500);
-            }
-        }
-
         /// <summary>
         /// 用于控制灯具显示状态，0：常绿、1：闪红、2：红、3：闪绿
         /// </summary>
@@ -596,7 +563,6 @@ namespace A8Project
         {
             LoadErrorInfo();
             LoadConsumables();
-            LoadDayProductRatio();
         }
 
         private void LoadErrorInfo()
@@ -610,7 +576,7 @@ namespace A8Project
         private void LoadConsumables()
         {
             //查询获得AC、CC、FC等站点Process_IN实际过站次数
-            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0)%50;
+            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) % 50;
             float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
             float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
             float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
@@ -624,6 +590,7 @@ namespace A8Project
             if (consumable2 == 47.5)
             {
                 flag.updateResetFlag("CC", 1);
+                flag.updateResetFlag("CC_Print", 1);
             }
             if (consumable3 == 47.5)
             {
@@ -635,7 +602,7 @@ namespace A8Project
             }
             if (consumable5 == 47.5)
             {
-                flag.updateResetFlag("WS3", 1);
+                flag.updateResetFlag("WS3_Print", 1);
             }
 
             DataTable dtFlag = flag.getResetFlag();
@@ -643,35 +610,79 @@ namespace A8Project
             bool CC_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC'")[0]["flag"]);
             bool FC01_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC01'")[0]["flag"]);
             bool FC02_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC02'")[0]["flag"]);
-            bool WS3_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3'")[0]["flag"]);            
+            bool WS3_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3_Print'")[0]["flag"]);
+            bool CC_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC_Print'")[0]["flag"]);
 
             //bool开关量用来作重置标识
+            //AC
             if (consumable1 > 47.5 && AC_flag)
             {
                 ControlStatus[label49] = 1;
                 label19.Visible = true;
             }
+            else
+            {
+                ControlStatus[label49] = 0;
+                label19.Visible = false;
+            }
+            //CC
             if (consumable2 > 47.5 && CC_flag)
             {
                 ControlStatus[label50] = 1;
-                ControlStatus[label53] = 1;
+
                 label19.Visible = true;
             }
+            else
+            {
+                ControlStatus[label50] = 0;
+                ControlStatus[label53] = 0;
+                label19.Visible = false;
+            }
+            //FC01
             if (consumable3 > 47.5 && FC01_flag)
             {
                 ControlStatus[label51] = 1;
                 label19.Visible = true;
             }
+            else
+            {
+                ControlStatus[label51] = 0;
+                label19.Visible = false;
+            }
+            //FC02
             if (consumable4 > 47.5 && FC02_flag)
             {
                 ControlStatus[label52] = 1;
                 label19.Visible = true;
             }
-            if (consumable5 > 47.5 && WS3_flag)
+            else
+            {
+                ControlStatus[label52] = 0;
+                label19.Visible = false;
+            }
+            //CC_Print
+            if (consumable2 > 47.5 && CC_Print_flag)
+            {
+                ControlStatus[label53] = 1;
+                label19.Visible = true;
+            }
+            else
+            {
+                ControlStatus[label53] = 0;
+                label19.Visible = false;
+            }
+            //WS3_Print
+            if (consumable5 > 47.5 && WS3_Print_flag)
             {
                 ControlStatus[label54] = 1;
                 label19.Visible = true;
             }
+            else
+            {
+                ControlStatus[label54] = 0;
+                label19.Visible = false;
+            }
+
 
             this.arcScaleComponent1.Value = consumable1;
             this.label5.Text = consumable1.ToString() + " K";
@@ -697,9 +708,16 @@ namespace A8Project
         /// </summary>
         private void LoadCycleTime()
         {
-            DataTable dtHis = new DataTable();
-            dtHis = buTestValue.GetCycleTime();
-            this.gdcHistory.DataSource = dtHis;
+            try
+            {
+                DataTable dtHis = new DataTable();
+                dtHis = buTestValue.GetCycleTime();
+                this.gdcHistory.DataSource = dtHis;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -707,204 +725,209 @@ namespace A8Project
         /// </summary>
         private void LoadTodayData()
         {
-            DataTable dt = buTestValue.GetTodayData();
-            DataTable dt2 = buTestValue.GetTodayTarget();
-
-            this.chartControl1.Series.Clear();
-            #region 方式一，传统的数据绑定，无需精确控制每一个Bar
-            //Series series1 = new Series("产量", ViewType.Bar);
-            //series1.DataSource = dt;
-            //series1.ArgumentScaleType = ScaleType.Qualitative;
-            //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-
-            //// 以哪个字段进行显示 
-            //series1.ArgumentDataMember = "hours";
-            //series1.ValueScaleType = ScaleType.Numerical;
-
-            //// 柱状图里的柱的取值字段
-            //series1.ValueDataMembers.AddRange(new string[] { "counts" });
-
-            ////BarSeriesView barSeriesView = (BarSeriesView)series1.View;
-            ////barSeriesView.Color = Color.Red;
-            //chartControl1.Series.Add(series1);
-            #endregion
-
-            #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
-            Series series1 = new Series("Output", ViewType.Bar);
-            SeriesPoint point = null;
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                if (row["hours"] != null)
+                DataTable dt = buTestValue.GetTodayData();
+                DataTable dt2 = buTestValue.GetTodayTarget();
+                this.chartControl1.Series.Clear();
+                #region 方式一，传统的数据绑定，无需精确控制每一个Bar
+                //Series series1 = new Series("产量", ViewType.Bar);
+                //series1.DataSource = dt;
+                //series1.ArgumentScaleType = ScaleType.Qualitative;
+                //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+                //// 以哪个字段进行显示 
+                //series1.ArgumentDataMember = "hours";
+                //series1.ValueScaleType = ScaleType.Numerical;
+
+                //// 柱状图里的柱的取值字段
+                //series1.ValueDataMembers.AddRange(new string[] { "counts" });
+
+                ////BarSeriesView barSeriesView = (BarSeriesView)series1.View;
+                ////barSeriesView.Color = Color.Red;
+                //chartControl1.Series.Add(series1);
+                #endregion
+
+                #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
+                Series series1 = new Series("Output", ViewType.Bar);
+                SeriesPoint point = null;
+                foreach (DataRow row in dt.Rows)
                 {
-                    point = new SeriesPoint(row["hours"].ToString());
-                    double[] vals = { Convert.ToDouble(row["counts"]) };
-                    point.Values = vals;
-                    double counts = Convert.ToDouble(row["counts"]);
-                    double target = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]);
+                    if (row["hours"] != null)
+                    {
+                        point = new SeriesPoint(row["hours"].ToString());
+                        double[] vals = { Convert.ToDouble(row["counts"]) };
+                        point.Values = vals;
+                        double counts = Convert.ToDouble(row["counts"]);
+                        double target = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]);
 
-                    if (counts >= target)
-                        point.Color = Color.Green;
-                    else if ((target - 0.1 * target) <= counts && counts < target)
-                        point.Color = Color.Yellow;
-                    else
-                        point.Color = Color.Red;
-                    series1.Points.Add(point);
+                        if (counts >= target)
+                            point.Color = Color.Green;
+                        else if ((target - 0.1 * target) <= counts && counts < target)
+                            point.Color = Color.Yellow;
+                        else
+                            point.Color = Color.Red;
+                        series1.Points.Add(point);
+                    }
                 }
+                this.chartControl1.Series.Add(series1);
+                #endregion
+
+                Series series2 = new Series("Target", ViewType.Line);
+                series2.DataSource = dt2;
+                series2.ArgumentScaleType = ScaleType.Qualitative;
+
+                // 以哪个字段进行显示 
+                series2.ArgumentDataMember = "hours";
+                series2.ValueScaleType = ScaleType.Numerical;
+                //series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;//标签
+
+                // 柱状图里的柱的取值字段
+                series2.ValueDataMembers.AddRange(new string[] { "counts" });
+                //绑定Series
+                chartControl1.Series.Add(series2);
+
+                XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
+                diagram.AxisX.GridSpacingAuto = false;
+                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.Label.Angle = 30;
+                diagram.AxisY.Label.Font = new Font("Arial", 9F);
+                chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             }
-            this.chartControl1.Series.Add(series1);
-            #endregion
-
-            Series series2 = new Series("Target", ViewType.Line);
-            series2.DataSource = dt2;
-            series2.ArgumentScaleType = ScaleType.Qualitative;
-
-            // 以哪个字段进行显示 
-            series2.ArgumentDataMember = "hours";
-            series2.ValueScaleType = ScaleType.Numerical;
-            //series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;//标签
-
-            // 柱状图里的柱的取值字段
-            series2.ValueDataMembers.AddRange(new string[] { "counts" });
-            //绑定Series
-            chartControl1.Series.Add(series2);
-
-            XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
-            diagram.AxisX.GridSpacingAuto = false;
-            diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle = 30;
-            diagram.AxisY.Label.Font = new Font("Arial", 9F);
-            chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
-        }
-
-        private void LoadDayProductRatio()
-        {
-            //DataTable dt = buTestValue.GetDayOfCountWithFPY();
-            //this.chartControl4.Series.Clear();
-            //this.chartControl4.DataSource = dt;
-            //Series mySeries = new Series("Series1", ViewType.Pie);  // 这是图形类型
-            //chartControl4.Series.Add(mySeries);
-            //mySeries.ArgumentDataMember = "name";   // 绑定参数
-            //mySeries.ValueDataMembers.AddRange(new string[] { "value" });   // 绑定值
-            //mySeries.Label.PointOptions.PointView = PointView.ArgumentAndValues;   // 设置Label显示方式
-            //mySeries.ToolTipEnabled = DevExpress.Utils.DefaultBoolean.True;  // 设置鼠标悬浮显示toolTip
-
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void LoadYearMonth()
         {
-            DataTable dt = buTestValue.GetYearMonth();
-            DataTable dt2 = buTestValue.GetYearMonthTarget();
-
-            this.chartControl2.Series.Clear();
-            #region 方式一，传统的数据绑定，无需精确控制每一个Bar
-            //Series series1 = new Series("历史产量", ViewType.Bar);
-            //series1.DataSource = dt;
-            //series1.ArgumentScaleType = ScaleType.Qualitative;
-            //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
-
-            //// 以哪个字段进行显示 
-            //series1.ArgumentDataMember = "months";
-            //series1.ValueScaleType = ScaleType.Numerical;
-
-            //// 柱状图里的柱的取值字段
-            //series1.ValueDataMembers.AddRange(new string[] { "counts" });
-            ////绑定Series
-            //chartControl2.Series.Add(series1);
-            #endregion
-
-            #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
-            Series series1 = new Series("HistoryOutput", ViewType.Bar);
-            SeriesPoint point = null;
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                if (row["months"] != null)
+                DataTable dt = buTestValue.GetYearMonth();
+                DataTable dt2 = buTestValue.GetYearMonthTarget();
+
+                this.chartControl2.Series.Clear();
+                #region 方式一，传统的数据绑定，无需精确控制每一个Bar
+                //Series series1 = new Series("历史产量", ViewType.Bar);
+                //series1.DataSource = dt;
+                //series1.ArgumentScaleType = ScaleType.Qualitative;
+                //series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+
+                //// 以哪个字段进行显示 
+                //series1.ArgumentDataMember = "months";
+                //series1.ValueScaleType = ScaleType.Numerical;
+
+                //// 柱状图里的柱的取值字段
+                //series1.ValueDataMembers.AddRange(new string[] { "counts" });
+                ////绑定Series
+                //chartControl2.Series.Add(series1);
+                #endregion
+
+                #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
+                Series series1 = new Series("HistoryOutput", ViewType.Bar);
+                SeriesPoint point = null;
+                foreach (DataRow row in dt.Rows)
                 {
-                    point = new SeriesPoint(row["months"].ToString());
-                    double[] vals = { Convert.ToDouble(row["counts"]) };
-                    point.Values = vals;
+                    if (row["months"] != null)
+                    {
+                        point = new SeriesPoint(row["months"].ToString());
+                        double[] vals = { Convert.ToDouble(row["counts"]) };
+                        point.Values = vals;
 
-                    double counts = Convert.ToDouble(row["counts"]);
-                    double target = Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]);
+                        double counts = Convert.ToDouble(row["counts"]);
+                        double target = Convert.ToDouble(ConfigurationManager.AppSettings["YearMonthTarget"]);
 
-                    if (counts >= target)
-                        point.Color = Color.Green;
-                    else if ((target - 0.1 * target) <= counts && counts < target)
-                        point.Color = Color.Yellow;
-                    else
-                        point.Color = Color.Red;
-                    series1.Points.Add(point);
+                        if (counts >= target)
+                            point.Color = Color.Green;
+                        else if ((target - 0.1 * target) <= counts && counts < target)
+                            point.Color = Color.Yellow;
+                        else
+                            point.Color = Color.Red;
+                        series1.Points.Add(point);
+                    }
                 }
+                this.chartControl2.Series.Add(series1);
+                #endregion
+
+                Series series2 = new Series("Target", ViewType.Line);
+                series2.DataSource = dt2;
+                series2.ArgumentScaleType = ScaleType.Qualitative;
+
+                // 以哪个字段进行显示 
+                series2.ArgumentDataMember = "months";
+                series2.ValueScaleType = ScaleType.Numerical;
+
+                // 柱状图里的柱的取值字段
+                series2.ValueDataMembers.AddRange(new string[] { "counts" });
+                //绑定Series
+                this.chartControl2.Series.Add(series2);
+
+                XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
+                diagram.AxisX.GridSpacingAuto = false;
+                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.Label.Angle = 20;
+                diagram.AxisY.Label.Font = new Font("Arial", 9F);
+                diagram.AxisX.Label.Font = new Font("Arial", 9F);
+                chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            }catch(Exception ex)
+            {
+                throw ex;
             }
-            this.chartControl2.Series.Add(series1);
-            #endregion
-
-            Series series2 = new Series("Target", ViewType.Line);
-            series2.DataSource = dt2;
-            series2.ArgumentScaleType = ScaleType.Qualitative;
-
-            // 以哪个字段进行显示 
-            series2.ArgumentDataMember = "months";
-            series2.ValueScaleType = ScaleType.Numerical;
-
-            // 柱状图里的柱的取值字段
-            series2.ValueDataMembers.AddRange(new string[] { "counts" });
-            //绑定Series
-            this.chartControl2.Series.Add(series2);
-
-            XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
-            diagram.AxisX.GridSpacingAuto = false;
-            diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle = 20;
-            diagram.AxisY.Label.Font = new Font("Arial", 9F);
-            diagram.AxisX.Label.Font = new Font("Arial", 9F);
-            chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
         }
 
         private void LoadYearMonthFPY()
         {
-            DataTable dt = buTestValue.GetYearMonthFPY();
-            DataTable dt2 = buTestValue.GetYearMonthFPYTarget();
-            this.chartControl3.Series.Clear();
-            Series series1 = new Series("FPY", ViewType.Line);
-            series1.DataSource = dt;
-            series1.ArgumentScaleType = ScaleType.Qualitative;
+            try
+            {
+                DataTable dt = buTestValue.GetYearMonthFPY();
+                DataTable dt2 = buTestValue.GetYearMonthFPYTarget();
+                this.chartControl3.Series.Clear();
+                Series series1 = new Series("FPY", ViewType.Line);
+                series1.DataSource = dt;
+                series1.ArgumentScaleType = ScaleType.Qualitative;
 
-            // 以哪个字段进行显示 
-            series1.ArgumentDataMember = "months";
-            series1.ValueScaleType = ScaleType.Numerical;
-            series1.Label.TextPattern = "{v:0.00%}";
-            series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
+                // 以哪个字段进行显示 
+                series1.ArgumentDataMember = "months";
+                series1.ValueScaleType = ScaleType.Numerical;
+                series1.Label.TextPattern = "{v:0.00%}";
+                series1.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;
 
-            // 柱状图里的柱的取值字段
-            series1.ValueDataMembers.AddRange(new string[] { "ratio" });
-            //绑定Series
-            chartControl3.Series.Add(series1);
+                // 柱状图里的柱的取值字段
+                series1.ValueDataMembers.AddRange(new string[] { "ratio" });
+                //绑定Series
+                chartControl3.Series.Add(series1);
 
-            Series series2 = new Series("Target", ViewType.Line);
-            series2.DataSource = dt2;
-            series2.ArgumentScaleType = ScaleType.Qualitative;
+                Series series2 = new Series("Target", ViewType.Line);
+                series2.DataSource = dt2;
+                series2.ArgumentScaleType = ScaleType.Qualitative;
 
-            // 以哪个字段进行显示 
-            series2.ArgumentDataMember = "months";
-            series2.ValueScaleType = ScaleType.Numerical;
+                // 以哪个字段进行显示 
+                series2.ArgumentDataMember = "months";
+                series2.ValueScaleType = ScaleType.Numerical;
 
-            // 柱状图里的柱的取值字段
-            series2.ValueDataMembers.AddRange(new string[] { "ratio" });
-            //绑定Series
-            this.chartControl3.Series.Add(series2);
-            XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
-            diagram.AxisX.GridSpacingAuto = false;
-            diagram.AxisX.GridSpacing = 1;
-            diagram.AxisX.Label.Angle = 20;
-            diagram.AxisY.Label.TextPattern = "{v:0.00%}";
-            diagram.AxisY.Label.Font = new Font("Arial", 9F);
-            diagram.AxisX.Label.Font = new Font("Arial", 9F);
-            //设置Y轴区间范围0%-100%
-            diagram.AxisY.WholeRange.Auto = false;
-            diagram.AxisY.WholeRange.AutoSideMargins = false;
-            diagram.AxisY.WholeRange.SideMarginsValue = 0;
-            diagram.AxisY.WholeRange.SetMinMaxValues(0, 1);
-            chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+                // 柱状图里的柱的取值字段
+                series2.ValueDataMembers.AddRange(new string[] { "ratio" });
+                //绑定Series
+                this.chartControl3.Series.Add(series2);
+                XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
+                diagram.AxisX.GridSpacingAuto = false;
+                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.Label.Angle = 20;
+                diagram.AxisY.Label.TextPattern = "{v:0.00%}";
+                diagram.AxisY.Label.Font = new Font("Arial", 9F);
+                diagram.AxisX.Label.Font = new Font("Arial", 9F);
+                //设置Y轴区间范围0%-100%
+                diagram.AxisY.WholeRange.Auto = false;
+                diagram.AxisY.WholeRange.AutoSideMargins = false;
+                diagram.AxisY.WholeRange.SideMarginsValue = 0;
+                diagram.AxisY.WholeRange.SetMinMaxValues(0, 1);
+                chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -947,6 +970,34 @@ namespace A8Project
                 {
                     e.Appearance.BackColor = Color.Red;
                 }
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (progressBarControl1.Position > 0)
+                {
+                    progressBarControl1.Position += -1;
+                    labelControl2.Text = progressBarControl1.Position.ToString() + "S";
+                    if (progressBarControl1.Position == 0)
+                    {
+                        LoadCycleTime();
+                        LoadTodayData();
+                        LoadYearMonth();
+                        LoadYearMonthFPY();
+                        LoadErrorInfo();
+                        LoadConsumables();
+
+                        progressBarControl1.Position = 60;
+                        labelControl2.Text = progressBarControl1.Position.ToString() + "S";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
             }
         }
     }

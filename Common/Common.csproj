@@ -60,14 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BUSys_userinfo.cs" />
     <Compile Include="BLL\BUTestValue.cs" />
     <Compile Include="DAL\CommunicationLogs.cs" />
     <Compile Include="DAL\Productlog.cs" />
     <Compile Include="DAL\Sys_reset_flag.cs" />
+    <Compile Include="DAL\Sys_userinfo.cs" />
     <Compile Include="DBUtility\Dbs.classes.cs" />
     <Compile Include="DBUtility\DbsBaseClass.cs" />
     <Compile Include="DBUtility\IDbs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\MD5Util.cs" />
     <Compile Include="Util\ReadXml.cs" />
     <Compile Include="Util\SerialClass.cs" />
     <Compile Include="Util\Com_Msg.cs" />

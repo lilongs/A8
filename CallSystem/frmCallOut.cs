@@ -1,4 +1,5 @@
 ﻿using Common.Util;
+using DevExpress.XtraBars;
 using HPSocketCS;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace CallSystem
         private void frmCallOut_Load(object sender, EventArgs e)
         {
             appState = AppState.Stoped;
-
+            barStaticItem2.Caption = this.Tag.ToString();
             //绑定事件
             //开始连接前触发
             client.OnPrepareConnect += new TcpClientEvent.OnPrepareConnectEventHandler(client_OnPrepareConnect);
@@ -84,7 +85,7 @@ namespace CallSystem
                     appState = AppState.Started;
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.Text = "通讯正常：服务器已连接！";
+                        barStaticItem4.Caption = "服务器已连接";
                     });
                 }
                 else
@@ -93,7 +94,7 @@ namespace CallSystem
                     SysLog.CreateLog(string.Format("无法建立连接：{0}，{1}", client.ErrorMessage, client.ErrorCode));
                     this.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.Text = "通讯异常：服务器连接已关闭！";
+                        barStaticItem4.Caption = "服务器连接已关闭";
                     });
                 }
             }
@@ -147,7 +148,7 @@ namespace CallSystem
                 SysLog.CreateLog("连接已关闭");
                 this.BeginInvoke((MethodInvoker)delegate
                 {
-                    label1.Text = "通讯异常：服务器连接已关闭！";
+                    barStaticItem4.Caption = "服务器连接已关闭";
                 });
             }
             else
@@ -155,7 +156,7 @@ namespace CallSystem
                 SysLog.CreateLog(string.Format("连接异常关闭：{0}，{1}", client.ErrorMessage, client.ErrorCode));
                 this.BeginInvoke((MethodInvoker)delegate
                 {
-                    label1.Text = "通讯异常：服务器连接已关闭！";
+                    barStaticItem4.Caption = "服务器连接已关闭";
                 });
             }
 
@@ -292,6 +293,34 @@ namespace CallSystem
             Application.Exit();
         }
 
-        
+        private void SubItem_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                string formname = e.Item.Caption.ToString();
+
+                if (!String.IsNullOrEmpty(formname))
+                {
+                    switch (formname)
+                    {
+                        case "修改密码":
+                            frmChangePassword frmChange = new frmChangePassword();
+                            frmChange.username = this.Tag.ToString();
+                            frmChange.ShowDialog();
+                            break;
+                        case "耗材重置":
+                            frmReset frmReset = new frmReset();
+                            frmReset.ShowDialog();
+                            return;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
+            }
+        }
     }
 }
