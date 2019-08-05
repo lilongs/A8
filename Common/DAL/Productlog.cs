@@ -85,7 +85,7 @@ namespace Common.DAL
 	                        select productno,min(createtime)as endtime 
 	                        from (select equipment,productno,key_process,createtime  
 			                        from productlog
-			                        where DATEDIFF(DAY,createtime,GETDATE())<=1 
+			                        where DATEDIFF(DAY,createtime,GETDATE())=0
 			                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
 	                        where equipment='CC' and  key_process='START_OUT'
 	                        group by productno
@@ -164,12 +164,17 @@ namespace Common.DAL
             //            and equipment='CC' and key_process='START_OUT'
             //            group by DATEPART(hh, createtime)";
 
-            string sql = @"select FORMAT(createtime, 'HH:mm') as mins,count(distinct productno)as counts  
-                        from productlog
-                        where DATEDIFF(DAY, createtime, GETDATE()) =0
-                        and equipment='CC' and key_process='START_OUT'
-                        group by FORMAT(createtime, 'HH:mm')
-                        order by mins";
+            string sql = @"select FORMAT(endtime, 'HH:mm') as mins,count(distinct productno)as counts  
+                        FROM(
+                        select productno,min(createtime)as endtime 
+                        from (select equipment,productno,key_process,createtime  
+		                        from productlog
+		                        where DATEDIFF(DAY,createtime,GETDATE())=0 
+		                        and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4'))as temp 
+                        where equipment='CC' and  key_process='START_OUT'
+                        group by productno)AS B
+                        group by FORMAT(endtime, 'HH:mm')
+                         order by mins";
             return sqlconn.Query(sql).Tables[0];
         }
 
@@ -179,10 +184,17 @@ namespace Common.DAL
         /// <returns></returns>
         public DataTable GetYearMonth()
         {
-            string sql = @"select DATEPART(MM, createtime) as months,count(productno) as counts 
-                            from productlog
-                            where equipment='CC' and key_process='START_OUT'
-                            group by DATEPART(MM, createtime)";
+            string sql = @"select DATEPART(MM, endtime) as months,count(productno) as counts 
+                        from (
+                            select productno,min(createtime)as endtime 
+                            from (select equipment,productno,key_process,createtime  
+		                            from productlog
+		                            where DATEDIFF(YEAR,createtime,GETDATE())=0 
+		                            and equipment in ('AC','CC','FC01','FC02','Run-In','WS1','WS2','WS3','WS4')
+                                )as temp 
+                            where equipment='CC' and  key_process='START_OUT'
+                            group by productno)as b
+                        group by DATEPART(MM, endtime)";
             return sqlconn.Query(sql).Tables[0];
         }
 

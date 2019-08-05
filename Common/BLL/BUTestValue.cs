@@ -341,29 +341,36 @@ namespace Common.BLL
         /// <returns></returns>
         public DataTable DealErrorInfo()
         {
-            DataTable dt = new DataTable();
-            dt = productlog.GetInfo();
-            foreach(DataRow dr in dt.Rows)
+            try
             {
-                if (dr["key_process"].ToString() == "START_OUT")
+                DataTable dt = new DataTable();
+                dt = productlog.GetInfo();
+                foreach (DataRow dr in dt.Rows)
                 {
-                    string xml = dr["contents"].ToString();
-                    IList<Teststep> resultList = ReadXml.ReadXMLFroPath(xml);
-                    IEnumerator enumerator = resultList.GetEnumerator();
-                    List<string> list = new List<string>();
-                    while (enumerator.MoveNext())
+                    if (dr["key_process"].ToString() == "START_OUT")
                     {
-                        Teststep teststep = enumerator.Current as Teststep;
-                        if (teststep.TestResult == "0")
+                        string xml = dr["contents"].ToString();
+                        IList<Teststep> resultList = ReadXml.ReadXMLFroPath(xml);
+                        IEnumerator enumerator = resultList.GetEnumerator();
+                        List<string> list = new List<string>();
+                        while (enumerator.MoveNext())
                         {
-                            list.Add(teststep.StepName);
+                            Teststep teststep = enumerator.Current as Teststep;
+                            if (teststep.TestResult == "2")
+                            {
+                                list.Add(teststep.StepName);
+                            }
                         }
+                        if (list.Count > 0)
+                            dr["contents"] = String.Join(",", list.ToArray());
                     }
-                    if(list.Count>0)
-                    dr["contents"] = String.Join(",", list.ToArray());
                 }
+                return dt;
             }
-            return dt;
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

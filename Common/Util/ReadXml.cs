@@ -11,28 +11,35 @@ namespace Common.Util
     {
         public static IList<Teststep> ReadXMLFroPath(string str)
         {
-            IList<Teststep> resultList = new List<Teststep>();
+            try
+            { 
+                IList<Teststep> resultList = new List<Teststep>();
 
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(str);
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(str);
 
-            XmlNodeList xmlNodeList = xmlDocument.SelectSingleNode("Cluster").ChildNodes;
-            foreach (XmlNode list in xmlNodeList)
-            {
-                Teststep teststep = new Teststep
-                (
-                    list.Attributes["StepNo"].InnerText,
-                    list.Attributes["StepName"].InnerText,
-                    list.Attributes["Value"].InnerText,
-                    list.Attributes["UPPERLIMIT"].InnerText,
-                    list.Attributes["LOWERLIMIT"].InnerText,
-                    list.Attributes["Unit"].InnerText,
-                    list.Attributes["Duration"].InnerText,
-                    list.Attributes["TestResult"].InnerText
-                );
-                resultList.Add(teststep);
+                XmlNodeList xmlNodeList = xmlDocument.SelectSingleNode("Cluster").ChildNodes;
+                foreach (XmlNode list in xmlNodeList)
+                {
+                    Teststep teststep = new Teststep
+                    (
+                        list.Attributes["StepNo"].InnerText,
+                        list.Attributes["StepName"].InnerText,
+                        list.Attributes["Value"].InnerText,
+                        list.Attributes["UPPERLIMIT"].InnerText,
+                        list.Attributes["LOWERLIMIT"].InnerText,
+                        list.Attributes["Unit"].InnerText,
+                        list.Attributes["Duration"].InnerText,
+                        list.Attributes["TestResult"].InnerText
+                    );
+                    resultList.Add(teststep);
+                }
+                return resultList;
             }
-            return resultList;
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static string ReadValueByXPath(string xml,string XPath,string targetAttributes)

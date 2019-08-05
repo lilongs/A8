@@ -9,60 +9,38 @@ namespace Common.Util
 {
     public static class FileOperate
     {
-        /// <summary>
-        /// 读取指定路径下的文本
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string[] RealFile(string path)
-        {
-            if (File.Exists(path))
+        public static void createFile(string folder,string filename,string info) { 
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            string filepath = folder + "/" + filename;
+            if (File.Exists(filepath))
             {
-                return File.ReadAllLines(path);
+                FileStream fs = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                StreamWriter sr = new StreamWriter(fs);
+                sr.WriteLine(info);
+                sr.Close();
+                fs.Close();
             }
             else
             {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 创建指定的文件夹路径
-        /// </summary>
-        /// <param name="directory"></param>
-        public static void CreateDirectory(string directory)
-        {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            if (!directoryInfo.Exists)
-            {
-                directoryInfo.Create();
-            }
-        }
-
-        /// <summary>
-        /// 向指定的路径生成文本文件，并写入指定内容
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="filename"></param>
-        /// <param name="list"></param>
-        public static void CreateFile(string path, List<string> list)
-        {
-            if (!File.Exists(path))
-            {
-                FileStream fs = File.Create(path);
+                FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                StreamWriter sr = new StreamWriter(fs);
+                sr.WriteLine(info);
+                sr.Close();
                 fs.Close();
             }
-            
-            File.AppendAllLines(path, list);
         }
 
-        /// <summary>
-        /// 删除指定路径下的文件
-        /// </summary>
-        /// <param name="path"></param>
-        public static void DeleteFile(string path)
-        {
-            File.Delete(path);
+        public static string ReadFile(string path) { 
+            FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            StreamReader sr = new StreamReader(fs, System.Text.Encoding.UTF8);
+            StringBuilder sb = new StringBuilder();
+            while (!sr.EndOfStream)
+            {
+                sb.AppendLine(sr.ReadLine());
+            }
+            return sb.ToString();
         }
     }
 }

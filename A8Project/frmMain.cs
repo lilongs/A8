@@ -58,39 +58,45 @@ namespace A8Project
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            #region Socket通讯服务
-            //绑定监听地址前触发
-            server.OnPrepareListen += new TcpServerEvent.OnPrepareListenEventHandler(server_OnPrepareListen);
-            //客户端连接请求被接受后触发
-            server.OnAccept += new TcpServerEvent.OnAcceptEventHandler(server_OnAccept);
-            //发送消息后触发
-            server.OnSend += new TcpServerEvent.OnSendEventHandler(server_OnSend);
-            //收到消息后触发
-            server.OnReceive += new TcpServerEvent.OnReceiveEventHandler(server_OnReceive);
-            //连接关闭后触发（服务端的连接通常是多个，只要某一个连接关闭了都会触发）
-            server.OnClose += new TcpServerEvent.OnCloseEventHandler(server_OnClose);
-            //组件停止后触发
-            server.OnShutdown += new TcpServerEvent.OnShutdownEventHandler(server_OnShutdown);
-            //server.PackHeaderFlag = 0xFF;
-            //设置包体长度
-            //server.MaxPackSize = 0x1000;
-            //启动server
-            SocketStart();
-            #endregion
-            //为label41-label53赋值，默认状态0：常绿
-            for (int i = 41; i < 53; i++)
+            try
             {
-                ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]), 0);
+                #region Socket通讯服务
+                //绑定监听地址前触发
+                server.OnPrepareListen += new TcpServerEvent.OnPrepareListenEventHandler(server_OnPrepareListen);
+                //客户端连接请求被接受后触发
+                server.OnAccept += new TcpServerEvent.OnAcceptEventHandler(server_OnAccept);
+                //发送消息后触发
+                server.OnSend += new TcpServerEvent.OnSendEventHandler(server_OnSend);
+                //收到消息后触发
+                server.OnReceive += new TcpServerEvent.OnReceiveEventHandler(server_OnReceive);
+                //连接关闭后触发（服务端的连接通常是多个，只要某一个连接关闭了都会触发）
+                server.OnClose += new TcpServerEvent.OnCloseEventHandler(server_OnClose);
+                //组件停止后触发
+                server.OnShutdown += new TcpServerEvent.OnShutdownEventHandler(server_OnShutdown);
+                //server.PackHeaderFlag = 0xFF;
+                //设置包体长度
+                //server.MaxPackSize = 0x1000;
+                //启动server
+                SocketStart();
+                #endregion
+                //为label41-label53赋值，默认状态0：常绿
+                for (int i = 41; i < 53; i++)
+                {
+                    ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]), 0);
+                }
+
+                LoadErrorInfo();
+                LoadConsumables();
+
+                LoadCycleTime();
+                LoadTodayData();
+                LoadYearMonth();
+                LoadYearMonthFPY();
             }
-
-            LoadErrorInfo();
-            LoadConsumables();
-
-            LoadCycleTime();
-            LoadTodayData();
-            LoadYearMonth();
-            LoadYearMonthFPY();
-
+            catch(Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
+            }
 
         }
 
@@ -240,7 +246,9 @@ namespace A8Project
                                 //校验当前产品是否已进站
                                 if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))
                                 {
-                                    GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], list[5], now);
+                                    string filename = "E:\\EquimentTestXML\\" + EquipmentInfo[list[1]]+"\\"+list[5];
+                                    string contents = FileOperate.ReadFile(filename);
+                                    GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
 
                                     list.RemoveRange(4, listCount - 4);
                                     list.Add("pass");
@@ -567,16 +575,25 @@ namespace A8Project
 
         private void LoadErrorInfo()
         {
-            //加载信息
-            DataTable dt = new DataTable();
-            dt = buTestValue.DealErrorInfo();
-            this.gdcErrorInfo.DataSource = dt;
+            try
+            {
+                //加载信息
+                DataTable dt = new DataTable();
+                dt = buTestValue.DealErrorInfo();
+                this.gdcErrorInfo.DataSource = dt;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void LoadConsumables()
         {
-            //查询获得AC、CC、FC等站点Process_IN实际过站次数
-            float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) % 50;
+            try
+            {
+                //查询获得AC、CC、FC等站点Process_IN实际过站次数
+                float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) % 50;
             float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
             float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
             float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
@@ -701,6 +718,11 @@ namespace A8Project
 
             this.arcScaleComponent6.Value = consumable5;
             this.label12.Text = consumable5.ToString() + " K";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
