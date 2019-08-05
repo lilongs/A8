@@ -184,6 +184,7 @@
             this.button10.TabIndex = 8;
             this.button10.Text = "Run-In物料呼叫";
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button_Click);
             // 
             // button17
@@ -208,6 +209,7 @@
             this.button18.TabIndex = 18;
             this.button18.Text = "CC物料呼叫";
             this.button18.UseVisualStyleBackColor = false;
+            this.button18.Visible = false;
             this.button18.Click += new System.EventHandler(this.button_Click);
             // 
             // button16
@@ -232,6 +234,7 @@
             this.button15.TabIndex = 16;
             this.button15.Text = "FC02物料呼叫";
             this.button15.UseVisualStyleBackColor = false;
+            this.button15.Visible = false;
             this.button15.Click += new System.EventHandler(this.button_Click);
             // 
             // button13
@@ -256,6 +259,7 @@
             this.button14.TabIndex = 14;
             this.button14.Text = "FC01物料呼叫";
             this.button14.UseVisualStyleBackColor = false;
+            this.button14.Visible = false;
             this.button14.Click += new System.EventHandler(this.button_Click);
             // 
             // button12
@@ -280,6 +284,7 @@
             this.button11.TabIndex = 10;
             this.button11.Text = "AC物料呼叫";
             this.button11.UseVisualStyleBackColor = false;
+            this.button11.Visible = false;
             this.button11.Click += new System.EventHandler(this.button_Click);
             // 
             // timer1

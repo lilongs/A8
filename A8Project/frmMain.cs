@@ -93,7 +93,7 @@ namespace A8Project
                 LoadYearMonth();
                 LoadYearMonthFPY();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SysLog.CreateLog(ex.Message);
             }
@@ -246,7 +246,7 @@ namespace A8Project
                                 //校验当前产品是否已进站
                                 if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))
                                 {
-                                    string filename = "E:\\EquimentTestXML\\" + EquipmentInfo[list[1]]+"\\"+list[5];
+                                    string filename = "E:\\EquimentTestXML\\" + EquipmentInfo[list[1]] + "\\" + list[5];
                                     string contents = FileOperate.ReadFile(filename);
                                     GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
 
@@ -284,131 +284,171 @@ namespace A8Project
                             #region 呼叫系统
                             if (title.Contains("WS1"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label31.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label31.Visible = true;
-                                    }
-                                    label31.Text = title;
-                                    ControlStatus[label41] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label31.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label31.Visible = true;
+                                        }
+                                        label31.Text = title;
+                                        ControlStatus[label41] = flag;
+                                    });
+                                }
+                                else
+                                {
+                                    ShowMSG(title);
+                                }
                             }
                             else if (title.Contains("WS2"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label32.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label32.Visible = true;
-                                    }
-                                    label32.Text = title;
-                                    ControlStatus[label42] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label32.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label32.Visible = true;
+                                        }
+                                        label32.Text = title;
+                                        ControlStatus[label42] = flag;
+                                    });
+                                }
+                                else
+                                {
+                                    ShowMSG(title);
+                                }
                             }
                             else if (title.Contains("WS3"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label33.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label33.Visible = true;
-                                    }
-                                    label33.Text = title;
-                                    ControlStatus[label43] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label33.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label33.Visible = true;
+                                        }
+                                        label33.Text = title;
+                                        ControlStatus[label43] = flag;
+                                    });
+                                }
+                                else
+                                {
+                                    ShowMSG(title);
+                                }
                             }
                             else if (title.Contains("WS4"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label34.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label34.Visible = true;
-                                    }
-                                    label34.Text = title;
-                                    ControlStatus[label44] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label34.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label34.Visible = true;
+                                        }
+                                        label34.Text = title;
+                                        ControlStatus[label44] = flag;
+                                    });
+                                }
+                                else
+                                {
+                                    ShowMSG(title);
+                                }
                             }
                             else if (title.Contains("Run-In"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label35.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label35.Visible = true;
-                                    }
-                                    label35.Text = title;
-                                    ControlStatus[label45] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label35.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label35.Visible = true;
+                                        }
+                                        label35.Text = title;
+                                        ControlStatus[label45] = flag;
+                                    });
+                                }
                             }
                             else if (title.Contains("AC"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label36.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label36.Visible = true;
-                                    }
-                                    label36.Text = title;
-                                    ControlStatus[label46] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label36.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label36.Visible = true;
+                                        }
+                                        label36.Text = title;
+                                        ControlStatus[label46] = flag;
+                                    });
+                                }
                             }
                             else if (title.Contains("CC"))
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                        this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label37.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label37.Visible = true;
-                                    }
-                                    label37.Text = title;
-                                    ControlStatus[label47] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label37.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label37.Visible = true;
+                                        }
+                                        label37.Text = title;
+                                        ControlStatus[label47] = flag;
+                                    });
+                                }
                             }
                             else
                             {
-                                this.BeginInvoke((MethodInvoker)delegate
+                                if (!title.Contains("物料"))
                                 {
-                                    if (flag == 0)
+                                    this.BeginInvoke((MethodInvoker)delegate
                                     {
-                                        label38.Visible = false;
-                                    }
-                                    else
-                                    {
-                                        label38.Visible = true;
-                                    }
-                                    label38.Text = title;
-                                    ControlStatus[label48] = flag;
-                                });
+                                        if (flag == 0)
+                                        {
+                                            label38.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label38.Visible = true;
+                                        }
+                                        label38.Text = title;
+                                        ControlStatus[label48] = flag;
+                                    });
+                                }
                             }
                             break;
                         #endregion
@@ -430,6 +470,20 @@ namespace A8Project
                 GetCommunicationLogs(msg, now, "<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
             }
             return HandleResult.Ok;
+        }
+
+        private void ShowMSG(string msg)
+        {
+            listBoxMessage.BeginInvoke((MethodInvoker)delegate
+            {
+                string now = DateTime.Now.ToString("MM-dd HH:mm:ss");
+                if (listBoxMessage.Items.Count >5)
+                {
+                    listBoxMessage.Items.RemoveAt(0);
+                }
+                
+                listBoxMessage.Items.Add(now+":"+msg);
+            });
         }
 
         /// <summary>
@@ -582,7 +636,7 @@ namespace A8Project
                 dt = buTestValue.DealErrorInfo();
                 this.gdcErrorInfo.DataSource = dt;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -594,130 +648,136 @@ namespace A8Project
             {
                 //查询获得AC、CC、FC等站点Process_IN实际过站次数
                 float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) % 50;
-            float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
-            float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
-            float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
-            float consumable5 = (float)(buTestValue.GetSiteCount("WS3") / 1000.0) % 50;
+                float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
+                float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
+                float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
 
-            Sys_reset_flag flag = new Sys_reset_flag();
-            if (consumable1 == 47.5)
-            {
-                flag.updateResetFlag("AC", 1);
-            }
-            if (consumable2 == 47.5)
-            {
-                flag.updateResetFlag("CC", 1);
-                flag.updateResetFlag("CC_Print", 1);
-            }
-            if (consumable3 == 47.5)
-            {
-                flag.updateResetFlag("FC01", 1);
-            }
-            if (consumable4 == 47.5)
-            {
-                flag.updateResetFlag("FC02", 1);
-            }
-            if (consumable5 == 47.5)
-            {
-                flag.updateResetFlag("WS3_Print", 1);
-            }
+                float consumable5 = (float)(buTestValue.GetSiteCount("WS3") / 1000.0) % 5;
+                float consumable6 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 5;
 
-            DataTable dtFlag = flag.getResetFlag();
-            bool AC_flag = Convert.ToBoolean(dtFlag.Select("keyname='AC'")[0]["flag"]);
-            bool CC_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC'")[0]["flag"]);
-            bool FC01_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC01'")[0]["flag"]);
-            bool FC02_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC02'")[0]["flag"]);
-            bool WS3_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3_Print'")[0]["flag"]);
-            bool CC_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC_Print'")[0]["flag"]);
+                Sys_reset_flag flag = new Sys_reset_flag();
+                if (consumable1 == 47.5)
+                {
+                    flag.updateResetFlag("AC", 1);
+                }
+                if (consumable2 == 47.5)
+                {
+                    flag.updateResetFlag("CC", 1);
+                }
+                if (consumable3 == 47.5)
+                {
+                    flag.updateResetFlag("FC01", 1);
+                }
+                if (consumable4 == 47.5)
+                {
+                    flag.updateResetFlag("FC02", 1);
+                }
 
-            //bool开关量用来作重置标识
-            //AC
-            if (consumable1 > 47.5 && AC_flag)
-            {
-                ControlStatus[label49] = 1;
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label49] = 0;
-                label19.Visible = false;
-            }
-            //CC
-            if (consumable2 > 47.5 && CC_flag)
-            {
-                ControlStatus[label50] = 1;
+                if (consumable5 == 4.5)
+                {
+                    flag.updateResetFlag("WS3_Print", 1);
+                }
+                if (consumable6 == 4.75)
+                {
+                    flag.updateResetFlag("CC_Print", 1);
+                }
 
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label50] = 0;
-                ControlStatus[label53] = 0;
-                label19.Visible = false;
-            }
-            //FC01
-            if (consumable3 > 47.5 && FC01_flag)
-            {
-                ControlStatus[label51] = 1;
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label51] = 0;
-                label19.Visible = false;
-            }
-            //FC02
-            if (consumable4 > 47.5 && FC02_flag)
-            {
-                ControlStatus[label52] = 1;
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label52] = 0;
-                label19.Visible = false;
-            }
-            //CC_Print
-            if (consumable2 > 47.5 && CC_Print_flag)
-            {
-                ControlStatus[label53] = 1;
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label53] = 0;
-                label19.Visible = false;
-            }
-            //WS3_Print
-            if (consumable5 > 47.5 && WS3_Print_flag)
-            {
-                ControlStatus[label54] = 1;
-                label19.Visible = true;
-            }
-            else
-            {
-                ControlStatus[label54] = 0;
-                label19.Visible = false;
-            }
+                DataTable dtFlag = flag.getResetFlag();
+                bool AC_flag = Convert.ToBoolean(dtFlag.Select("keyname='AC'")[0]["flag"]);
+                bool CC_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC'")[0]["flag"]);
+                bool FC01_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC01'")[0]["flag"]);
+                bool FC02_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC02'")[0]["flag"]);
+                bool WS3_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3_Print'")[0]["flag"]);
+                bool CC_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC_Print'")[0]["flag"]);
+
+                //bool开关量用来作重置标识
+                //AC
+                if (consumable1 > 47.5 && AC_flag)
+                {
+                    ControlStatus[label49] = 1;
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label49] = 0;
+                    label19.Visible = false;
+                }
+                //CC
+                if (consumable2 > 47.5 && CC_flag)
+                {
+                    ControlStatus[label50] = 1;
+
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label50] = 0;
+                    ControlStatus[label53] = 0;
+                    label19.Visible = false;
+                }
+                //FC01
+                if (consumable3 > 47.5 && FC01_flag)
+                {
+                    ControlStatus[label51] = 1;
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label51] = 0;
+                    label19.Visible = false;
+                }
+                //FC02
+                if (consumable4 > 47.5 && FC02_flag)
+                {
+                    ControlStatus[label52] = 1;
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label52] = 0;
+                    label19.Visible = false;
+                }
+                //CC_Print
+                if (consumable2 > 4.75 && CC_Print_flag)
+                {
+                    ControlStatus[label53] = 1;
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label53] = 0;
+                    label19.Visible = false;
+                }
+                //WS3_Print
+                if (consumable5 > 4.75 && WS3_Print_flag)
+                {
+                    ControlStatus[label54] = 1;
+                    label19.Visible = true;
+                }
+                else
+                {
+                    ControlStatus[label54] = 0;
+                    label19.Visible = false;
+                }
 
 
-            this.arcScaleComponent1.Value = consumable1;
-            this.label5.Text = consumable1.ToString() + " K";
+                this.arcScaleComponent1.Value = consumable1;
+                this.label5.Text = consumable1.ToString() + " K";
 
-            this.arcScaleComponent2.Value = consumable2;
-            this.label6.Text = consumable2.ToString() + " K";
+                this.arcScaleComponent2.Value = consumable2;
+                this.label6.Text = consumable2.ToString() + " K";
 
-            this.arcScaleComponent3.Value = consumable3;
-            this.label7.Text = consumable3.ToString() + " K";
+                this.arcScaleComponent3.Value = consumable3;
+                this.label7.Text = consumable3.ToString() + " K";
 
-            this.arcScaleComponent4.Value = consumable4;
-            this.label8.Text = consumable3.ToString() + " K";
+                this.arcScaleComponent4.Value = consumable4;
+                this.label8.Text = consumable3.ToString() + " K";
 
-            this.arcScaleComponent5.Value = consumable2;
-            this.label10.Text = consumable2.ToString() + " K";
+                this.arcScaleComponent5.Value = consumable2;
+                this.label10.Text = consumable2.ToString() + " K";
 
-            this.arcScaleComponent6.Value = consumable5;
-            this.label12.Text = consumable5.ToString() + " K";
+                this.arcScaleComponent6.Value = consumable5;
+                this.label12.Text = consumable5.ToString() + " K";
             }
             catch (Exception ex)
             {
@@ -794,7 +854,7 @@ namespace A8Project
                 //}
                 //this.chartControl1.Series.Add(series1);
                 #endregion
-                Series series1 = new Series("Output", ViewType.Point);
+                Series series1 = new Series("Output", ViewType.Line);
                 series1.DataSource = dt;
                 series1.ArgumentScaleType = ScaleType.Qualitative;
                 // 以哪个字段进行显示 
@@ -810,7 +870,7 @@ namespace A8Project
                 chartControl1.Series.Add(series1);
 
 
-                
+
 
 
                 Series series2 = new Series("Target", ViewType.Line);
@@ -914,9 +974,10 @@ namespace A8Project
                 diagram.AxisX.DateTimeScaleOptions.GridSpacing = 1;
                 diagram.AxisX.Label.Angle = 20;
                 diagram.AxisX.Label.Font = new Font("Arial", 9F);
-                diagram.AxisY.Label.Font = new Font("Arial", 9F);                
+                diagram.AxisY.Label.Font = new Font("Arial", 9F);
                 chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -970,7 +1031,7 @@ namespace A8Project
                 diagram.AxisY.WholeRange.SetMinMaxValues(0, 1);
                 chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
