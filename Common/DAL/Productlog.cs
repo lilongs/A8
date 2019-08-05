@@ -158,11 +158,18 @@ namespace Common.DAL
         /// <returns></returns>
         public DataTable GetTodayData()
         {
-            string sql = @"select DATEPART(hh, createtime) as hours,count(productno)as counts  
+            //string sql = @"select DATEPART(hh, createtime) as hours,count(productno)as counts  
+            //            from productlog
+            //            where DATEDIFF(DAY, createtime, GETDATE()) = 0
+            //            and equipment='CC' and key_process='START_OUT'
+            //            group by DATEPART(hh, createtime)";
+
+            string sql = @"select FORMAT(createtime, 'HH:mm') as mins,count(distinct productno)as counts  
                         from productlog
-                        where DATEDIFF(DAY, createtime, GETDATE()) = 0
+                        where DATEDIFF(DAY, createtime, GETDATE()) =0
                         and equipment='CC' and key_process='START_OUT'
-                        group by DATEPART(hh, createtime)";
+                        group by FORMAT(createtime, 'HH:mm')
+                        order by mins";
             return sqlconn.Query(sql).Tables[0];
         }
 

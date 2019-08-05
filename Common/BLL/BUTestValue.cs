@@ -23,38 +23,64 @@ namespace Common.BLL
         {
             DataTable dtData = productlog.GetTodayData();
             DataTable dt = new DataTable();
-            dt.Columns.Add("hours", Type.GetType("System.String"));
+            dt.Columns.Add("hours", Type.GetType("System.DateTime"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
-            for (int i = 1; i <= 24; i++)
+            double sum = 0d;
+            foreach(DataRow drs in dtData.Rows)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i + " O'clock";
-                DataRow[] dataRows = dtData.Select("hours=" + i + "");
-                if (dataRows.Length > 0)
-                {
-                    dr["counts"] = dataRows[0]["counts"].ToString();
-                }
-                else
-                {
-                    dr["counts"] = 0;
-                }
+                sum += Convert.ToDouble(drs["counts"]);
+                string min =drs["mins"].ToString();
+                dr["hours"] = Convert.ToDateTime(min);
+                dr["counts"] = sum;
                 dt.Rows.Add(dr);
             }
+            //for (int i = 1; i <= 24; i++)
+            //{
+            //    DataRow dr = dt.NewRow();
+            //    dr["hours"] = i + " O'clock";
+            //    DataRow[] dataRows = dtData.Select("hours=" + i + "");
+            //    if (dataRows.Length > 0)
+            //    {
+            //        dr["counts"] = dataRows[0]["counts"].ToString();
+            //    }
+            //    else
+            //    {
+            //        dr["counts"] = 0;
+            //    }
+            //    dt.Rows.Add(dr);
+            //}
             return dt;
+        }
+
+        public double ConvertHourFromMin(string time)
+        {
+            double result = 0d;
+            if (!String.IsNullOrEmpty(time))
+            {
+                string[] arr=time.Split(':');                
+                result =  Convert.ToDouble(arr[0])+Convert.ToDouble(arr[1])/60;
+            }
+            return result;
         }
 
         public DataTable GetTodayTarget()
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("hours", Type.GetType("System.String"));
+            dt.Columns.Add("hours", Type.GetType("System.DateTime"));
             dt.Columns.Add("counts", Type.GetType("System.Int32"));
-            for (int i = 1; i <= 24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["hours"] = i + " O'clock";
-                dr["counts"] = ConfigurationManager.AppSettings["OneHourProductionTarget"];
+                dr["hours"] = Convert.ToDateTime(i + ":00");
+                dr["counts"] = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"])*i;
                 dt.Rows.Add(dr);
             }
+            DataRow dr2 = dt.NewRow();
+            dr2["hours"] = Convert.ToDateTime("23:59");
+            dr2["counts"] = 1200;
+            dt.Rows.Add(dr2);
+
             return dt;
         }
 

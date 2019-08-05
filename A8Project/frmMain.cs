@@ -749,48 +749,64 @@ namespace A8Project
                 #endregion
 
                 #region 方式二，使用Points的方式进行数据赋值，适用于控制每个柱子的颜色
-                Series series1 = new Series("Output", ViewType.Bar);
-                SeriesPoint point = null;
-                foreach (DataRow row in dt.Rows)
-                {
-                    if (row["hours"] != null)
-                    {
-                        point = new SeriesPoint(row["hours"].ToString());
-                        double[] vals = { Convert.ToDouble(row["counts"]) };
-                        point.Values = vals;
-                        double counts = Convert.ToDouble(row["counts"]);
-                        double target = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]);
+                //Series series1 = new Series("Output", ViewType.Bar);
+                //SeriesPoint point = null;
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    if (row["hours"] != null)
+                //    {
+                //        point = new SeriesPoint(row["hours"].ToString());
+                //        double[] vals = { Convert.ToDouble(row["counts"]) };
+                //        point.Values = vals;
+                //        double counts = Convert.ToDouble(row["counts"]);
+                //        double target = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]);
 
-                        if (counts >= target)
-                            point.Color = Color.Green;
-                        else if ((target - 0.1 * target) <= counts && counts < target)
-                            point.Color = Color.Yellow;
-                        else
-                            point.Color = Color.Red;
-                        series1.Points.Add(point);
-                    }
-                }
-                this.chartControl1.Series.Add(series1);
+                //        if (counts >= target)
+                //            point.Color = Color.Green;
+                //        else if ((target - 0.1 * target) <= counts && counts < target)
+                //            point.Color = Color.Yellow;
+                //        else
+                //            point.Color = Color.Red;
+                //        series1.Points.Add(point);
+                //    }
+                //}
+                //this.chartControl1.Series.Add(series1);
                 #endregion
+                Series series1 = new Series("Output", ViewType.Point);
+                series1.DataSource = dt;
+                series1.ArgumentScaleType = ScaleType.Qualitative;
+                // 以哪个字段进行显示 
+                series1.ArgumentDataMember = "hours";
+                series1.ArgumentScaleType = ScaleType.DateTime;
+                series1.ValueScaleType = ScaleType.Numerical;
+                // 柱状图里的柱的取值字段
+                series1.ValueDataMembers.AddRange(new string[] { "counts" });
+                //绑定Series
+                chartControl1.Series.Add(series1);
+
 
                 Series series2 = new Series("Target", ViewType.Line);
                 series2.DataSource = dt2;
                 series2.ArgumentScaleType = ScaleType.Qualitative;
-
                 // 以哪个字段进行显示 
                 series2.ArgumentDataMember = "hours";
+                series2.ArgumentScaleType = ScaleType.DateTime;
                 series2.ValueScaleType = ScaleType.Numerical;
-                //series2.LabelsVisibility = DevExpress.Utils.DefaultBoolean.True;//标签
-
                 // 柱状图里的柱的取值字段
                 series2.ValueDataMembers.AddRange(new string[] { "counts" });
                 //绑定Series
                 chartControl1.Series.Add(series2);
 
                 XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
-                diagram.AxisX.GridSpacingAuto = false;
-                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.QualitativeScaleOptions.AutoGrid = false;
+                diagram.AxisX.DateTimeScaleOptions.ScaleMode = ScaleMode.Manual;//x轴是扫描轴，时间类型
+                diagram.AxisX.DateTimeScaleOptions.MeasureUnit = DateTimeMeasureUnit.Minute;//测量单位是秒这样才能显示到秒
+                diagram.AxisX.DateTimeScaleOptions.GridAlignment = DateTimeGridAlignment.Hour;
+                diagram.AxisX.DateTimeScaleOptions.GridSpacing = 1;
                 diagram.AxisX.Label.Angle = 30;
+                diagram.AxisX.WholeRange.AutoSideMargins = false;
+                diagram.AxisX.WholeRange.SideMarginsValue = 0;
+
                 diagram.AxisY.Label.Font = new Font("Arial", 9F);
                 chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             }
@@ -864,11 +880,11 @@ namespace A8Project
                 this.chartControl2.Series.Add(series2);
 
                 XYDiagram diagram = (XYDiagram)chartControl2.Diagram;
-                diagram.AxisX.GridSpacingAuto = false;
-                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.QualitativeScaleOptions.AutoGrid = false;
+                diagram.AxisX.DateTimeScaleOptions.GridSpacing = 1;
                 diagram.AxisX.Label.Angle = 20;
-                diagram.AxisY.Label.Font = new Font("Arial", 9F);
                 diagram.AxisX.Label.Font = new Font("Arial", 9F);
+                diagram.AxisY.Label.Font = new Font("Arial", 9F);                
                 chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             }catch(Exception ex)
             {
@@ -911,8 +927,8 @@ namespace A8Project
                 //绑定Series
                 this.chartControl3.Series.Add(series2);
                 XYDiagram diagram = (XYDiagram)chartControl3.Diagram;
-                diagram.AxisX.GridSpacingAuto = false;
-                diagram.AxisX.GridSpacing = 1;
+                diagram.AxisX.QualitativeScaleOptions.AutoGrid = false;
+                diagram.AxisX.DateTimeScaleOptions.GridSpacing = 1;
                 diagram.AxisX.Label.Angle = 20;
                 diagram.AxisY.Label.TextPattern = "{v:0.00%}";
                 diagram.AxisY.Label.Font = new Font("Arial", 9F);
