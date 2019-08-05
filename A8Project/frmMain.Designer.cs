@@ -853,7 +853,7 @@
             this.label19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(172)))), ((int)(((byte)(0)))));
             this.label19.Font = new System.Drawing.Font("黑体", 12F);
             this.label19.ForeColor = System.Drawing.Color.Red;
-            this.label19.Location = new System.Drawing.Point(430, 12);
+            this.label19.Location = new System.Drawing.Point(392, 11);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(136, 16);
             this.label19.TabIndex = 19;
@@ -1576,9 +1576,9 @@
             this.groupControl5.AppearanceCaption.Options.UseFont = true;
             this.groupControl5.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("groupControl5.CaptionImageOptions.Image")));
             this.groupControl5.Controls.Add(this.chartControl3);
-            this.groupControl5.Location = new System.Drawing.Point(140, 1);
+            this.groupControl5.Location = new System.Drawing.Point(140, 0);
             this.groupControl5.Name = "groupControl5";
-            this.groupControl5.Size = new System.Drawing.Size(415, 460);
+            this.groupControl5.Size = new System.Drawing.Size(415, 471);
             this.groupControl5.TabIndex = 3;
             this.groupControl5.Text = "FPY=AC_FPY*CC_FPY*FC1_FPY*FC2_FPY";
             // 
@@ -1590,7 +1590,7 @@
             this.chartControl3.Location = new System.Drawing.Point(2, 39);
             this.chartControl3.Name = "chartControl3";
             this.chartControl3.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
-            this.chartControl3.Size = new System.Drawing.Size(411, 419);
+            this.chartControl3.Size = new System.Drawing.Size(411, 430);
             this.chartControl3.TabIndex = 2;
             chartTitle4.Font = new System.Drawing.Font("Tahoma", 15F);
             chartTitle4.Text = "";
@@ -1608,9 +1608,9 @@
             this.groupControl4.AppearanceCaption.Options.UseFont = true;
             this.groupControl4.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("groupControl4.CaptionImageOptions.Image")));
             this.groupControl4.Controls.Add(this.chartControl2);
-            this.groupControl4.Location = new System.Drawing.Point(0, 3);
+            this.groupControl4.Location = new System.Drawing.Point(0, 2);
             this.groupControl4.Name = "groupControl4";
-            this.groupControl4.Size = new System.Drawing.Size(415, 460);
+            this.groupControl4.Size = new System.Drawing.Size(415, 467);
             this.groupControl4.TabIndex = 2;
             this.groupControl4.Text = "OutputHistory";
             // 
@@ -1622,7 +1622,7 @@
             this.chartControl2.Location = new System.Drawing.Point(2, 39);
             this.chartControl2.Name = "chartControl2";
             this.chartControl2.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
-            this.chartControl2.Size = new System.Drawing.Size(411, 419);
+            this.chartControl2.Size = new System.Drawing.Size(411, 426);
             this.chartControl2.TabIndex = 1;
             chartTitle5.Font = new System.Drawing.Font("Tahoma", 15F);
             chartTitle5.Text = "";

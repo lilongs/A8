@@ -803,8 +803,14 @@ namespace A8Project
                 series1.ValueScaleType = ScaleType.Numerical;
                 // 柱状图里的柱的取值字段
                 series1.ValueDataMembers.AddRange(new string[] { "counts" });
+                // 点系列视图属性设置
+                PointSeriesView myView1 = (PointSeriesView)series1.View;
+                myView1.PointMarkerOptions.Size = 4;//标记大小
                 //绑定Series
                 chartControl1.Series.Add(series1);
+
+
+                
 
 
                 Series series2 = new Series("Target", ViewType.Line);
@@ -816,6 +822,8 @@ namespace A8Project
                 series2.ValueScaleType = ScaleType.Numerical;
                 // 柱状图里的柱的取值字段
                 series2.ValueDataMembers.AddRange(new string[] { "counts" });
+                PointSeriesView myView2 = (PointSeriesView)series2.View;
+                myView2.PointMarkerOptions.Size = 4;//标记大小
                 //绑定Series
                 chartControl1.Series.Add(series2);
 
