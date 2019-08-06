@@ -222,24 +222,6 @@ namespace Common.BLL
             return dt;
         }
 
-        /// <summary>
-        /// 获取每个站点的Process_IN次数
-        /// </summary>
-        /// <param name="site"></param>
-        /// <returns></returns>
-        public int GetSiteCount(string site)
-        {
-            int result = 0;
-            DataTable dt = productlog.GetSiteCount(site);
-            if (dt.Rows.Count > 0)
-            {
-                return result = Convert.ToInt32(dt.Rows[0]["counts"]);
-            }
-            else
-            {
-                return result;
-            }
-        }
 
         /// <summary>
         /// 计算一年12月的FPY

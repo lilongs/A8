@@ -198,18 +198,6 @@ namespace Common.DAL
             return sqlconn.Query(sql).Tables[0];
         }
 
-        /// <summary>
-        /// 获取每个站点Process_IN的产品数的次数
-        /// </summary>
-        /// <param name="site"></param>
-        /// <returns></returns>
-        public DataTable GetSiteCount(string site)
-        {
-            string sql = @"select '" + site + @"' as site,count(productno) as counts 
-                        from productlog
-                        where equipment like '%" + site + "%' and key_process='Process_IN'";
-            return sqlconn.Query(sql).Tables[0];
-        }
 
         /// <summary>
         /// 计算一年12月的FPY，FPY=AC_FPY*CC_FPY*FC_FPY
@@ -314,5 +302,7 @@ namespace Common.DAL
                         where key_process='Process_IN' and equipment='" + equipment + "' and productno='"+ productno + "'";
             return sqlconn.Exists(sql);
         }
+
+        
     }
 }

@@ -184,6 +184,30 @@ namespace A8Project
                                 list.Add("pass");
                                 sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                                 GetProductLog(list[0], EquipmentInfo[list[1]], list[3], "", "", now);
+
+                                //累计进站AC.CC.FC01.FC02探针和WS3打印纸使用次数
+                                Sys_reset_flag reset = new Sys_reset_flag();
+                                switch (EquipmentInfo[list[1]])
+                                {
+                                    case "CC":
+                                        reset.Process_IN_CountIncrease("CC_Print", 1);
+                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                        break;
+                                    case "WS3":
+                                        reset.Process_IN_CountIncrease("WS3_Print", 1);
+                                        break;
+                                    case "AC":
+                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                        break;
+                                    case "FC01":
+                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                        break;
+                                    case "FC02":
+                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                        break;
+                                    default:
+                                        break;
+                                }                                                               
                             }
                             else
                             {
@@ -747,39 +771,6 @@ namespace A8Project
             //textBox1.AppendText("朗读位置:" + InputWordLength.ToString() + "\r\n");
         }
 
-        //public static uint SND_ASYNC = 0x0001; // play asynchronously
-        //public static uint SND_FILENAME = 0x00020000; // name is file name
-        //[DllImport("winmm.dll")]
-        //public static extern int mciSendString(string m_strCmd, string m_strReceive, int m_v1, int m_v2);
-        //[DllImport("Kernel32", CharSet = CharSet.Auto)]
-        //static extern Int32 GetShortPathName(String path, StringBuilder shortPath, Int32 shortPathLength);
-
-        private void Speaker(object text)
-        {
-            try
-            {
-                //string name = Application.StartupPath+"/Alarm.mp3";
-                //StringBuilder shortpath = new StringBuilder(80);
-                //int result = GetShortPathName(name, shortpath, shortpath.Capacity);
-                //name=shortpath.ToString();
-                //mciSendString(@"close all",null,0,0);
-                //mciSendString(@"open "+name+" alias song",null,0,0); //打开
-                //mciSendString("play song",null,0,0); //播放
-                //mciSendString("setaudio NOWMUSIC volume to 1", null,0,0);//设置音量
-
-                //SpVoice voice = new SpVoice();
-                //voice.Rate = 2; //语速,[-10,10]
-                //voice.Volume = 100; //音量,[0,100]
-                //voice.Voice = voice.GetVoices().Item(0); //语音库
-                //voice.Speak(text.ToString());
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         private void ShowMSG(string msg)
         {
             listBoxMessage.BeginInvoke((MethodInvoker)delegate
@@ -813,53 +804,21 @@ namespace A8Project
         {
             try
             {
+                Sys_reset_flag reset = new Sys_reset_flag();
+                DataTable dtProcessInCounts = new DataTable();
+                dtProcessInCounts = reset.GetResetInfo();
                 //查询获得AC、CC、FC等站点Process_IN实际过站次数
-                float consumable1 = (float)(buTestValue.GetSiteCount("AC") / 1000.0) % 50;
-                float consumable2 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 50;
-                float consumable3 = (float)(buTestValue.GetSiteCount("FC01") / 1000.0) % 50;
-                float consumable4 = (float)(buTestValue.GetSiteCount("FC02") / 1000.0) % 50;
+                float consumable1 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='AC'")[0]["Process_IN_Counts"]) / 1000.0) ;
+                float consumable2 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='CC'")[0]["Process_IN_Counts"]) / 1000.0);
+                float consumable3 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='FC01'")[0]["Process_IN_Counts"]) / 1000.0) ;
+                float consumable4 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='FC02'")[0]["Process_IN_Counts"]) / 1000.0) ;
 
-                float consumable5 = (float)(buTestValue.GetSiteCount("WS3") / 1000.0) % 5;
-                float consumable6 = (float)(buTestValue.GetSiteCount("CC") / 1000.0) % 5;
+                float consumable5 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='WS3_Print'")[0]["Process_IN_Counts"]) / 1000.0) ;
+                float consumable6 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='CC_Print'")[0]["Process_IN_Counts"]) / 1000.0) ;
 
-                Sys_reset_flag flag = new Sys_reset_flag();
-                if (consumable1 == 47.5)
-                {
-                    flag.updateResetFlag("AC", 1);
-                }
-                if (consumable2 == 47.5)
-                {
-                    flag.updateResetFlag("CC", 1);
-                }
-                if (consumable3 == 47.5)
-                {
-                    flag.updateResetFlag("FC01", 1);
-                }
-                if (consumable4 == 47.5)
-                {
-                    flag.updateResetFlag("FC02", 1);
-                }
 
-                if (consumable5 == 4.5)
-                {
-                    flag.updateResetFlag("WS3_Print", 1);
-                }
-                if (consumable6 == 4.75)
-                {
-                    flag.updateResetFlag("CC_Print", 1);
-                }
-
-                DataTable dtFlag = flag.getResetFlag();
-                bool AC_flag = Convert.ToBoolean(dtFlag.Select("keyname='AC'")[0]["flag"]);
-                bool CC_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC'")[0]["flag"]);
-                bool FC01_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC01'")[0]["flag"]);
-                bool FC02_flag = Convert.ToBoolean(dtFlag.Select("keyname='FC02'")[0]["flag"]);
-                bool WS3_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='WS3_Print'")[0]["flag"]);
-                bool CC_Print_flag = Convert.ToBoolean(dtFlag.Select("keyname='CC_Print'")[0]["flag"]);
-
-                //bool开关量用来作重置标识
                 //AC
-                if (consumable1 > 47.5 && AC_flag)
+                if (consumable1 > 47.5)
                 {
                     ControlStatus[label49] = 1;
                     label19.Visible = true;                    
@@ -870,7 +829,7 @@ namespace A8Project
                     label19.Visible = false;
                 }
                 //CC
-                if (consumable2 > 47.5 && CC_flag)
+                if (consumable2 > 47.5)
                 {
                     ControlStatus[label50] = 1;
 
@@ -883,7 +842,7 @@ namespace A8Project
                     label19.Visible = false;
                 }
                 //FC01
-                if (consumable3 > 47.5 && FC01_flag)
+                if (consumable3 > 47.5)
                 {
                     ControlStatus[label51] = 1;
                     label19.Visible = true;
@@ -894,7 +853,7 @@ namespace A8Project
                     label19.Visible = false;
                 }
                 //FC02
-                if (consumable4 > 47.5 && FC02_flag)
+                if (consumable4 > 47.5)
                 {
                     ControlStatus[label52] = 1;
                     label19.Visible = true;
@@ -905,7 +864,7 @@ namespace A8Project
                     label19.Visible = false;
                 }
                 //CC_Print
-                if (consumable2 > 4.75 && CC_Print_flag)
+                if (consumable6 > 4.75)
                 {
                     ControlStatus[label53] = 1;
                     label19.Visible = true;
@@ -916,7 +875,7 @@ namespace A8Project
                     label19.Visible = false;
                 }
                 //WS3_Print
-                if (consumable5 > 4.75 && WS3_Print_flag)
+                if (consumable5 > 4.75)
                 {
                     ControlStatus[label54] = 1;
                     label19.Visible = true;
@@ -940,8 +899,8 @@ namespace A8Project
                 this.arcScaleComponent4.Value = consumable4;
                 this.label8.Text = consumable3.ToString() + " K";
 
-                this.arcScaleComponent5.Value = consumable2;
-                this.label10.Text = consumable2.ToString() + " K";
+                this.arcScaleComponent5.Value = consumable6;
+                this.label10.Text = consumable6.ToString() + " K";
 
                 this.arcScaleComponent6.Value = consumable5;
                 this.label12.Text = consumable5.ToString() + " K";

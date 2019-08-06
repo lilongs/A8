@@ -310,6 +310,7 @@ namespace CallSystem
                             break;
                         case "耗材重置":
                             frmReset frmReset = new frmReset();
+                            frmReset.username = barStaticItem2.Caption;
                             frmReset.ShowDialog();
                             return;
                         default:
