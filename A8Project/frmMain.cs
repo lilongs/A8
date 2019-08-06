@@ -677,8 +677,7 @@ namespace A8Project
                         LoadTodayData();
                         LoadYearMonth();
                         LoadYearMonthFPY();
-                        LoadErrorInfo();
-                        LoadConsumables();
+                      
 
                         progressBarControl1.Position = 60;
                         labelControl2.Text = progressBarControl1.Position.ToString() + "S";
