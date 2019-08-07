@@ -28,6 +28,12 @@
         "Entry"
         {
         "MsmKey" = "8:_0FA7E00F978E386CFB475DCD8C927B52"
+        "OwnerKey" = "8:_F73E668440694935A1D02CC86B499A7B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0FA7E00F978E386CFB475DCD8C927B52"
         "OwnerKey" = "8:_769CC026BED84F7B876BBCD37BA0BC7C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -41,6 +47,12 @@
         {
         "MsmKey" = "8:_1E3711C82ED0F129B83F3831BF060161"
         "OwnerKey" = "8:_0FA7E00F978E386CFB475DCD8C927B52"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1E3711C82ED0F129B83F3831BF060161"
+        "OwnerKey" = "8:_F73E668440694935A1D02CC86B499A7B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -65,6 +77,12 @@
         {
         "MsmKey" = "8:_3B7A779AA6C614E6E7A5975ACFFE60DF"
         "OwnerKey" = "8:_0FA7E00F978E386CFB475DCD8C927B52"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3B7A779AA6C614E6E7A5975ACFFE60DF"
+        "OwnerKey" = "8:_F73E668440694935A1D02CC86B499A7B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -159,6 +177,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_92D7C84904874ED88E2881D791980159"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A770B46BED0647DB8E66D85D33121E0F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -183,8 +207,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F73E668440694935A1D02CC86B499A7B"
+        "OwnerKey" = "8:_769CC026BED84F7B876BBCD37BA0BC7C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_769CC026BED84F7B876BBCD37BA0BC7C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F73E668440694935A1D02CC86B499A7B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -690,6 +726,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_92D7C84904874ED88E2881D791980159"
+            {
+            "SourcePath" = "8:..\\Icon\\logo.ico"
+            "TargetName" = "8:logo.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_44EB87E6EDDF4DB2BEF8DD5064418BF8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A770B46BED0647DB8E66D85D33121E0F"
             {
             "SourcePath" = "8:..\\Icon\\phone_call_32px_1232369_easyicon.net.ico"
@@ -803,6 +859,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F73E668440694935A1D02CC86B499A7B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraBars.v17.1, Version=17.1.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F73E668440694935A1D02CC86B499A7B"
+                    {
+                    "Name" = "8:DevExpress.XtraBars.v17.1.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraBars.v17.1.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_44EB87E6EDDF4DB2BEF8DD5064418BF8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -860,7 +947,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CallOutSetup"
         "ProductCode" = "8:{92E67613-7E44-4785-958D-172406003249}"
-        "PackageCode" = "8:{ACE42B27-AB50-4DE9-856F-181567E9C013}"
+        "PackageCode" = "8:{E322DC16-2BE2-4656-816E-1DF2AA627077}"
         "UpgradeCode" = "8:{D59137E4-E82F-4206-89D9-E8D902AFEFFA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
