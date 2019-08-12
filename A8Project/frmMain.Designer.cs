@@ -158,6 +158,8 @@
             this.Six_timer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label30 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
@@ -1303,12 +1305,14 @@
             this.groupControl7.AppearanceCaption.Options.UseFont = true;
             this.groupControl7.CaptionImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("groupControl7.CaptionImageOptions.Image")));
             this.groupControl7.ContentImage = ((System.Drawing.Image)(resources.GetObject("groupControl7.ContentImage")));
+            this.groupControl7.Controls.Add(this.label38);
+            this.groupControl7.Controls.Add(this.label30);
+            this.groupControl7.Controls.Add(this.label40);
             this.groupControl7.Controls.Add(this.label34);
             this.groupControl7.Controls.Add(this.listBoxMessage);
             this.groupControl7.Controls.Add(this.label13);
             this.groupControl7.Controls.Add(this.label36);
             this.groupControl7.Controls.Add(this.label46);
-            this.groupControl7.Controls.Add(this.label38);
             this.groupControl7.Controls.Add(this.label48);
             this.groupControl7.Controls.Add(this.label37);
             this.groupControl7.Controls.Add(this.label47);
@@ -1392,9 +1396,9 @@
             this.label38.Font = new System.Drawing.Font("黑体", 10F);
             this.label38.Location = new System.Drawing.Point(288, 178);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(77, 14);
+            this.label38.Size = new System.Drawing.Size(91, 14);
             this.label38.TabIndex = 18;
-            this.label38.Text = "FC物料呼叫";
+            this.label38.Text = "FC02物料呼叫";
             this.label38.Visible = false;
             // 
             // label48
@@ -1403,7 +1407,7 @@
             this.label48.BackColor = System.Drawing.Color.Transparent;
             this.label48.Font = new System.Drawing.Font("Tahoma", 30F);
             this.label48.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label48.Location = new System.Drawing.Point(323, 192);
+            this.label48.Location = new System.Drawing.Point(321, 185);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(44, 48);
             this.label48.TabIndex = 17;
@@ -1711,6 +1715,30 @@
             this.timer2.Interval = 1000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(218)))), ((int)(((byte)(218)))));
+            this.label30.Font = new System.Drawing.Font("黑体", 10F);
+            this.label30.Location = new System.Drawing.Point(202, 178);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(91, 14);
+            this.label30.TabIndex = 26;
+            this.label30.Text = "FC01物料呼叫";
+            this.label30.Visible = false;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.BackColor = System.Drawing.Color.Transparent;
+            this.label40.Font = new System.Drawing.Font("Tahoma", 30F);
+            this.label40.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label40.Location = new System.Drawing.Point(273, 185);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(44, 48);
+            this.label40.TabIndex = 25;
+            this.label40.Text = "●";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1912,6 +1940,8 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ListBox listBoxMessage;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label40;
     }
 }
 

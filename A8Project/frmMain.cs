@@ -17,6 +17,7 @@ using Common.BLL;
 using System.IO.Ports;
 using HPSocketCS;
 using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
+using SpeechLib;
 
 namespace A8Project
 {
@@ -79,8 +80,8 @@ namespace A8Project
                 //启动server
                 SocketStart();
                 #endregion
-                //为label41-label53赋值，默认状态0：常绿
-                for (int i = 41; i < 53; i++)
+                //为label40-label53赋值，默认状态0：常绿
+                for (int i = 40; i < 53; i++)
                 {
                     ControlStatus.Add(((Label)this.Controls.Find("label" + i.ToString(), true)[0]), 0);
                 }
@@ -431,6 +432,24 @@ namespace A8Project
                                     });
                                 }
                             }
+                            else if(title.Contains("FC01")){
+                                if (!title.Contains("物料"))
+                                {
+                                    this.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        if (flag == 0)
+                                        {
+                                            label30.Visible = false;
+                                        }
+                                        else
+                                        {
+                                            label30.Visible = true;
+                                        }
+                                        label30.Text = title;
+                                        ControlStatus[label40] = flag;
+                                    });
+                                }
+                            }
                             else
                             {
                                 if (!title.Contains("物料"))
@@ -472,6 +491,15 @@ namespace A8Project
             return HandleResult.Ok;
         }
 
+        private void Speaker(string text)
+        {
+            SpVoice voice = new SpVoice();
+            voice.Rate = 1; //语速,[-10,10]
+            voice.Volume = 100; //音量,[0,100]
+            voice.Voice = voice.GetVoices().Item(0); //语音库
+            voice.Speak(text);
+        }
+
         private void ShowMSG(string msg)
         {
             listBoxMessage.BeginInvoke((MethodInvoker)delegate
@@ -507,6 +535,57 @@ namespace A8Project
                         item.Key.ForeColor = Color.Red;
                     else
                         item.Key.ForeColor = this.BackColor;
+                    switch (item.Key.Name)
+                    {
+                        case "label40":
+                            Speaker("FC01维修呼叫");
+                            break;
+                        case "label41":
+                            Speaker("WS1维修呼叫");
+                            break;
+                        case "label42":
+                            Speaker("WS2维修呼叫");
+                            break;
+                        case "label43":
+                            Speaker("WS3维修呼叫");
+                            break;
+                        case "label44":
+                            Speaker("WS4维修呼叫");
+                            break;
+                        case "label45":
+                            Speaker("Run-In维修呼叫");
+                            break;
+                        case "label46":
+                            Speaker("AC维修呼叫");
+                            break;
+                        case "label47":
+                            Speaker("CC维修呼叫");
+                            break;
+                        case "label48":
+                            Speaker("FC02维修呼叫");
+                            break;
+                       
+                        case "label49":
+                            Speaker("请更换AC探针");
+                            break;
+                        case "label50":
+                            Speaker("请更换CC探针");
+                            break;
+                        case "label51":
+                            Speaker("请更换FC01探针");
+                            break;
+                        case "label52":
+                            Speaker("请更换FC02探针");
+                            break;
+                        case "label53":
+                            Speaker("请更换CC打印纸");
+                            break;
+                        case "label54":
+                            Speaker("请更换WS3打印纸");
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 else if (item.Value == 2)
                 {
@@ -695,7 +774,7 @@ namespace A8Project
                 if (consumable1 > 47.5 && AC_flag)
                 {
                     ControlStatus[label49] = 1;
-                    label19.Visible = true;
+                    label19.Visible = true;                    
                 }
                 else
                 {
