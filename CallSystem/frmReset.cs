@@ -25,8 +25,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("AC", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("AC", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
@@ -38,8 +42,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("CC", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("CC", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
@@ -51,8 +59,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("FC01", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("FC01", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
@@ -64,8 +76,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("FC02", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("FC02", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
@@ -77,8 +93,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("CC_Print", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("CC_Print", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
@@ -90,8 +110,12 @@ namespace CallSystem
         {
             try
             {
-                bool result = sys_Reset_.updateResetFlag("WS3_Print", 0);
-                MessageBox.Show(result ? "重置成功" : "重置失败");
+                DialogResult dr = MessageBox.Show("确认重置？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.OK)
+                {
+                    bool result = sys_Reset_.updateResetFlag("WS3_Print", 0);
+                    MessageBox.Show(result ? "重置成功" : "重置失败");
+                }
             }
             catch (Exception ex)
             {
