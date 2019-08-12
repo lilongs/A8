@@ -18,6 +18,7 @@ using System.IO.Ports;
 using HPSocketCS;
 using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
 using SpeechLib;
+using System.Runtime.InteropServices;
 
 namespace A8Project
 {
@@ -491,13 +492,36 @@ namespace A8Project
             return HandleResult.Ok;
         }
 
+        //public static uint SND_ASYNC = 0x0001; // play asynchronously
+        //public static uint SND_FILENAME = 0x00020000; // name is file name
+        //[DllImport("winmm.dll")]
+        //public static extern int mciSendString(string m_strCmd, string m_strReceive, int m_v1, int m_v2);
+        //[DllImport("Kernel32", CharSet = CharSet.Auto)]
+        //static extern Int32 GetShortPathName(String path, StringBuilder shortPath, Int32 shortPathLength);
+
         private void Speaker(string text)
         {
-            SpVoice voice = new SpVoice();
-            voice.Rate = 1; //语速,[-10,10]
-            voice.Volume = 100; //音量,[0,100]
-            voice.Voice = voice.GetVoices().Item(0); //语音库
-            voice.Speak(text);
+            try
+            {
+                //string name = Application.StartupPath+"/Alarm.mp3";
+                //StringBuilder shortpath = new StringBuilder(80);
+                //int result = GetShortPathName(name, shortpath, shortpath.Capacity);
+                //name=shortpath.ToString();
+                //mciSendString(@"close all",null,0,0);
+                //mciSendString(@"open "+name+" alias song",null,0,0); //打开
+                //mciSendString("play song",null,0,0); //播放
+                //mciSendString("setaudio NOWMUSIC volume to 1", null,0,0);//设置音量
+
+                SpVoice voice = new SpVoice();
+                voice.Rate = 2; //语速,[-10,10]
+                voice.Volume = 100; //音量,[0,100]
+                voice.Voice = voice.GetVoices().Item(0); //语音库
+                voice.Speak(text);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void ShowMSG(string msg)
@@ -521,86 +545,93 @@ namespace A8Project
         /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
-            foreach (var item in ControlStatus)
+            try
             {
-                if (item.Value == 0)
+                foreach (var item in ControlStatus)
                 {
-                    //绿
-                    item.Key.ForeColor = Color.Green;
-                }
-                else if (item.Value == 1)
-                {
-                    //闪红
-                    if (item.Key.ForeColor == Color.Green || item.Key.ForeColor == this.BackColor)
-                        item.Key.ForeColor = Color.Red;
-                    else
-                        item.Key.ForeColor = this.BackColor;
-                    switch (item.Key.Name)
+                    if (item.Value == 0)
                     {
-                        case "label40":
-                            Speaker("FC01维修呼叫");
-                            break;
-                        case "label41":
-                            Speaker("WS1维修呼叫");
-                            break;
-                        case "label42":
-                            Speaker("WS2维修呼叫");
-                            break;
-                        case "label43":
-                            Speaker("WS3维修呼叫");
-                            break;
-                        case "label44":
-                            Speaker("WS4维修呼叫");
-                            break;
-                        case "label45":
-                            Speaker("Run-In维修呼叫");
-                            break;
-                        case "label46":
-                            Speaker("AC维修呼叫");
-                            break;
-                        case "label47":
-                            Speaker("CC维修呼叫");
-                            break;
-                        case "label48":
-                            Speaker("FC02维修呼叫");
-                            break;
-                       
-                        case "label49":
-                            Speaker("请更换AC探针");
-                            break;
-                        case "label50":
-                            Speaker("请更换CC探针");
-                            break;
-                        case "label51":
-                            Speaker("请更换FC01探针");
-                            break;
-                        case "label52":
-                            Speaker("请更换FC02探针");
-                            break;
-                        case "label53":
-                            Speaker("请更换CC打印纸");
-                            break;
-                        case "label54":
-                            Speaker("请更换WS3打印纸");
-                            break;
-                        default:
-                            break;
+                        //绿
+                        item.Key.ForeColor = Color.Green;
+                    }
+                    else if (item.Value == 1)
+                    {
+                        //闪红
+                        if (item.Key.ForeColor == Color.Green || item.Key.ForeColor == this.BackColor)
+                            item.Key.ForeColor = Color.Red;
+                        else
+                            item.Key.ForeColor = this.BackColor;
+                        switch (item.Key.Name)
+                        {
+                            case "label40":
+                                Speaker("FC01维修呼叫");
+                                break;
+                            case "label41":
+                                Speaker("WS1维修呼叫");
+                                break;
+                            case "label42":
+                                Speaker("WS2维修呼叫");
+                                break;
+                            case "label43":
+                                Speaker("WS3维修呼叫");
+                                break;
+                            case "label44":
+                                Speaker("WS4维修呼叫");
+                                break;
+                            case "label45":
+                                Speaker("Run-In维修呼叫");
+                                break;
+                            case "label46":
+                                Speaker("AC维修呼叫");
+                                break;
+                            case "label47":
+                                Speaker("CC维修呼叫");
+                                break;
+                            case "label48":
+                                Speaker("FC02维修呼叫");
+                                break;
+
+                            case "label49":
+                                Speaker("请更换AC探针");
+                                break;
+                            case "label50":
+                                Speaker("请更换CC探针");
+                                break;
+                            case "label51":
+                                Speaker("请更换FC01探针");
+                                break;
+                            case "label52":
+                                Speaker("请更换FC02探针");
+                                break;
+                            case "label53":
+                                Speaker("请更换CC打印纸");
+                                break;
+                            case "label54":
+                                Speaker("请更换WS3打印纸");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else if (item.Value == 2)
+                    {
+                        //红
+                        item.Key.ForeColor = Color.Red;
+                    }
+                    else if (item.Value == 3)
+                    {
+                        //闪绿
+                        if (item.Key.ForeColor == Color.Red || item.Key.ForeColor == this.BackColor)
+                            item.Key.ForeColor = Color.Green;
+                        else
+                            item.Key.ForeColor = this.BackColor;
+
                     }
                 }
-                else if (item.Value == 2)
-                {
-                    //红
-                    item.Key.ForeColor = Color.Red;
-                }
-                else if (item.Value == 3)
-                {
-                    //闪绿
-                    if (item.Key.ForeColor == Color.Red || item.Key.ForeColor == this.BackColor)
-                        item.Key.ForeColor = Color.Green;
-                    else
-                        item.Key.ForeColor = this.BackColor;
-
-                }
+            }
+            catch(Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
             }
         }
 
