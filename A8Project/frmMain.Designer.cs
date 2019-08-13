@@ -30,30 +30,30 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange64 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange65 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange66 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange67 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange68 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange69 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange70 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange71 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange72 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange73 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange74 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange75 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange76 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange77 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange78 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange79 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange80 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange81 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange82 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange83 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange84 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraCharts.ChartTitle chartTitle10 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.ChartTitle chartTitle11 = new DevExpress.XtraCharts.ChartTitle();
-            DevExpress.XtraCharts.ChartTitle chartTitle12 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange1 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange2 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange3 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange4 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange5 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange6 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange7 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange8 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange9 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange10 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange11 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange12 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange13 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange14 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange15 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange16 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange17 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange18 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange19 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange20 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange21 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraCharts.ChartTitle chartTitle1 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.ChartTitle chartTitle2 = new DevExpress.XtraCharts.ChartTitle();
+            DevExpress.XtraCharts.ChartTitle chartTitle3 = new DevExpress.XtraCharts.ChartTitle();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.gdcHistory = new DevExpress.XtraGrid.GridControl();
@@ -462,30 +462,30 @@
             this.arcScaleComponent4.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent4.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent4.Name = "scale1";
-            arcScaleRange64.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange64.EndThickness = 14F;
-            arcScaleRange64.EndValue = 40F;
-            arcScaleRange64.Name = "Range0";
-            arcScaleRange64.ShapeOffset = 0F;
-            arcScaleRange64.StartThickness = 14F;
-            arcScaleRange65.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange65.EndThickness = 14F;
-            arcScaleRange65.EndValue = 47.5F;
-            arcScaleRange65.Name = "Range1";
-            arcScaleRange65.ShapeOffset = 0F;
-            arcScaleRange65.StartThickness = 14F;
-            arcScaleRange65.StartValue = 40F;
-            arcScaleRange66.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange66.EndThickness = 14F;
-            arcScaleRange66.EndValue = 50F;
-            arcScaleRange66.Name = "Range2";
-            arcScaleRange66.ShapeOffset = 0F;
-            arcScaleRange66.StartThickness = 14F;
-            arcScaleRange66.StartValue = 47.5F;
+            arcScaleRange1.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange1.EndThickness = 14F;
+            arcScaleRange1.EndValue = 40F;
+            arcScaleRange1.Name = "Range0";
+            arcScaleRange1.ShapeOffset = 0F;
+            arcScaleRange1.StartThickness = 14F;
+            arcScaleRange2.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange2.EndThickness = 14F;
+            arcScaleRange2.EndValue = 47.5F;
+            arcScaleRange2.Name = "Range1";
+            arcScaleRange2.ShapeOffset = 0F;
+            arcScaleRange2.StartThickness = 14F;
+            arcScaleRange2.StartValue = 40F;
+            arcScaleRange3.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange3.EndThickness = 14F;
+            arcScaleRange3.EndValue = 50F;
+            arcScaleRange3.Name = "Range2";
+            arcScaleRange3.ShapeOffset = 0F;
+            arcScaleRange3.StartThickness = 14F;
+            arcScaleRange3.StartValue = 47.5F;
             this.arcScaleComponent4.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange64,
-            arcScaleRange65,
-            arcScaleRange66});
+            arcScaleRange1,
+            arcScaleRange2,
+            arcScaleRange3});
             this.arcScaleComponent4.StartAngle = -240F;
             this.arcScaleComponent4.Value = 10F;
             // 
@@ -580,30 +580,30 @@
             this.arcScaleComponent3.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent3.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent3.Name = "scale1";
-            arcScaleRange67.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange67.EndThickness = 14F;
-            arcScaleRange67.EndValue = 40F;
-            arcScaleRange67.Name = "Range0";
-            arcScaleRange67.ShapeOffset = 0F;
-            arcScaleRange67.StartThickness = 14F;
-            arcScaleRange68.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange68.EndThickness = 14F;
-            arcScaleRange68.EndValue = 47.5F;
-            arcScaleRange68.Name = "Range1";
-            arcScaleRange68.ShapeOffset = 0F;
-            arcScaleRange68.StartThickness = 14F;
-            arcScaleRange68.StartValue = 40F;
-            arcScaleRange69.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange69.EndThickness = 14F;
-            arcScaleRange69.EndValue = 50F;
-            arcScaleRange69.Name = "Range2";
-            arcScaleRange69.ShapeOffset = 0F;
-            arcScaleRange69.StartThickness = 14F;
-            arcScaleRange69.StartValue = 47.5F;
+            arcScaleRange4.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange4.EndThickness = 14F;
+            arcScaleRange4.EndValue = 40F;
+            arcScaleRange4.Name = "Range0";
+            arcScaleRange4.ShapeOffset = 0F;
+            arcScaleRange4.StartThickness = 14F;
+            arcScaleRange5.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange5.EndThickness = 14F;
+            arcScaleRange5.EndValue = 47.5F;
+            arcScaleRange5.Name = "Range1";
+            arcScaleRange5.ShapeOffset = 0F;
+            arcScaleRange5.StartThickness = 14F;
+            arcScaleRange5.StartValue = 40F;
+            arcScaleRange6.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange6.EndThickness = 14F;
+            arcScaleRange6.EndValue = 50F;
+            arcScaleRange6.Name = "Range2";
+            arcScaleRange6.ShapeOffset = 0F;
+            arcScaleRange6.StartThickness = 14F;
+            arcScaleRange6.StartValue = 47.5F;
             this.arcScaleComponent3.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange67,
-            arcScaleRange68,
-            arcScaleRange69});
+            arcScaleRange4,
+            arcScaleRange5,
+            arcScaleRange6});
             this.arcScaleComponent3.StartAngle = -240F;
             // 
             // arcScaleNeedleComponent1
@@ -697,30 +697,30 @@
             this.arcScaleComponent1.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent1.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent1.Name = "scale1";
-            arcScaleRange70.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange70.EndThickness = 14F;
-            arcScaleRange70.EndValue = 40F;
-            arcScaleRange70.Name = "Range0";
-            arcScaleRange70.ShapeOffset = 0F;
-            arcScaleRange70.StartThickness = 14F;
-            arcScaleRange71.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange71.EndThickness = 14F;
-            arcScaleRange71.EndValue = 47.5F;
-            arcScaleRange71.Name = "Range1";
-            arcScaleRange71.ShapeOffset = 0F;
-            arcScaleRange71.StartThickness = 14F;
-            arcScaleRange71.StartValue = 40F;
-            arcScaleRange72.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange72.EndThickness = 14F;
-            arcScaleRange72.EndValue = 50F;
-            arcScaleRange72.Name = "Range2";
-            arcScaleRange72.ShapeOffset = 0F;
-            arcScaleRange72.StartThickness = 14F;
-            arcScaleRange72.StartValue = 47.5F;
+            arcScaleRange7.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange7.EndThickness = 14F;
+            arcScaleRange7.EndValue = 40F;
+            arcScaleRange7.Name = "Range0";
+            arcScaleRange7.ShapeOffset = 0F;
+            arcScaleRange7.StartThickness = 14F;
+            arcScaleRange8.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange8.EndThickness = 14F;
+            arcScaleRange8.EndValue = 47.5F;
+            arcScaleRange8.Name = "Range1";
+            arcScaleRange8.ShapeOffset = 0F;
+            arcScaleRange8.StartThickness = 14F;
+            arcScaleRange8.StartValue = 40F;
+            arcScaleRange9.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange9.EndThickness = 14F;
+            arcScaleRange9.EndValue = 50F;
+            arcScaleRange9.Name = "Range2";
+            arcScaleRange9.ShapeOffset = 0F;
+            arcScaleRange9.StartThickness = 14F;
+            arcScaleRange9.StartValue = 47.5F;
             this.arcScaleComponent1.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange70,
-            arcScaleRange71,
-            arcScaleRange72});
+            arcScaleRange7,
+            arcScaleRange8,
+            arcScaleRange9});
             this.arcScaleComponent1.StartAngle = -240F;
             // 
             // arcScaleNeedleComponent5
@@ -815,30 +815,30 @@
             this.arcScaleComponent6.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent6.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent6.Name = "scale1";
-            arcScaleRange73.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange73.EndThickness = 14F;
-            arcScaleRange73.EndValue = 4F;
-            arcScaleRange73.Name = "Range0";
-            arcScaleRange73.ShapeOffset = 0F;
-            arcScaleRange73.StartThickness = 14F;
-            arcScaleRange74.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange74.EndThickness = 14F;
-            arcScaleRange74.EndValue = 4.75F;
-            arcScaleRange74.Name = "Range1";
-            arcScaleRange74.ShapeOffset = 0F;
-            arcScaleRange74.StartThickness = 14F;
-            arcScaleRange74.StartValue = 4F;
-            arcScaleRange75.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange75.EndThickness = 14F;
-            arcScaleRange75.EndValue = 5F;
-            arcScaleRange75.Name = "Range2";
-            arcScaleRange75.ShapeOffset = 0F;
-            arcScaleRange75.StartThickness = 14F;
-            arcScaleRange75.StartValue = 4.75F;
+            arcScaleRange10.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange10.EndThickness = 14F;
+            arcScaleRange10.EndValue = 4F;
+            arcScaleRange10.Name = "Range0";
+            arcScaleRange10.ShapeOffset = 0F;
+            arcScaleRange10.StartThickness = 14F;
+            arcScaleRange11.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange11.EndThickness = 14F;
+            arcScaleRange11.EndValue = 4.75F;
+            arcScaleRange11.Name = "Range1";
+            arcScaleRange11.ShapeOffset = 0F;
+            arcScaleRange11.StartThickness = 14F;
+            arcScaleRange11.StartValue = 4F;
+            arcScaleRange12.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange12.EndThickness = 14F;
+            arcScaleRange12.EndValue = 5F;
+            arcScaleRange12.Name = "Range2";
+            arcScaleRange12.ShapeOffset = 0F;
+            arcScaleRange12.StartThickness = 14F;
+            arcScaleRange12.StartValue = 4.75F;
             this.arcScaleComponent6.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange73,
-            arcScaleRange74,
-            arcScaleRange75});
+            arcScaleRange10,
+            arcScaleRange11,
+            arcScaleRange12});
             this.arcScaleComponent6.StartAngle = -240F;
             this.arcScaleComponent6.Value = 5F;
             // 
@@ -934,30 +934,30 @@
             this.arcScaleComponent5.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent5.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent5.Name = "scale1";
-            arcScaleRange76.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange76.EndThickness = 14F;
-            arcScaleRange76.EndValue = 4F;
-            arcScaleRange76.Name = "Range0";
-            arcScaleRange76.ShapeOffset = 0F;
-            arcScaleRange76.StartThickness = 14F;
-            arcScaleRange77.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange77.EndThickness = 14F;
-            arcScaleRange77.EndValue = 4.75F;
-            arcScaleRange77.Name = "Range1";
-            arcScaleRange77.ShapeOffset = 0F;
-            arcScaleRange77.StartThickness = 14F;
-            arcScaleRange77.StartValue = 4F;
-            arcScaleRange78.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange78.EndThickness = 14F;
-            arcScaleRange78.EndValue = 5F;
-            arcScaleRange78.Name = "Range2";
-            arcScaleRange78.ShapeOffset = 0F;
-            arcScaleRange78.StartThickness = 14F;
-            arcScaleRange78.StartValue = 4.75F;
+            arcScaleRange13.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange13.EndThickness = 14F;
+            arcScaleRange13.EndValue = 4F;
+            arcScaleRange13.Name = "Range0";
+            arcScaleRange13.ShapeOffset = 0F;
+            arcScaleRange13.StartThickness = 14F;
+            arcScaleRange14.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange14.EndThickness = 14F;
+            arcScaleRange14.EndValue = 4.75F;
+            arcScaleRange14.Name = "Range1";
+            arcScaleRange14.ShapeOffset = 0F;
+            arcScaleRange14.StartThickness = 14F;
+            arcScaleRange14.StartValue = 4F;
+            arcScaleRange15.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange15.EndThickness = 14F;
+            arcScaleRange15.EndValue = 5F;
+            arcScaleRange15.Name = "Range2";
+            arcScaleRange15.ShapeOffset = 0F;
+            arcScaleRange15.StartThickness = 14F;
+            arcScaleRange15.StartValue = 4.75F;
             this.arcScaleComponent5.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange76,
-            arcScaleRange77,
-            arcScaleRange78});
+            arcScaleRange13,
+            arcScaleRange14,
+            arcScaleRange15});
             this.arcScaleComponent5.StartAngle = -240F;
             // 
             // arcScaleNeedleComponent2
@@ -1065,30 +1065,30 @@
             this.arcScaleComponent2.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent2.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent2.Name = "scale1";
-            arcScaleRange79.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange79.EndThickness = 14F;
-            arcScaleRange79.EndValue = 40F;
-            arcScaleRange79.Name = "Range0";
-            arcScaleRange79.ShapeOffset = 0F;
-            arcScaleRange79.StartThickness = 14F;
-            arcScaleRange80.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange80.EndThickness = 14F;
-            arcScaleRange80.EndValue = 47.5F;
-            arcScaleRange80.Name = "Range1";
-            arcScaleRange80.ShapeOffset = 0F;
-            arcScaleRange80.StartThickness = 14F;
-            arcScaleRange80.StartValue = 40F;
-            arcScaleRange81.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange81.EndThickness = 14F;
-            arcScaleRange81.EndValue = 50F;
-            arcScaleRange81.Name = "Range2";
-            arcScaleRange81.ShapeOffset = 0F;
-            arcScaleRange81.StartThickness = 14F;
-            arcScaleRange81.StartValue = 47.5F;
+            arcScaleRange16.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange16.EndThickness = 14F;
+            arcScaleRange16.EndValue = 40F;
+            arcScaleRange16.Name = "Range0";
+            arcScaleRange16.ShapeOffset = 0F;
+            arcScaleRange16.StartThickness = 14F;
+            arcScaleRange17.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange17.EndThickness = 14F;
+            arcScaleRange17.EndValue = 47.5F;
+            arcScaleRange17.Name = "Range1";
+            arcScaleRange17.ShapeOffset = 0F;
+            arcScaleRange17.StartThickness = 14F;
+            arcScaleRange17.StartValue = 40F;
+            arcScaleRange18.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange18.EndThickness = 14F;
+            arcScaleRange18.EndValue = 50F;
+            arcScaleRange18.Name = "Range2";
+            arcScaleRange18.ShapeOffset = 0F;
+            arcScaleRange18.StartThickness = 14F;
+            arcScaleRange18.StartValue = 47.5F;
             this.arcScaleComponent2.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange79,
-            arcScaleRange80,
-            arcScaleRange81});
+            arcScaleRange16,
+            arcScaleRange17,
+            arcScaleRange18});
             this.arcScaleComponent2.StartAngle = -240F;
             // 
             // arcScaleNeedleComponent6
@@ -1126,30 +1126,30 @@
             this.arcScaleComponent7.MinorTickmark.ShapeOffset = -7F;
             this.arcScaleComponent7.MinorTickmark.ShapeType = DevExpress.XtraGauges.Core.Model.TickmarkShapeType.Circular_Style16_2;
             this.arcScaleComponent7.Name = "scale1";
-            arcScaleRange82.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange82.EndThickness = 14F;
-            arcScaleRange82.EndValue = 40F;
-            arcScaleRange82.Name = "Range0";
-            arcScaleRange82.ShapeOffset = 0F;
-            arcScaleRange82.StartThickness = 14F;
-            arcScaleRange83.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange83.EndThickness = 14F;
-            arcScaleRange83.EndValue = 47.5F;
-            arcScaleRange83.Name = "Range1";
-            arcScaleRange83.ShapeOffset = 0F;
-            arcScaleRange83.StartThickness = 14F;
-            arcScaleRange83.StartValue = 40F;
-            arcScaleRange84.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange84.EndThickness = 14F;
-            arcScaleRange84.EndValue = 50F;
-            arcScaleRange84.Name = "Range2";
-            arcScaleRange84.ShapeOffset = 0F;
-            arcScaleRange84.StartThickness = 14F;
-            arcScaleRange84.StartValue = 47.5F;
+            arcScaleRange19.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange19.EndThickness = 14F;
+            arcScaleRange19.EndValue = 40F;
+            arcScaleRange19.Name = "Range0";
+            arcScaleRange19.ShapeOffset = 0F;
+            arcScaleRange19.StartThickness = 14F;
+            arcScaleRange20.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange20.EndThickness = 14F;
+            arcScaleRange20.EndValue = 47.5F;
+            arcScaleRange20.Name = "Range1";
+            arcScaleRange20.ShapeOffset = 0F;
+            arcScaleRange20.StartThickness = 14F;
+            arcScaleRange20.StartValue = 40F;
+            arcScaleRange21.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange21.EndThickness = 14F;
+            arcScaleRange21.EndValue = 50F;
+            arcScaleRange21.Name = "Range2";
+            arcScaleRange21.ShapeOffset = 0F;
+            arcScaleRange21.StartThickness = 14F;
+            arcScaleRange21.StartValue = 47.5F;
             this.arcScaleComponent7.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] {
-            arcScaleRange82,
-            arcScaleRange83,
-            arcScaleRange84});
+            arcScaleRange19,
+            arcScaleRange20,
+            arcScaleRange21});
             this.arcScaleComponent7.StartAngle = -240F;
             this.arcScaleComponent7.Value = 10F;
             // 
@@ -1653,10 +1653,10 @@
             this.chartControl3.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl3.Size = new System.Drawing.Size(411, 428);
             this.chartControl3.TabIndex = 2;
-            chartTitle10.Font = new System.Drawing.Font("Tahoma", 15F);
-            chartTitle10.Text = "";
+            chartTitle1.Font = new System.Drawing.Font("Tahoma", 15F);
+            chartTitle1.Text = "";
             this.chartControl3.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle10});
+            chartTitle1});
             // 
             // groupControl4
             // 
@@ -1685,10 +1685,10 @@
             this.chartControl2.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl2.Size = new System.Drawing.Size(411, 426);
             this.chartControl2.TabIndex = 1;
-            chartTitle11.Font = new System.Drawing.Font("Tahoma", 15F);
-            chartTitle11.Text = "";
+            chartTitle2.Font = new System.Drawing.Font("Tahoma", 15F);
+            chartTitle2.Text = "";
             this.chartControl2.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle11});
+            chartTitle2});
             // 
             // groupControl3
             // 
@@ -1718,10 +1718,10 @@
             this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl1.Size = new System.Drawing.Size(553, 233);
             this.chartControl1.TabIndex = 3;
-            chartTitle12.Font = new System.Drawing.Font("Tahoma", 15F);
-            chartTitle12.Text = "";
+            chartTitle3.Font = new System.Drawing.Font("Tahoma", 15F);
+            chartTitle3.Text = "";
             this.chartControl1.Titles.AddRange(new DevExpress.XtraCharts.ChartTitle[] {
-            chartTitle12});
+            chartTitle3});
             // 
             // Six_timer
             // 
@@ -1742,7 +1742,6 @@
             // 
             // timer3
             // 
-            this.timer3.Enabled = true;
             this.timer3.Interval = 2000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
