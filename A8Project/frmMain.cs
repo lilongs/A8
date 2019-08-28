@@ -795,7 +795,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -906,7 +906,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -923,7 +923,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -1027,7 +1027,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -1104,7 +1104,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -1158,7 +1158,7 @@ namespace A8Project
             }
             catch (Exception ex)
             {
-                throw ex;
+                SysLog.CreateLog(ex.Message);
             }
         }
 
@@ -1184,24 +1184,31 @@ namespace A8Project
 
         private void gdvHistory_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
-            if (e.Column.FieldName == "second")
+            try
             {
-                int Value = e.CellValue.ToString() == "null" ? 0 : Convert.ToInt32(e.CellValue);
-                double target = double.Parse(ConfigurationManager.AppSettings["CycleTimeTarget"]);
-                double ratio = (Value / target) - 1;
+                if (e.Column.FieldName == "second")
+                {
+                    int Value = e.CellValue.ToString() == "null" ? 0 : Convert.ToInt32(e.CellValue);
+                    double target = double.Parse(ConfigurationManager.AppSettings["CycleTimeTarget"]);
+                    double ratio = (Value / target) - 1;
 
-                if (Value <= target)
-                {
-                    e.Appearance.BackColor = Color.Green;
+                    if (Value <= target)
+                    {
+                        e.Appearance.BackColor = Color.Green;
+                    }
+                    else if (Value > target && Value <= target + target * 0.1)
+                    {
+                        e.Appearance.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        e.Appearance.BackColor = Color.Red;
+                    }
                 }
-                else if (Value > target && Value <= target + target * 0.1)
-                {
-                    e.Appearance.BackColor = Color.Yellow;
-                }
-                else
-                {
-                    e.Appearance.BackColor = Color.Red;
-                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.CreateLog(ex.Message);
             }
         }
 
