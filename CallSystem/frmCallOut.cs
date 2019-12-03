@@ -225,12 +225,21 @@ namespace CallSystem
                     }
                 }
                 //操作记录
-                SysLog.OperateLog(((Button)sender).Text);
+                string strMsg = string.Empty;
+                if(((Button)sender).Text.Contains("呼叫"))
+                {
+                    strMsg=((Button)sender).Text.Replace("呼叫", "确认");
+                }
+                else
+                {
+                    strMsg = ((Button)sender).Text;
+                }
+                SysLog.OperateLog(strMsg);
                 //与服务器通讯并发送信息到移动手表
-                string msg = "<STX>Call_OUT," + ((Button)sender).Text + ","+ ControlStatus[((Button)sender)] + "<ETX>";
+                string msg = "<STX>Call_OUT," + strMsg + ","+ ControlStatus[((Button)sender)] + "<ETX>";
                 byte[] sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(msg);
                 client.Send(sendBytes, sendBytes.Length);
-                Com_Msg.SendData(((Button)sender).Text);
+                Com_Msg.SendData(strMsg);
                 
             }
             catch (Exception exc)

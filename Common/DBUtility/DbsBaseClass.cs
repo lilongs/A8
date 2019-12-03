@@ -24,10 +24,6 @@ namespace Common.DBUtility
 
         #region IDbs 成员
 
-        public virtual string GetconnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["A8Connect"].ConnectionString;
-        }
 
         /// <summary>
         /// 判断是否存在某表的某个字段

@@ -12,7 +12,7 @@ namespace Common.DBUtility
     {
         public TempTest()
         {
-            connectionString = GetconnectionString();
+            connectionString = ConfigurationManager.ConnectionStrings["A8Connect"].ConnectionString;
         }
     }    
 

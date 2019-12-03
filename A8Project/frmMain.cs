@@ -18,6 +18,8 @@ using System.IO.Ports;
 using HPSocketCS;
 using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
 using System.Runtime.InteropServices;
+using MES_HAI;
+using MES_HAI.Entity;
 
 namespace A8Project
 {
@@ -93,6 +95,14 @@ namespace A8Project
                 LoadTodayData();
                 LoadYearMonth();
                 LoadYearMonthFPY();
+
+                Thread OneMinutesTh = new Thread(ProgressCountDown);
+                OneMinutesTh.IsBackground = true;
+                OneMinutesTh.Start();
+
+                Thread ThreeSecTh = new Thread(LoadError_Consum);
+                ThreeSecTh.IsBackground = true;
+                ThreeSecTh.Start();
             }
             catch (Exception ex)
             {
@@ -150,6 +160,7 @@ namespace A8Project
             string msg = Encoding.GetEncoding("UTF-8").GetString(bytes);
             List<string> list = new List<string>();
             byte[] sendBytes = new byte[] { };
+            Traceability traceability = new Traceability();
             try
             {
                 string sendContent = string.Empty;
@@ -178,36 +189,57 @@ namespace A8Project
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
                             break;
-                        case "Process_IN":
+                        case "Process_IN"://PC PLC进站与监控程序通讯
                             if (checkInfo[connId])
                             {
-                                list.Add("pass");
-                                sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
-                                GetProductLog(list[0], EquipmentInfo[list[1]], list[3], "", "", now);
-
-                                //累计进站AC.CC.FC01.FC02探针和WS3打印纸使用次数
-                                Sys_reset_flag reset = new Sys_reset_flag();
-                                switch (EquipmentInfo[list[1]])
+                                //2019-11-23
+                                //取得客户mes系统中的SerialNumber(产品序列号)的检验结果                                
+                                Enums.ConnectionState state= traceability.Login(EquipmentInfo[list[1]],"","");
+                                if(state== Enums.ConnectionState.Logged)
                                 {
-                                    case "CC":
-                                        reset.Process_IN_CountIncrease("CC_Print", 1);
-                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
-                                        break;
-                                    case "WS3":
-                                        reset.Process_IN_CountIncrease("WS3_Print", 1);
-                                        break;
-                                    case "AC":
-                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
-                                        break;
-                                    case "FC01":
-                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
-                                        break;
-                                    case "FC02":
-                                        reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
-                                        break;
-                                    default:
-                                        break;
-                                }                                                               
+                                   SerialInfo info= traceability.Serial_GetInformation(EquipmentInfo[list[1]],list[3]);
+                                   MoveInResponse response=traceability.Serial_MoveIn(EquipmentInfo[list[1]], list[3],false,0);
+                                    if (response.ErrorCode == 0)
+                                    {
+                                        list.Add("pass");
+                                        sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+
+                                        GetProductLog(list[0], EquipmentInfo[list[1]], list[3], "", "", now);
+                                        //累计进站AC.CC.FC01.FC02探针和WS3打印纸使用次数
+                                        Sys_reset_flag reset = new Sys_reset_flag();
+                                        switch (EquipmentInfo[list[1]])
+                                        {
+                                            case "CC":
+                                                reset.Process_IN_CountIncrease("CC_Print", 1);
+                                                reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                                break;
+                                            case "WS3":
+                                                reset.Process_IN_CountIncrease("WS3_Print", 1);
+                                                break;
+                                            case "AC":
+                                                reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                                break;
+                                            case "FC01":
+                                                reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                                break;
+                                            case "FC02":
+                                                reset.Process_IN_CountIncrease(EquipmentInfo[list[1]], 1);
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        list.Add("error");
+                                        sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                    }
+                                }
+                                else
+                                {
+                                    list.Add("error");
+                                    sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                }
                             }
                             else
                             {
@@ -219,26 +251,37 @@ namespace A8Project
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
                             break;
-                        case "Process_OUT":
+                        case "Process_OUT"://PLC出站
                             if (checkInfo[connId])
                             {
-                                if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))//校验当前产品是否已进站
+                                List<Measure> measures = new List<Measure>();
+                                ErrorDetail detail=traceability.Serial_MoveOutAndTestResults(EquipmentInfo[list[1]], list[3],list[4].ToUpper()=="PASS"?Enums.Results.Pass:Enums.Results.Fail,"","", measures,0,false);
+                                if (detail.ErrorCode == 0)
                                 {
-                                    List<string> tempList = new List<string>();
-                                    foreach (string str in list)
+                                    if (productlog.CheckProcess(EquipmentInfo[list[1]], list[3]))//校验当前产品是否已进站
                                     {
-                                        tempList.Add(str);
-                                    }
-                                    tempList.RemoveRange(0, 5);//取得Item项目和校验位
-                                    //判断Item项目与数量是否一致，一致则返回pass,否则为error
-                                    int count = tempList.Count;
-                                    if (count - 1 == Convert.ToInt32(tempList[count - 1]))
-                                    {
-                                        string contents = String.Join(",", tempList.ToArray());
-                                        GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
-                                        list.RemoveRange(4, listCount - 4);
-                                        list.Add("pass");
-                                        sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                        List<string> tempList = new List<string>();
+                                        foreach (string str in list)
+                                        {
+                                            tempList.Add(str);
+                                        }
+                                        tempList.RemoveRange(0, 5);//取得Item项目和校验位
+                                                                   //判断Item项目与数量是否一致，一致则返回pass,否则为error
+                                        int count = tempList.Count;
+                                        if (count - 1 == Convert.ToInt32(tempList[count - 1]))
+                                        {
+                                            string contents = String.Join(",", tempList.ToArray());
+                                            GetProductLog(list[0], EquipmentInfo[list[1]], list[3], list[4], contents, now);
+                                            list.RemoveRange(4, listCount - 4);
+                                            list.Add("pass");
+                                            sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                        }
+                                        else
+                                        {
+                                            list.RemoveRange(4, listCount - 4);
+                                            list.Add("error");
+                                            sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
+                                        }
                                     }
                                     else
                                     {
@@ -265,7 +308,7 @@ namespace A8Project
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
                             break;
-                        case "START_OUT":
+                        case "START_OUT"://PC出站
                             if (checkInfo[connId])
                             {
                                 //校验当前产品是否已进站
@@ -611,10 +654,20 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Three_timer1_Tick(object sender, EventArgs e)
+        private void Three_timer_Tick(object sender, EventArgs e)
         {
             LoadErrorInfo();
             LoadConsumables();
+        }
+
+        private void LoadError_Consum()
+        {
+            while (true)
+            {
+                LoadErrorInfo();
+                LoadConsumables();
+                Thread.Sleep(3000);
+            }
         }
 
         /// <summary>
@@ -622,7 +675,7 @@ namespace A8Project
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer1_Tick(object sender, EventArgs e)
+        private void LED_timer_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -663,7 +716,7 @@ namespace A8Project
             }
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+        private void Progress_timer_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -690,7 +743,32 @@ namespace A8Project
             }
         }
 
-        private void timer3_Tick(object sender, EventArgs e)
+        private void ProgressCountDown()
+        {
+            while (true)
+            {
+                progressBarControl1.BeginInvoke((MethodInvoker)delegate{ 
+                if (progressBarControl1.Position > 0)
+                {
+                    progressBarControl1.Position += -1;
+                    labelControl2.Text = progressBarControl1.Position.ToString() + "S";
+                    if (progressBarControl1.Position == 0)
+                    {
+                        LoadCycleTime();
+                        LoadTodayData();
+                        LoadYearMonth();
+                        LoadYearMonthFPY();
+
+                        progressBarControl1.Position = 60;
+                        labelControl2.Text = progressBarControl1.Position.ToString() + "S";
+                    }
+                }
+                });
+                Thread.Sleep(1000);
+            }
+        }
+
+        private void Speaker_timer_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -791,7 +869,9 @@ namespace A8Project
                 //加载信息
                 DataTable dt = new DataTable();
                 dt = buTestValue.DealErrorInfo();
-                this.gdcErrorInfo.DataSource = dt;
+                gdcErrorInfo.BeginInvoke((MethodInvoker)delegate {
+                    this.gdcErrorInfo.DataSource = dt;
+                });
             }
             catch (Exception ex)
             {
@@ -815,7 +895,7 @@ namespace A8Project
                 float consumable5 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='WS3_Print'")[0]["Process_IN_Counts"]) / 1000.0) ;
                 float consumable6 = (float)(Convert.ToDouble(dtProcessInCounts.Select("keyname='CC_Print'")[0]["Process_IN_Counts"]) / 1000.0) ;
 
-
+                label19.BeginInvoke((MethodInvoker)delegate { 
                 //AC
                 if (consumable1 > 47.5)
                 {
@@ -884,8 +964,8 @@ namespace A8Project
                     ControlStatus[label54] = 0;
                     label19.Visible = false;
                 }
-
-
+                });
+                this.BeginInvoke((MethodInvoker)delegate { 
                 this.arcScaleComponent1.Value = consumable1;
                 this.label5.Text = consumable1.ToString() + " K";
 
@@ -903,6 +983,7 @@ namespace A8Project
 
                 this.arcScaleComponent6.Value = consumable5;
                 this.label12.Text = consumable5.ToString() + " K";
+                });
             }
             catch (Exception ex)
             {
@@ -919,7 +1000,11 @@ namespace A8Project
             {
                 DataTable dtHis = new DataTable();
                 dtHis = buTestValue.GetCycleTime();
-                this.gdcHistory.DataSource = dtHis;
+                gdcHistory.BeginInvoke((MethodInvoker) delegate
+                {
+                    this.gdcHistory.DataSource = dtHis;
+                });
+                    
             }
             catch (Exception ex)
             {
@@ -936,6 +1021,8 @@ namespace A8Project
             {
                 DataTable dt = buTestValue.GetTodayData();
                 DataTable dt2 = buTestValue.GetTodayTarget();
+                chartControl1.BeginInvoke((MethodInvoker)delegate {
+                
                 this.chartControl1.Series.Clear();
                 #region 方式一，传统的数据绑定，无需精确控制每一个Bar
                 //Series series1 = new Series("产量", ViewType.Bar);
@@ -1024,6 +1111,7 @@ namespace A8Project
 
                 diagram.AxisY.Label.Font = new Font("Arial", 9F);
                 chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+                });
             }
             catch (Exception ex)
             {
@@ -1037,6 +1125,7 @@ namespace A8Project
             {
                 DataTable dt = buTestValue.GetYearMonth();
                 DataTable dt2 = buTestValue.GetYearMonthTarget();
+                chartControl2.BeginInvoke((MethodInvoker)delegate { 
 
                 this.chartControl2.Series.Clear();
                 #region 方式一，传统的数据绑定，无需精确控制每一个Bar
@@ -1101,6 +1190,7 @@ namespace A8Project
                 diagram.AxisX.Label.Font = new Font("Arial", 9F);
                 diagram.AxisY.Label.Font = new Font("Arial", 9F);
                 chartControl2.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+                });
             }
             catch (Exception ex)
             {
@@ -1114,6 +1204,8 @@ namespace A8Project
             {
                 DataTable dt = buTestValue.GetYearMonthFPY();
                 DataTable dt2 = buTestValue.GetYearMonthFPYTarget();
+
+                chartControl3.BeginInvoke((MethodInvoker)delegate { 
                 this.chartControl3.Series.Clear();
                 Series series1 = new Series("FPY", ViewType.Line);
                 series1.DataSource = dt;
@@ -1155,6 +1247,7 @@ namespace A8Project
                 diagram.AxisY.WholeRange.SideMarginsValue = 0;
                 diagram.AxisY.WholeRange.SetMinMaxValues(0, 1);
                 chartControl3.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+                });
             }
             catch (Exception ex)
             {
