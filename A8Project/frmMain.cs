@@ -2,24 +2,19 @@
 using Common.Util;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using DevExpress.XtraCharts;
 using Common.BLL;
-using System.IO.Ports;
 using HPSocketCS;
-using static DevExpress.Utils.Drawing.Helpers.NativeMethods;
-using System.Runtime.InteropServices;
 using MES_HAI;
 using MES_HAI.Entity;
+using System.Net;
 
 namespace A8Project
 {
@@ -116,7 +111,9 @@ namespace A8Project
         #region 事件处理方法
         private void SocketStart()
         {
-            this.ip = ConfigurationManager.AppSettings["socketSeverIP"];
+            IPAddress[] addressList = Dns.GetHostAddresses(Dns.GetHostName());
+            List<System.Net.IPAddress> list = addressList.Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
+            this.ip = list[0].ToString();
             this.port = ushort.Parse(ConfigurationManager.AppSettings["socketSeverPort"]);
             server.IpAddress = ip;
             server.Port = port;

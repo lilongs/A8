@@ -77,8 +77,8 @@ namespace Common.BLL
                 dt.Rows.Add(dr);
             }
             DataRow dr2 = dt.NewRow();
-            dr2["hours"] = Convert.ToDateTime("23:59");
-            dr2["counts"] = 1200;
+            dr2["hours"] = Convert.ToDateTime("23:59:59.999");
+            dr2["counts"] = Convert.ToDouble(ConfigurationManager.AppSettings["OneHourProductionTarget"]) * 24;
             dt.Rows.Add(dr2);
 
             return dt;

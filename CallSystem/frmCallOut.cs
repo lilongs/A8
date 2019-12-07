@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,7 +74,9 @@ namespace CallSystem
         {
             try
             {
-                string ip = ConfigurationManager.AppSettings["socketSeverIP"];
+                IPAddress[] addressList = Dns.GetHostAddresses(Dns.GetHostName());
+                List<System.Net.IPAddress> list = addressList.Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
+                string ip = list[0].ToString();
                 ushort port = ushort.Parse(ConfigurationManager.AppSettings["socketSeverPort"]);
                 appState = AppState.Starting;
 
