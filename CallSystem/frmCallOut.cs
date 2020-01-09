@@ -74,9 +74,7 @@ namespace CallSystem
         {
             try
             {
-                IPAddress[] addressList = Dns.GetHostAddresses(Dns.GetHostName());
-                List<System.Net.IPAddress> list = addressList.Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
-                string ip = list[0].ToString();
+                string ip = ConfigurationManager.AppSettings["socketSeverIP"];
                 ushort port = ushort.Parse(ConfigurationManager.AppSettings["socketSeverPort"]);
                 appState = AppState.Starting;
 
