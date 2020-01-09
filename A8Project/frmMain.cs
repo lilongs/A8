@@ -113,7 +113,7 @@ namespace A8Project
         {
             IPAddress[] addressList = Dns.GetHostAddresses(Dns.GetHostName());
             List<System.Net.IPAddress> list = addressList.Where(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
-            this.ip = list[0].ToString();
+            this.ip = list[1].ToString();
             this.port = ushort.Parse(ConfigurationManager.AppSettings["socketSeverPort"]);
             server.IpAddress = ip;
             server.Port = port;
@@ -154,13 +154,17 @@ namespace A8Project
         private HandleResult server_OnReceive(IntPtr connId, byte[] bytes)
         {
             string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            string msg = Encoding.GetEncoding("UTF-8").GetString(bytes);
+            //string msg = Encoding.GetEncoding("UTF-8").GetString(bytes);
+            string msg = System.Text.Encoding.Default.GetString(bytes);
             List<string> list = new List<string>();
             byte[] sendBytes = new byte[] { };
             Traceability traceability = new Traceability();
             try
             {
                 string sendContent = string.Empty;
+                //移除<ETX>后面无用的空格或其他的字符
+                int index_n = msg.IndexOf("<ETX>");
+                msg = msg.Remove(index_n + 5, msg.Length - 5 - index_n);
                 string doneMsg = msg.Replace("<STX>", "").Replace("<ETX>", "");
                 list = doneMsg.Split(',').ToList();
                 int listCount = list.Count();
@@ -181,7 +185,8 @@ namespace A8Project
 
                             list.Add("pass");
                             sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
-                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            sendBytes = Encoding.Default.GetBytes(sendContent);
                             server.Send(connId, sendBytes, sendBytes.Length);
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
@@ -243,7 +248,8 @@ namespace A8Project
                                 list.Add("error");
                                 sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                             }
-                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            sendBytes = Encoding.Default.GetBytes(sendContent);
                             server.Send(connId, sendBytes, sendBytes.Length);
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
@@ -300,7 +306,8 @@ namespace A8Project
                                 list.Add("error");
                                 sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                             }
-                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            sendBytes = Encoding.Default.GetBytes(sendContent);
                             server.Send(connId, sendBytes, sendBytes.Length);
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
@@ -333,7 +340,8 @@ namespace A8Project
                                 list.Add("error");
                                 sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
                             }
-                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            sendBytes = Encoding.Default.GetBytes(sendContent);
                             server.Send(connId, sendBytes, sendBytes.Length);
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
@@ -538,7 +546,8 @@ namespace A8Project
                         default:
                             list.Add("error");
                             sendContent = "<STX>" + String.Join(",", list.ToArray()) + "<ETX>";
-                            sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes(sendContent);
+                            sendBytes = Encoding.Default.GetBytes(sendContent);
                             server.Send(connId, sendBytes, sendBytes.Length);
                             GetCommunicationLogs(msg, now, sendContent);
                             sendContent = string.Empty;
@@ -548,7 +557,8 @@ namespace A8Project
             }
             catch
             {
-                sendBytes = Encoding.GetEncoding("UTF-8").GetBytes("<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
+                //sendBytes = Encoding.GetEncoding("UTF-8").GetBytes("<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
+                sendBytes = Encoding.Default.GetBytes("<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
                 server.Send(connId, sendBytes, sendBytes.Length);
                 GetCommunicationLogs(msg, now, "<STX>" + String.Join(",", list.ToArray()) + ",error<ETX>");
             }
